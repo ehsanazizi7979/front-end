@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapter 1 — JavaScript is everywhere | Secrets of the JavaScript Ninja, 3rd Edition</title>
-<meta name="description" content="A chapter summary of Chapter 1, “JavaScript is everywhere”, from Secrets of the JavaScript Ninja, Third Edition (MEAP V10) — with the book’s figure, icons and code listings embedded.">
+<title>Chapters 1–2 | Secrets of the JavaScript Ninja, 3rd Edition</title>
+<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapter 1, “JavaScript is everywhere”, and chapter 2, “Using modern JavaScript tools”, with the book’s figure, icons and code listings embedded.">
 <style>
   :root{
     --ink:#14161a;
@@ -40,7 +40,7 @@
   .layout{display:grid;grid-template-columns:minmax(0,1fr);gap:48px;}
   @media (min-width:1080px){
     .layout{grid-template-columns:260px minmax(0,1fr);gap:56px;}
-    nav.toc{position:sticky;top:28px;align-self:start;display:block !important;}
+    nav.toc:not([hidden]){position:sticky;top:28px;align-self:start;display:block !important;}
   }
 
   /* ---------- hero ---------- */
@@ -76,6 +76,7 @@
 
   /* ---------- nav ---------- */
   nav.toc{display:none;}
+  nav.toc[hidden]{display:none !important;}
   nav.toc h2{
     font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
     font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
@@ -218,6 +219,82 @@
   footer p{margin:0 0 8px;}
   footer a{color:var(--ink-soft);}
 
+
+  /* ---------- chapter switcher ---------- */
+  .chapter-nav{
+    display:flex;flex-wrap:wrap;gap:10px;align-items:center;
+    margin:26px 0 0;padding:0;list-style:none;
+    font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  .chapter-nav li{margin:0;}
+  .chapter-nav button{
+    appearance:none;cursor:pointer;font:inherit;font-size:.85rem;font-weight:600;
+    display:inline-flex;align-items:baseline;gap:9px;
+    padding:9px 16px;border-radius:999px;border:1px solid #d8d4c8;
+    background:#fff;color:var(--ink-soft);
+    transition:background .15s,border-color .15s,color .15s,box-shadow .15s;
+  }
+  .chapter-nav button:hover{border-color:var(--accent);color:var(--accent);}
+  .chapter-nav button[aria-selected="true"]{
+    background:var(--accent);border-color:var(--accent);color:#fff;
+    box-shadow:0 2px 10px rgba(15,92,74,.22);
+  }
+  .chapter-nav button .n{
+    font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;opacity:.72;font-weight:800;
+  }
+  .chapter-nav button[aria-selected="true"] .n{opacity:.85;}
+  .chapter-nav button .dots{display:none;}
+  .chapter-nav button[aria-selected="true"] .dots{display:inline;}
+
+  /* ---------- chapter head & sidebar cards ---------- */
+  section.chapter-head{margin-bottom:40px;}
+  h2.chapter-title{
+    font-size:clamp(1.75rem,3.6vw,2.5rem);border-bottom:0;padding-bottom:0;
+    margin:0 0 22px;letter-spacing:-.02em;
+  }
+  .card.sidebar{background:#f7f6f1;border-style:dashed;border-color:#ddd8c9;}
+  .card.sidebar > h4{color:var(--accent);}
+  .card.sidebar p{font-size:.95rem;margin-bottom:12px;}
+  .card.sidebar p:last-child{margin-bottom:0;}
+  .card.sidebar ul{font-size:.95rem;margin-top:6px;}
+  .card > p{font-size:.97rem;}
+
+  /* ---------- next-chapter button & page note ---------- */
+  .chapter-next{margin:40px 0 0;padding-top:26px;border-top:1px solid var(--line);}
+  .chapter-next button{
+    appearance:none;cursor:pointer;font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
+    font-size:.86rem;font-weight:600;display:inline-flex;align-items:baseline;gap:10px;
+    padding:11px 18px;border-radius:10px;border:1px solid #cfe3da;
+    background:var(--accent-soft);color:#0b4a3b;transition:background .15s,border-color .15s,transform .15s;
+  }
+  .chapter-next button:hover{background:#d9ebe4;border-color:var(--accent);transform:translateX(2px);}
+  .chapter-next .n{
+    font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;opacity:.7;
+  }
+  .page-note{
+    margin-top:56px;padding:24px 26px;border:1px solid var(--line);border-radius:var(--radius);
+    background:#f7f6f1;
+  }
+  .page-note h2{font-size:1.15rem;border-bottom:0;padding-bottom:0;margin-bottom:14px;}
+  .page-note p{font-size:.92rem;color:var(--ink-soft);}
+
+  /* ---------- terminal blocks ---------- */
+  .terminal{
+    margin:20px 0 24px;border-radius:10px;overflow:hidden;
+    border:1px solid #262b33;background:#1b2027;
+  }
+  .terminal pre{
+    margin:0;padding:14px 16px;overflow-x:auto;
+    font-family:"SFMono-Regular",Menlo,Consolas,"Liberation Mono",monospace;
+    font-size:.8rem;line-height:1.6;color:#dfe4ec;white-space:pre;
+  }
+  .terminal .prompt{color:#6ee7b7;font-weight:700;user-select:none;}
+
+  /* ---------- listing extras ---------- */
+  .listing .bar span:first-child{text-transform:none;letter-spacing:.01em;font-weight:700;color:var(--ink-soft);}
+  .listing .bar .lang{text-transform:uppercase;font-size:.68rem;}
+  mark.tok-a{background:rgba(184,134,11,.16);border-radius:3px;padding:0 .18em;}
+
   @media print{
     nav.toc{display:none !important;}
     body{background:#fff;font-size:11.5pt;}
@@ -233,13 +310,26 @@
 <header class="hero">
   <div class="wrap">
     <p class="kicker">Secrets of the JavaScript Ninja · Third Edition · MEAP V10</p>
-    <h1>Chapter 1 — JavaScript is everywhere
-      <span class="thin">A summary of the opening chapter, with the book’s figure, icons and code listings embedded.</span>
+    <h1>Chapter summaries
+      <span class="thin">Chapter 1 — “JavaScript is everywhere” · Chapter 2 — “Using modern JavaScript tools”, with the book’s figures, icons and every code listing reproduced.</span>
     </h1>
     <p class="byline">
       <strong>Trevor Burnham</strong>, with Bear Bibeault, Josip Maras &amp; John Resig ·
-      Manning Publications · pages 1–16 of the MEAP
+      Manning Publications · MEAP V10
     </p>
+
+    <ul class="chapter-nav" role="tablist" aria-label="Choose a chapter">
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-1" aria-controls="chapter-1" aria-selected="true" data-target="chapter-1">
+          <span class="n">Ch 1</span> JavaScript is everywhere <span class="dots">·</span>
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-2" aria-controls="chapter-2" aria-selected="false" data-target="chapter-2">
+          <span class="n">Ch 2</span> Using modern JavaScript tools
+        </button>
+      </li>
+    </ul>
 
     <blockquote class="epigraph">
       “Atwood’s Law: any application that can be written in JavaScript, will eventually be written in JavaScript.”
@@ -251,8 +341,8 @@
 <div class="wrap">
   <div class="layout">
 
-    <nav class="toc" aria-label="Table of contents">
-      <h2>On this page</h2>
+    <nav class="toc" id="toc-1" aria-label="Chapter 1 contents">
+      <h2>Chapter 1 · on this page</h2>
       <ol>
         <li><a href="#covers">What the chapter covers</a></li>
         <li><a href="#language"><span class="mono">1.1</span> Understanding the language</a></li>
@@ -273,7 +363,30 @@
       </ol>
     </nav>
 
+    <nav class="toc" id="toc-2" aria-label="Chapter 2 contents" hidden>
+      <h2>Chapter 2 · on this page</h2>
+      <ol>
+        <li><a href="#c2-intro">This chapter covers</a></li>
+        <li><a href="#c2-typescript"><span class="mono">2.1</span> Type checking with TypeScript</a></li>
+        <li class="sub"><a href="#c2-install">2.1.1 Installing the compiler</a></li>
+        <li class="sub"><a href="#c2-annotations">2.1.2 Annotations &amp; declarations</a></li>
+        <li class="sub"><a href="#c2-narrowing">2.1.3 Narrowing &amp; predicates</a></li>
+        <li class="sub"><a href="#c2-runtime">2.1.4 Running without compiling</a></li>
+        <li><a href="#c2-eslint"><span class="mono">2.2</span> Enforcing rules with ESLint</a></li>
+        <li class="sub"><a href="#c2-setup">2.2.1 Setting up ESLint</a></li>
+        <li class="sub"><a href="#c2-disabling">2.2.2 Disabling rules</a></li>
+        <li class="sub"><a href="#c2-style">2.2.3 Enforcing a style</a></li>
+        <li><a href="#c2-prettier"><span class="mono">2.3</span> Formatting with Prettier</a></li>
+        <li class="sub"><a href="#c2-prettier-setup">2.3.1 Setting up Prettier</a></li>
+        <li class="sub"><a href="#c2-husky">2.3.2 Running from a commit hook</a></li>
+        <li><a href="#c2-summary"><span class="mono">2.4</span> Summary</a></li>
+        <li><a href="#c2-source">Source</a></li>
+      </ol>
+    </nav>
+
     <main>
+
+      <div class="chapter" id="chapter-1" data-chapter="1">
 
       <section id="covers">
         <h2>What the chapter covers</h2>
@@ -553,9 +666,9 @@
           <div class="bar"><span>An Express server</span><span class="lang">JavaScript</span></div>
           <pre><code><span class="tok-kw">import</span> express <span class="tok-kw">from</span> <span class="tok-str">"express"</span>;
 
-<span class="tok-kw">const</span> app = <span class="tok-fn">express</span>();            <span class="tok-com">// #A</span>
-app.<span class="tok-fn">get</span>(<span class="tok-str">"/ping"</span>, (req, res) =&gt; {   <span class="tok-com">// #B</span>
-  res.<span class="tok-fn">send</span>(<span class="tok-str">"OK"</span>);               <span class="tok-com">// #C</span>
+<span class="tok-kw">const</span> app = <span class="tok-fn">express</span>();            <span class="tok-com">#A</span>
+app.<span class="tok-fn">get</span>(<span class="tok-str">"/ping"</span>, (req, res) =&gt; {   <span class="tok-com">#B</span>
+  res.<span class="tok-fn">send</span>(<span class="tok-str">"OK"</span>);               <span class="tok-com">#C</span>
 });</code></pre>
           <div class="callouts">
             <div><b>#A</b> Create an Express server</div>
@@ -644,8 +757,8 @@ app.<span class="tok-fn">get</span>(<span class="tok-str">"/ping"</span>, (req, 
 
         <div class="listing">
           <div class="bar"><span>Type checking catches a bad call</span><span class="lang">TypeScript</span></div>
-          <pre><code><span class="tok-kw">const</span> addOne = (x: <span class="tok-kw">number</span>) =&gt; x + <span class="tok-num">1</span>;  <span class="tok-com">// #A</span>
-<span class="tok-fn">addOne</span>(<span class="tok-str">"10"</span>);                              <span class="tok-com">// #B</span></code></pre>
+          <pre><code><span class="tok-kw">const</span> addOne = (x: <span class="tok-kw">number</span>) =&gt; x + <span class="tok-num">1</span>;  <span class="tok-com">#A</span>
+<span class="tok-fn">addOne</span>(<span class="tok-str">"10"</span>);                              <span class="tok-com">#B</span></code></pre>
           <div class="callouts">
             <div><b>#A</b> Defines a function that takes a number <code>x</code> and returns <code>x + 1</code></div>
             <div><b>#B</b> Calls the function with a string, which will yield an error when the type checker runs</div>
@@ -686,8 +799,8 @@ app.<span class="tok-fn">get</span>(<span class="tok-str">"/ping"</span>, (req, 
           <div class="bar"><span>Shadowed variable</span><span class="lang">JavaScript</span></div>
           <pre><code><span class="tok-kw">let</span> username = <span class="tok-str">"Zork"</span>;
 
-<span class="tok-kw">function</span> <span class="tok-fn">logInAs</span>(username) {   <span class="tok-com">// #A</span>
-  username = username;      <span class="tok-com">// #B</span>
+<span class="tok-kw">function</span> <span class="tok-fn">logInAs</span>(username) {   <span class="tok-com">#A</span>
+  username = username;      <span class="tok-com">#B</span>
 }
 
 <span class="tok-fn">logInAs</span>(<span class="tok-str">"Grue"</span>);</code></pre>
@@ -872,18 +985,1200 @@ console.<span class="tok-fn">assert</span>(b === <span class="tok-num">2</span>,
         </div>
       </section>
 
-      <section id="source">
-        <h2>Source &amp; assets</h2>
+
+      <p class="chapter-next"><button type="button" data-goto="chapter-2"><span class="n">Next</span> Chapter 2 — Using modern JavaScript tools →</button></p>
+
+      </div><!-- /chapter 1 -->
+
+      <div class="chapter" id="chapter-2" data-chapter="2" hidden>
+
+      <section class="chapter-head" id="c2-intro">
+        <p class="kicker">Chapter 2</p>
+        <h2 class="chapter-title">Using modern JavaScript tools</h2>
+        <div class="card">
+          <h4>This chapter covers</h4>
+          <ul>
+            <li>Three tools that have taken the JavaScript world by storm</li>
+            <li>Why most JavaScript code is now written in TypeScript</li>
+            <li>How productive teams resolve arguments about code style</li>
+          </ul>
+        </div>
         <p>
-          This page summarises Chapter 1, “JavaScript is everywhere”, of
-          <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10, chapters 1–10 of 15, 2026) by Trevor
-          Burnham, Bear Bibeault, Josip Maras and John Resig — Manning Publications. Chapter 1 runs from printed
-          page 1 to page 16 of the PDF edition in this repository.
+          In the early days of JavaScript engineers had a common refrain: “It’s not a real language.” The idea
+          was that JavaScript was a toy, decent for simple scripts but ill-suited to “serious” programming.
         </p>
         <p>
-          The figure and the two note icons are extracted from the book PDF and embedded in this single HTML file
-          as data URIs, so the page is self-contained. The code listings reproduce the book’s examples, with the
-          original <code>#A</code>, <code>#B</code>, <code>#C</code> callouts kept as annotation keys beneath each snippet.
+          That attitude has largely disappeared. The language itself has evolved, certainly — a steady stream of
+          ECMAScript iterations adding features. But the more significant change is <em>how</em> JavaScript is
+          written. When engineers said it wasn’t a real language, they meant it lacked the guardrails Java and C#
+          provide: reference an undefined variable, call a function with the wrong number of arguments, do
+          arithmetic on a string, and those languages complain at compile time — or better, in the IDE. In
+          JavaScript you wouldn’t know until the code runs (if then).
+        </p>
+        <p>Three tools transformed that experience:</p>
+        <ul>
+          <li><strong>TypeScript</strong> made compile-time type checking a reality, and powerful IDE integration with it.</li>
+          <li><strong>ESLint</strong> made it easy to enforce whatever rules you want, from the common-sensical to the esoteric.</li>
+          <li><strong>Prettier</strong> ended a million arguments about what JavaScript code should look like.</li>
+        </ul>
+        <p>
+          This chapter is more hands-on than the rest of the book, because the only way to understand these tools
+          is to start using them. Once they’re set up, you’re equipped to work with the code examples that follow.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Running tools with Node.js</h4>
+          <p>
+            One key ingredient in JavaScript’s rise has been the ability to write JavaScript tools in
+            JavaScript. That trend started with Node.js, which has become the standard runtime for JavaScript
+            tooling. This chapter assumes Node.js is set up so that you can run the <code>node</code>,
+            <code>npm</code> and <code>npx</code> commands; for step-by-step installation and version management,
+            see Appendix A.
+          </p>
+        </div>
+      </section>
+
+      <section id="c2-typescript">
+        <h2><span class="num">2.1</span> Type checking with TypeScript</h2>
+        <p>
+          Mismatched types are one of the most common sources of JavaScript errors, and an easy mistake to make.
+          Say you misremember the order of arguments to <code>setTimeout</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Incorrect argument order</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-com">// Incorrect code! The time should come after the callback.</span>
+<span class="tok-fn">setTimeout</span>(<span class="tok-num">200</span>, () =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"This will never run."</span>);
+});</code></pre>
+        </div>
+
+        <p>
+          Run this in a browser and something strange happens: nothing. No error is thrown, no message appears in
+          the console. Many browser APIs behave that way, which makes bugs from a failed timeout hard to track
+          down. Node.js is, helpfully, stricter: the invalid <code>setTimeout</code> triggers a runtime error with
+          an informative message. But why wait until runtime to discover an error that could have been predicted
+          just by looking at the code?
+        </p>
+        <p>
+          Many attempts have been made to solve this. Most involved generating JavaScript from a completely
+          different language — Google’s GWT compiles Java into a browser-friendly JavaScript application, for
+          instance. TypeScript takes another approach: rather than being a different language, it is a
+          <strong>superset of JavaScript</strong> with types that can be verified at compile time.
+        </p>
+        <p>
+          Because it’s a superset, the <code>setTimeout</code> code above is also valid TypeScript, yet the type
+          checker can still recognise the error. You can see it for yourself in the
+          <a href="https://www.typescriptlang.org/play">TypeScript Playground</a>.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Types of typed languages</h4>
+          <p>
+            When developers complain that JavaScript has no proper types, two separate concepts are in play:
+          </p>
+          <ul>
+            <li>
+              JavaScript is <strong>dynamically typed</strong>: types are enforced only at runtime. In a
+              <strong>statically typed</strong> language they are enforced at compile time. TypeScript is statically
+              typed, because its type checker runs before your code does.
+            </li>
+            <li>
+              JavaScript has <strong>implicit type coercion</strong>: <code>1 + "2"</code> produces the string
+              <code>"12"</code>, because anything added to a string is converted. TypeScript keeps every runtime
+              behaviour of JavaScript, so coercion still happens — but being weakly typed is less likely to cause
+              errors, because the type checker can predict coercion: it knows <code>1 + "2"</code> is a string, and
+              errors if that value is used where a string isn’t expected.
+            </li>
+          </ul>
+        </div>
+
+        <h3 id="c2-install"><span class="num">2.1.1</span> Installing and running the TypeScript compiler</h3>
+        <p>
+          Create a directory called <code>typescript-project</code> with a <code>package.json</code> to track
+          dependencies. It needs almost nothing — the empty JSON object will do:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.1 — A truly minimal package.json</span><span class="lang">JSON</span></div>
+          <pre><code>{}</code></pre>
+        </div>
+
+        <p>Then install the latest <code>typescript</code> as a dev dependency (Chapter 3 explains <code>npm install</code> in detail):</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm install --save-dev typescript</pre></div>
+
+        <p>
+          The package includes an executable called <code>tsc</code>, the TypeScript Compiler. Before compiling,
+          <code>tsc</code> expects a <code>tsconfig.json</code> that tells it:
+        </p>
+        <ul>
+          <li>Which TypeScript files should it compile?</li>
+          <li>Which types should it include from other sources?</li>
+          <li>How strict should it be when performing type checking?</li>
+          <li>Should it emit compiled JavaScript — and if so, which version of ECMAScript should it target?</li>
+        </ul>
+        <p>Ask <code>tsc</code> for a reasonable starter configuration with the <code>--init</code> flag, run through <code>npx</code>:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx tsc --init
+Created a new tsconfig.json with:
+  target: es2016
+  module: commonjs
+  strict: true
+  esModuleInterop: true
+  skipLibCheck: true
+  forceConsistentCasingInFileNames: true</pre></div>
+
+        <p>
+          Configuring TypeScript can be tricky and is beyond this book’s scope; the
+          <a href="https://www.typescriptlang.org/tsconfig">TypeScript website</a> is the comprehensive reference,
+          and Matt Pocock’s <a href="https://www.totaltypescript.com/tsconfig-cheat-sheet">TSConfig Cheat Sheet</a>
+          covers the most common options. For this project, the generated config is fine. Now create
+          <code>timeout.ts</code> with the erroneous <code>setTimeout</code> call:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.2 — A TypeScript file with an incorrect argument type</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-fn">setTimeout</span>(<span class="tok-num">200</span>, () =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"This will never run."</span>);
+});</code></pre>
+        </div>
+
+        <p>
+          Run <code>tsc</code>, which type checks and compiles all <code>.ts</code> files in the project — its
+          default behaviour when <code>tsconfig.json</code> doesn’t override it:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx tsc
+timeout.ts:1:12 - error TS2345: Argument of type 'number' is not assignable to
+parameter of type 'TimerHandler'.
+
+1 setTimeout(200, () =&gt; {
+  ~~~
+
+Found 1 error in timeout.ts:1</pre></div>
+
+        <p>
+          The type checker identified the issue and described it precisely. But notice that it compiled the code
+          anyway, creating <code>timeout.js</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Compiled output — timeout.js</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-str">"use strict"</span>;
+<span class="tok-fn">setTimeout</span>(<span class="tok-num">200</span>, () =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"This will never run."</span>);
+});</code></pre>
+        </div>
+
+        <p>
+          The output is identical to the source apart from the added <code>"use strict"</code>, which enables
+          strict mode. Strict mode details are beyond this book, except to say it’s highly recommended — all of the
+          book’s JavaScript is compatible with it (see
+          <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Strict_mode">MDN</a>).
+        </p>
+        <p>
+          In general all the TypeScript compiler does is strip out type annotations and declarations and
+          transpile syntax features to the target ECMAScript version. Adding strict mode is a rare exception to
+          the rule that <code>tsc</code> doesn’t add code — whether it emits <code>"use strict"</code> is controlled
+          by an <code>alwaysStrict</code> flag, flipped to true (along with several other options) by the
+          <code>strict</code> flag.
+        </p>
+        <p>
+          If you want only the type checker, without any compilation artifacts, use <code>tsc --noEmit</code>. That’s
+          useful when compilation is handled by a build tool like Vite (Chapter 13) — or when TypeScript is run
+          without any compilation at all, as we’ll do later.
+        </p>
+
+        <h3 id="c2-annotations"><span class="num">2.1.2</span> Type annotations and declarations</h3>
+        <p>
+          The code below defines and tests a small utility that pluralises strings. Save it as
+          <code>pluralize.ts</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.3 — A TypeScript file with untyped function arguments</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> pluralize = (str, count) =&gt; (count === <span class="tok-num">1</span> ? str : <span class="tok-str">`${str}s`</span>);
+
+console.<span class="tok-fn">assert</span>(
+  <span class="tok-fn">pluralize</span>(<span class="tok-str">"egg"</span>, <span class="tok-num">1</span>) === <span class="tok-str">"egg"</span>,
+  <span class="tok-str">"pluralize returns the original string when count is 1"</span>,
+);
+console.<span class="tok-fn">assert</span>(
+  <span class="tok-fn">pluralize</span>(<span class="tok-str">"egg"</span>, <span class="tok-num">2</span>) === <span class="tok-str">"eggs"</span>,
+  <span class="tok-str">"pluralize appends 's' when count is 2"</span>,
+);</code></pre>
+        </div>
+
+        <p>
+          The code is perfectly valid JavaScript. Run it through the compiler, though, and you get an error
+          (though — as before — the error doesn’t block compilation):
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx tsc --noEmit
+pluralize.ts:1:20 - error TS7006: Parameter 'str' implicitly has an 'any' type.
+
+1 const pluralize = (str, count) =&gt; (count === 1 ? str : `${str}s`);
+                     ~~~
+
+pluralize.ts:1:25 - error TS7006: Parameter 'count' implicitly has an 'any' type.
+
+1 const pluralize = (str, count) =&gt; (count === 1 ? str : `${str}s`);
+                            ~~~~~</pre></div>
+
+        <p>
+          Now the <code>any</code> type. The type checker infers every variable’s type from the context in which
+          it’s declared: in <code>let x = 5</code> it infers <code>x</code> is a number from the initial value; in
+          <code>addEventListener("keydown", (event) =&gt; console.log(event.key))</code> it infers
+          <code>event</code> is a <code>KeyboardEvent</code> from where the function was defined. It looks at
+          nothing outside that initial declaration, so when it sees <code>(str, count)</code> in a function
+          assigned to an untyped variable it has nothing to go on, throws up its arms, and falls back on
+          <code>any</code>.
+        </p>
+        <p>
+          <code>any</code> is unlike any other TypeScript type: it effectively disables type checking for that
+          variable. It’s an escape hatch that can be valuable while migrating JavaScript to TypeScript, but
+          should otherwise be avoided. So the compiler emits an error whenever a value implicitly receives
+          <code>any</code> — controlled by <code>noImplicitAny</code>, which the <code>strict</code> flag flips on.
+        </p>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              TypeScript’s strict mode only prohibits <em>implicit</em> <code>any</code>. To stop developers using
+              <code>any</code> at all, typescript-eslint offers the
+              <a href="https://typescript-eslint.io/rules/no-explicit-any/">no-explicit-any</a> rule.</p>
+          </div>
+        </div>
+
+        <p>
+          The fix is to tell the type checker what argument types the function accepts. The most direct way is a
+          type annotation on each argument:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Annotating the parameters</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> pluralize = (str: <span class="tok-kw">string</span>, count: <span class="tok-kw">number</span>) =&gt;
+  count === <span class="tok-num">1</span> ? str : <span class="tok-str">`${str}s`</span>;</code></pre>
+        </div>
+
+        <p>
+          With those annotations the checker can do its job, raising an error for anything in the body or in
+          calls that isn’t compatible with those types. They also give it enough information to infer that
+          <code>pluralize</code> always returns a string.
+        </p>
+        <p>
+          Alternatively, annotate the function itself — one annotation meaning “pluralize takes a string and a
+          number and returns a string”:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Annotating the function</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> pluralize: (str: <span class="tok-kw">string</span>, count: <span class="tok-kw">number</span>) =&gt; <span class="tok-kw">string</span> =
+  (str, count) =&gt;
+    count === <span class="tok-num">1</span> ? str : <span class="tok-str">`${str}s`</span>;</code></pre>
+        </div>
+
+        <p>
+          Annotating the function looks a little ridiculous, since it duplicates information already in the
+          declaration, but it’s worth knowing: the compiler is equally happy whether it infers parameter types
+          from the function type or vice versa. It also demonstrates that types can get complicated — which is why
+          we don’t have to put them all inline. We can use <strong>type declarations</strong>.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.4 — A function parameter with a separate type declaration</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">interface</span> <span class="tok-fn">StarshipOptions</span> {            <span class="tok-com">#A</span>
+  captain: <span class="tok-str">"Kirk"</span> | <span class="tok-str">"Picard"</span> | <span class="tok-str">"Janeway"</span>;   <span class="tok-com">#B</span>
+  warpFactor: <span class="tok-kw">number</span>;
+  engage?: <span class="tok-kw">boolean</span>;                                   <span class="tok-com">#C</span>
+};
+
+<span class="tok-kw">const</span> startStarship = (options: StarshipOptions) =&gt; {
+  <span class="tok-kw">const</span> { captain, warpFactor, engage } = options;
+  <span class="tok-kw">if</span> (!engage) {
+    <span class="tok-kw">return</span> <span class="tok-str">"Awaiting orders from Starfleet."</span>;
+  }
+  <span class="tok-kw">return</span> <span class="tok-str">`Captain ${captain} says: Set warp ${warpFactor}. Engage!`</span>;
+};</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The <code>interface</code> keyword indicates we’re declaring a type. Here it’s an object type, so the structure mimics object-literal syntax. By convention, type names are capitalised.</div>
+            <div><b>#B</b> The <code>|</code> character defines a <em>union type</em>: here, three literal values joined into “one of these three values”.</div>
+            <div><b>#C</b> The <code>?</code> after a key makes the value optional — it can be <code>undefined</code> or omitted entirely.</div>
+          </div>
+        </div>
+
+        <p>
+          The type of <code>options</code> could have been written inline, but extracting and naming complex
+          types makes for more readable code. Declared types are also reusable: types follow the same scoping
+          rules as function declarations, so they can be referenced anywhere in the module and shared with
+          <code>import</code>/<code>export</code>. And you can derive new types from them — which is what the next
+          section does.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Types vs. interfaces</h4>
+          <p>
+            Object types can be defined two ways in TypeScript: with the <code>interface</code> keyword, as in
+            Listing 2.4, or with the <code>type</code> keyword. The
+            <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces">official
+            handbook</a> advises: “For the most part, you can choose based on personal preference, and TypeScript
+            will tell you if it needs something to be the other kind of declaration. If you would like a heuristic,
+            use <code>interface</code> until you need to use features from <code>type</code>.” The book’s code follows
+            that recommendation.
+          </p>
+          <p>
+            You can enforce the <code>interface</code> keyword for object types with typescript-eslint’s
+            <a href="https://github.com/cartant/eslint-plugin-etc/blob/main/docs/rules/prefer-interface.md">prefer-interface</a>
+            rule.
+          </p>
+        </div>
+
+        <h3 id="c2-narrowing"><span class="num">2.1.3</span> Type narrowing and predicates</h3>
+        <p>
+          Working with TypeScript types you’ll constantly see the union operator, <code>|</code>. Consider this
+          example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.5 — Using the type union operator</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">interface</span> Mage {
+  magic: <span class="tok-kw">number</span>;
+}
+<span class="tok-kw">interface</span> Thief {
+  dexterity: <span class="tok-kw">number</span>;
+}
+<span class="tok-kw">interface</span> MageThief <span class="tok-kw">extends</span> Mage, Thief {}    <span class="tok-com">#A</span>
+
+<span class="tok-kw">const</span> rerollAttributes = (character: Mage | Thief) =&gt; {   <span class="tok-com">#B</span>
+  <span class="tok-kw">if</span> (<span class="tok-str">"magic"</span> <span class="tok-kw">in</span> character) {                           <span class="tok-com">#C</span>
+    character.magic = Math.<span class="tok-fn">ceil</span>(Math.<span class="tok-fn">random</span>() * <span class="tok-num">20</span>);
+  }
+  <span class="tok-kw">if</span> (<span class="tok-str">"dexterity"</span> <span class="tok-kw">in</span> character) {
+    character.dexterity = Math.<span class="tok-fn">ceil</span>(Math.<span class="tok-fn">random</span>() * <span class="tok-num">20</span>);
+  }
+};</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The <code>extends</code> operator creates a new interface that inherits the properties of <code>Mage</code> and <code>Thief</code>.</div>
+            <div><b>#B</b> The <code>|</code> character creates a union of types — <code>character</code> can be a <code>Mage</code> or a <code>Thief</code>, or any superset of those types.</div>
+            <div><b>#C</b> The <code>in</code> keyword performs a runtime check: does this property exist on this object?</div>
+          </div>
+        </div>
+
+        <p>
+          This demonstrates <strong>type narrowing</strong>. Without the <code>in</code> checks before assigning
+          values, the type checker would complain:
+        </p>
+
+        <div class="terminal"><pre>error TS2339: Property 'magic' does not exist on type 'Mage | Thief | MageThief'.
+  Property 'magic' does not exist on type 'Thief'.</pre></div>
+
+        <p>
+          Because we check that <code>character</code> has <code>magic</code> before assigning it, the checker knows
+          <code>character</code> can’t be a <code>Thief</code> — it can only be a <code>Mage</code>, or more
+          precisely any object with a mage’s properties. (A <code>MageThief</code> qualifies; so does an undeclared
+          object like <code>{magic: 15, luck: 20}</code>.)
+        </p>
+        <p>
+          This kind of check is sometimes called <strong>duck typing</strong>, from “if it walks like a duck, and it
+          talks like a duck…” Developers from more strongly typed languages find that strange, and their instinct
+          is to write:
+        </p>
+
+        <div class="terminal"><pre><span class="tok-com">// This won’t work!</span>
+<span class="tok-kw">if</span> (character <span class="tok-kw">instanceof</span> Mage)</pre></div>
+
+        <p>
+          The problem is that it conflates types with JavaScript code — <em>types don’t exist at runtime!</em>
+          Fortunately the checker catches the mistake:
+        </p>
+
+        <div class="terminal"><pre>error TS2693: 'Mage' only refers to a type, but is being used as a value here.</pre></div>
+
+        <p>
+          (<code>instanceof</code> is useful when you want to know whether an object is an instance of a class;
+          Chapter 9 covers classes.) The compiled JavaScript contains the duck-type checks but no remnants of the
+          types themselves:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Compiled output — types erased</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-str">"use strict"</span>;
+<span class="tok-kw">const</span> rerollAttributes = (character) =&gt; {
+  <span class="tok-kw">if</span> (<span class="tok-str">"magic"</span> <span class="tok-kw">in</span> character) {
+    character.magic = Math.<span class="tok-fn">ceil</span>(Math.<span class="tok-fn">random</span>() * <span class="tok-num">20</span>);
+  }
+  <span class="tok-kw">if</span> (<span class="tok-str">"dexterity"</span> <span class="tok-kw">in</span> character) {
+    character.dexterity = Math.<span class="tok-fn">ceil</span>(Math.<span class="tok-fn">random</span>() * <span class="tok-num">20</span>);
+  }
+};</code></pre>
+        </div>
+
+        <p>There are many ways to narrow types in TypeScript. Listing 2.6 shows a few of the most common checks:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.6 — An assortment of type narrowing operations</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> getValueWithType = (value?: <span class="tok-kw">string</span> | <span class="tok-kw">string</span>[] | <span class="tok-num">23</span>) =&gt; {   <span class="tok-com">#A</span>
+  <span class="tok-kw">if</span> (value === <span class="tok-num">23</span>) {                                     <span class="tok-com">#B</span>
+    <span class="tok-kw">return</span> <span class="tok-str">`number: ${value}`</span>;
+  }
+  <span class="tok-kw">if</span> (<span class="tok-kw">typeof</span> value === <span class="tok-str">"string"</span>) {                      <span class="tok-com">#C</span>
+    <span class="tok-kw">return</span> <span class="tok-str">`string: ${value}`</span>;
+  }
+  <span class="tok-kw">if</span> (Array.<span class="tok-fn">isArray</span>(value)) {                              <span class="tok-com">#D</span>
+    <span class="tok-kw">return</span> <span class="tok-str">`array: ${value.join(", ")}`</span>;
+  }
+  value <span class="tok-kw">satisfies</span> <span class="tok-kw">undefined</span>;                               <span class="tok-com">// #E</span>
+  <span class="tok-kw">return</span> <span class="tok-str">"undefined"</span>;
+};</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The <code>?</code> makes <code>value</code> an optional parameter, meaning it can have the value <code>undefined</code>.</div>
+            <div><b>#B</b> Checking for equality with a primitive value narrows the type to that exact value.</div>
+            <div><b>#C</b> Using <code>typeof</code> narrows the type to that primitive type.</div>
+            <div><b>#D</b> Using <code>Array.isArray</code> narrows the type to an array. Because the only array type in the parameter annotation is <code>string[]</code>, it’s narrowed to an array of strings.</div>
+            <div><b>#E</b> The <code>satisfies</code> keyword makes a claim about a type. If <code>value</code> could have any type other than <code>undefined</code> on this line, the type checker would raise an error.</div>
+          </div>
+        </div>
+
+        <p>
+          The checker is clever about which possible types a value can have at any point in your code — but it has
+          a couple of big limitations. One is that it struggles to notice when mutable structures such as objects
+          and arrays are modified:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Widened mutable array</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> mixedArray = [<span class="tok-str">"str"</span>, <span class="tok-num">123</span>];        <span class="tok-com">// type: (string | number)[]</span>
+<span class="tok-kw">const</span> firstItem = mixedArray[<span class="tok-num">0</span>];      <span class="tok-com">// type: string | number</span></code></pre>
+        </div>
+
+        <p>
+          If you never plan to modify the structure, add <code>as const</code> after the literal (see Matt
+          Pocock’s <a href="https://www.totaltypescript.com/concepts/as-const">article on <code>as const</code></a>):
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>With as const</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> mixedArray = [<span class="tok-str">"str"</span>, <span class="tok-num">123</span>] <span class="tok-kw">as const</span>;    <span class="tok-com">// type: ["str", 123]</span>
+<span class="tok-kw">const</span> firstItem = mixedArray[<span class="tok-num">0</span>];                  <span class="tok-com">// type: "str"</span></code></pre>
+        </div>
+
+        <p>
+          Another limitation you’ll often hit: the checker can’t always narrow the way you’d expect based on a
+          function call. For example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Which calls narrow?</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> stringOrNumber = [<span class="tok-str">"str"</span>, <span class="tok-num">123</span>][<span class="tok-num">0</span>];   <span class="tok-com">// type: string | number</span>
+<span class="tok-kw">const</span> isString = (x: <span class="tok-kw">unknown</span>) =&gt; <span class="tok-kw">typeof</span> x === <span class="tok-str">"string"</span>;
+<span class="tok-kw">const</span> isShortString = (x: <span class="tok-kw">unknown</span>) =&gt; {
+  <span class="tok-kw">return</span> <span class="tok-kw">typeof</span> x === <span class="tok-str">"string"</span> &amp;&amp; x.length &lt;= <span class="tok-num">3</span>;
+}
+
+<span class="tok-kw">if</span> (<span class="tok-kw">typeof</span> stringOrNumber === <span class="tok-str">"string"</span>) {
+  stringOrNumber <span class="tok-kw">satisfies</span> <span class="tok-kw">string</span>;              <span class="tok-com">// assertion passes</span>
+}
+<span class="tok-kw">if</span> (<span class="tok-fn">isString</span>(stringOrNumber)) {
+  stringOrNumber <span class="tok-kw">satisfies</span> <span class="tok-kw">string</span>;              <span class="tok-com">// assertion passes</span>
+}
+<span class="tok-kw">if</span> (<span class="tok-fn">isShortString</span>(stringOrNumber)) {
+  stringOrNumber <span class="tok-kw">satisfies</span> <span class="tok-kw">string</span>;              <span class="tok-com">// assertion fails!</span>
+}</code></pre>
+        </div>
+
+        <p>
+          With <code>isString</code>, TypeScript correctly infers that if the function returns true then
+          <code>x</code> must be a string. So why not with <code>isShortString</code>? It’s a limitation in how
+          TypeScript stores function type information: it only draws the inference “if this returns true,
+          <code>x</code> must be a string” if it can conversely draw “if this returns false, <code>x</code> must not
+          be a string.” It can’t do that for <code>isShortString</code>, so it makes no inference at all.
+        </p>
+        <p>
+          One workaround is a <strong>type predicate</strong> — an annotation on a boolean function that forces the
+          checker to make an inference. But it also forces the converse inference, which can introduce bugs:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.7 — Using a type predicate, with a surprising result</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> shortOrLongString = [<span class="tok-str">"str"</span>, <span class="tok-str">"long string"</span>][<span class="tok-num">0</span>];   <span class="tok-com">// type: string</span>
+<span class="tok-kw">const</span> isShortString = (x: <span class="tok-kw">unknown</span>): <span class="tok-kw">x is string</span> =&gt; {      <span class="tok-com">#A</span>
+  <span class="tok-kw">return</span> <span class="tok-kw">typeof</span> x === <span class="tok-str">"string"</span> &amp;&amp; x.length &lt;= <span class="tok-num">3</span>;
+};
+
+<span class="tok-kw">if</span> (<span class="tok-fn">isShortString</span>(shortOrLongString)) {
+  shortOrLongString <span class="tok-kw">satisfies</span> <span class="tok-kw">string</span>;                      <span class="tok-com">#B</span>
+} <span class="tok-kw">else</span> {
+  shortOrLongString <span class="tok-kw">satisfies</span> <span class="tok-kw">never</span>;                       <span class="tok-com">#C</span>
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> This predicate tells the type checker that if the function returns true, then its argument is a string.</div>
+            <div><b>#B</b> The <code>satisfies</code> keyword confirms the type has been narrowed to <code>string</code>.</div>
+            <div><b>#C</b> The <code>satisfies</code> keyword confirms the type has been narrowed to <code>never</code>.</div>
+          </div>
+        </div>
+
+        <p>
+          The <code>x is string</code> predicate tells the checker that <code>x</code> is a string when
+          <code>isShortString</code> returns true — reasonable enough — except that it also implicitly tells the
+          checker <code>x</code> is <em>not</em> a string when it returns false. Since we passed a string, TypeScript
+          infers the result can’t be false, so in that branch it infers <code>shortOrLongString</code> has the
+          special type <code>never</code>.
+        </p>
+        <p>
+          Inlining the function logic would avoid the problem, but in principle you shouldn’t have to bend runtime
+          code to satisfy the type checker. There’s an escape hatch: the <code>as</code> keyword, which essentially
+          says “I know something about this variable’s type that you don’t.”
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Asserting the type</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">if</span> (<span class="tok-fn">isShortString</span>(stringOrNumber)) {
+  <span class="tok-kw">const</span> shortString = stringOrNumber <span class="tok-kw">as</span> <span class="tok-kw">string</span>; <span class="tok-com">// type: string</span>
+  <span class="tok-com">// ...</span>
+}</code></pre>
+        </div>
+
+        <p>Just use <code>as</code> with caution: the type checker is only as accurate as the type information you give it.</p>
+
+        <h3 id="c2-runtime"><span class="num">2.1.4</span> Running TypeScript without compilation</h3>
+        <p>
+          As TypeScript took the world by storm, one of the biggest complaints has been speed: large projects can
+          take several minutes to compile, a painful speed bump in an otherwise smooth workflow.
+        </p>
+        <p>
+          Fortunately, running TypeScript directly is now possible. Node.js 22.6.0 and newer can run most
+          TypeScript code directly given a flag, <code>--experimental-strip-types</code>:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> echo "console.log('Hello, TypeScript!');" &gt; hello.ts
+<span class="prompt">$</span> node --experimental-strip-types hello.ts
+Hello TypeScript!</pre></div>
+
+        <p>
+          The flag won’t work for code using TypeScript’s <code>enum</code> or <code>namespace</code> features —
+          controversial exceptions to the rule that TypeScript is JavaScript with type annotations. None of the
+          book’s code uses <code>enum</code> or <code>namespace</code>. TypeScript 5.8 added a configuration option,
+          <code>erasableSyntaxOnly</code>, that ensures all your code is compatible with type stripping.
+        </p>
+        <p>
+          By the time you read this, the latest Node.js may well run TypeScript without any flags; both Deno and
+          Bun already can.
+        </p>
+        <p>
+          There’s one big caveat: the runtime is only stripping type information, not running the type checks.
+          Type checking remains a separate process (except in Deno, where checking while running is on by
+          default). With that in mind, running code directly without waiting for a type check or compilation is a
+          huge boon for tasks like running scripts and testing.
+        </p>
+        <p>
+          Compilation still has its place. Browsers don’t look likely to support TypeScript any time soon, and even
+          if they did you’d still strip types as part of minification. And to support older runtimes, TypeScript
+          must be transpiled to a specific ECMAScript version (minification and transpilation are covered in
+          Chapter 13).
+        </p>
+        <p>
+          For most developers the biggest benefit is real-time feedback in modern editors like VS Code, where type
+          errors appear as you write and type information (“What arguments does the function I’m calling expect?”)
+          is a command away. Full project-wide type checks are valuable too, but they can run occasionally in
+          continuous integration (CI) so they don’t get in your way while working.
+        </p>
+        <p>
+          That wraps up the TypeScript overview; Chapter 5 discusses more of its benefits, and the book keeps using
+          it in examples. For a comprehensive look at the language, see <em>Essential TypeScript 5</em> by Adam
+          Freeman. Next: another tool that transformed JavaScript development — ESLint.
+        </p>
+      </section>
+
+      <section id="c2-eslint">
+        <h2><span class="num">2.2</span> Enforcing code rules with ESLint</h2>
+        <p>
+          How do you make sure your code works? Ideally you test it — with a unit testing library like
+          <a href="https://vitest.dev">Vitest</a> to simulate interactions. But writing tests takes time (though LLMs
+          can help). And even at 100% coverage — every line runs when tests run — there’s still a chance some
+          unanticipated set of conditions produces unintended behaviour.
+        </p>
+        <p>
+          That’s why you also want tools that perform <strong>static analysis</strong>: checking code for possible
+          mistakes without running it. It’s a low-effort way to catch bugs before they happen. TypeScript is the
+          static analysis tool for type misuse; <strong>ESLint</strong> is the static analysis tool for everything
+          else.
+        </p>
+
+        <h3 id="c2-setup"><span class="num">2.2.1</span> Setting up ESLint in a TypeScript project</h3>
+        <p>
+          Let’s set up a project with both TypeScript and ESLint. To lint TypeScript code we need both packages plus
+          one more, <code>typescript-eslint</code>. (These instructions are accurate as of typescript-eslint
+          version 8; see <a href="https://typescript-eslint.io/getting-started">typescript-eslint.io/getting-started</a>
+          for the latest.)
+        </p>
+        <p>As before, start with an empty <code>package.json</code> so npm can track dependencies:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> echo "{}" &gt; package.json</pre></div>
+
+        <p>
+          Install ESLint, TypeScript and typescript-eslint. Note that ESLint requires two packages:
+          <code>eslint</code> and <code>@eslint/js</code>.
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm install --save-dev eslint @eslint/js typescript typescript-eslint</pre></div>
+
+        <p>Then generate the default TypeScript configuration:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx tsc --init</pre></div>
+
+        <p>Now configure ESLint by creating <code>eslint.config.mjs</code>:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.8 — A starter ESLint configuration for a TypeScript project</span><span class="lang">ES module</span></div>
+          <pre><code><span class="tok-com">// @ts-check</span>                                   <span class="tok-com">#A</span>
+<span class="tok-kw">import</span> eslint <span class="tok-kw">from</span> <span class="tok-str">"@eslint/js"</span>;
+<span class="tok-kw">import</span> { defineConfig } <span class="tok-kw">from</span> <span class="tok-str">"eslint/config"</span>;
+<span class="tok-kw">import</span> tseslint <span class="tok-kw">from</span> <span class="tok-str">"typescript-eslint"</span>;
+
+<span class="tok-kw">export default</span> <span class="tok-fn">defineConfig</span>([
+  {                                          <span class="tok-com">#B</span>
+    extends: [eslint.configs.recommended],   <span class="tok-com">#B</span>
+  },                                         <span class="tok-com">#B</span>
+  {
+    files: [<span class="tok-str">"**/*.{ts,mts}"</span>],                <span class="tok-com">#C</span>
+    extends: [                               <span class="tok-com">#C</span>
+      tseslint.configs.strictTypeChecked     <span class="tok-com">#C</span>
+      tseslint.configs.stylisticTypeChecked, <span class="tok-com">#C</span>
+    ],                                       <span class="tok-com">#C</span>
+    rules: {                                 <span class="tok-com">#D</span>
+      <span class="tok-str">"@typescript-eslint/no-non-null-assertion"</span>: <span class="tok-str">"off"</span>,  <span class="tok-com">#D</span>
+    },                                       <span class="tok-com">#D</span>
+    languageOptions: {                       <span class="tok-com">// #E</span>
+      parserOptions: {                       <span class="tok-com">// #E</span>
+        projectService: <span class="tok-kw">true</span>,                 <span class="tok-com">// #E</span>
+        tsconfigRootDir: <span class="tok-kw">import</span>.meta.dirname, <span class="tok-com">// #E</span>
+      },                                     <span class="tok-com">// #E</span>
+    },                                       <span class="tok-com">// #E</span>
+  },
+]);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Enables type checking for this JavaScript file</div>
+            <div><b>#B</b> Enables rules in <code>eslint.configs.recommended</code> for all files</div>
+            <div><b>#C</b> Enables rules in <code>tseslint.configs.strictTypeChecked</code> and <code>tseslint.configs.stylisticTypeChecked</code> for TypeScript files</div>
+            <div><b>#D</b> Disables typescript-eslint’s <code>no-non-null-assertion</code> rule</div>
+            <div><b>#E</b> Tells ESLint how to communicate with the TypeScript type checker in this project</div>
+          </div>
+        </div>
+
+        <p>
+          Using an <code>@ts-check</code> comment in a JavaScript file like this one gives valuable type feedback in
+          your editor. Note that running <code>tsc</code> won’t report those type errors, since the file isn’t
+          included in the build defined by <code>tsconfig.json</code>.
+        </p>
+        <p>
+          The configuration has two blocks. The first enables ESLint’s recommended rules, which you can find at
+          <a href="https://eslint.org/docs/latest/rules">eslint.org/docs/latest/rules</a>. They’re valid for both
+          JavaScript and TypeScript, so they apply to all files unconditionally. The second block enables two
+          typescript-eslint rule sets, <code>strictTypeChecked</code> and <code>stylisticTypeChecked</code>; the
+          <code>-TypeChecked</code> suffix means some rules need information from the type checker. Integrating type
+          checking into ESLint takes extra configuration (visible in the same block) and makes linting slower, but it
+          greatly expands the range of issues rules can cover.
+        </p>
+        <p>Let’s try the new capabilities. Create <code>condition-rules.ts</code>:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.9 — TypeScript with unnecessary conditions</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> ninja = Math.<span class="tok-fn">random</span>() &gt; <span class="tok-num">0.5</span> ? <span class="tok-str">"ryu"</span> : <span class="tok-str">"naruto"</span>;  <span class="tok-com">#A</span>
+<span class="tok-kw">if</span> (ninja === <span class="tok-str">"ryu"</span> || <span class="tok-str">"naruto"</span>) {                    <span class="tok-com">#B</span>
+  <span class="tok-com">// Error: no-constant-condition                     // #B</span>
+}                                                        <span class="tok-com">#B</span>
+<span class="tok-kw">if</span> (ninja) {                                             <span class="tok-com">#C</span>
+  <span class="tok-com">// Error: @typescript-eslint/no-unnecessary-condition // #C</span>
+}                                                        <span class="tok-com">#C</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines a constant <code>ninja</code> with type <code>"ryu" | "naruto"</code>.</div>
+            <div><b>#B</b> This condition will always pass because it’s the “or” of two expressions, one of which is a constant.</div>
+            <div><b>#C</b> This condition will always pass because all of <code>ninja</code>’s possible values are truthy.</div>
+          </div>
+        </div>
+
+        <p>Run the linter against the module:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx eslint condition-rules.ts
+/javascript-ninja-3e-code/ch4/eslint-project/condition-rules.ts
+  3:5   error  Unexpected constant condition                    no-constant-condition
+  3:24  error  Unnecessary conditional, value is always truthy  @typescript-eslint/no-unnecessary-condition
+  7:5   error  Unnecessary conditional, value is always truthy  @typescript-eslint/no-unnecessary-condition</pre></div>
+
+        <p>
+          The first condition violates two rules: <code>no-constant-condition</code> from ESLint’s recommended set,
+          and <code>@typescript-eslint/no-unnecessary-condition</code> from typescript-eslint’s strict set. (All rules
+          outside ESLint’s core set are prefixed with a namespace.) The second condition violates only the
+          typescript-eslint rule — because the first uses a pattern ESLint can identify as bad regardless of what
+          <code>ninja</code> is, whereas the second only looks bad because the type checker knows <code>ninja</code>
+          is always a non-empty string.
+        </p>
+        <p>
+          With these rule sets in place you’ll avoid many common traps. But there will be times when a rule works
+          against you instead of for you, so next: finer-grained control.
+        </p>
+
+        <h3 id="c2-disabling"><span class="num">2.2.2</span> Disabling ESLint rules</h3>
+        <p>
+          We enabled a broad range of rules from ESLint core and typescript-eslint — notably the “strict” and
+          “stylistic” sets rather than the smaller “recommended” set. Those include many opinionated rules, which
+          might conflict with code some developers consider perfectly fine.
+        </p>
+        <p>
+          Deciding which rules to enable is a challenge every ninja faces. More rules generally catch more errors and
+          keep code style cohesive; on the other hand, it’s frustrating to write perfectly valid code and still get
+          complaints from your tooling. Consider this example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.10 — TypeScript with unnecessary conditions</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> dojoStudents = <span class="tok-kw">new</span> <span class="tok-fn">Map</span>([[<span class="tok-str">"Hidden Leaf"</span>, <span class="tok-num">2</span>]]);   <span class="tok-com">#A</span>
+
+<span class="tok-kw">const</span> enrollNinja = (dojoName: <span class="tok-kw">string</span>) =&gt; {
+  <span class="tok-kw">if</span> (!dojoStudents.<span class="tok-fn">has</span>(dojoName)) {                        <span class="tok-com">#B</span>
+    dojoStudents.<span class="tok-fn">set</span>(dojoName, <span class="tok-num">0</span>);                         <span class="tok-com">#B</span>
+  }                                                            <span class="tok-com">#B</span>
+  dojoStudents.<span class="tok-fn">set</span>(dojoName, dojoStudents.<span class="tok-fn">get</span>(dojoName)! + <span class="tok-num">1</span>);   <span class="tok-com">#C</span>
+};
+
+<span class="tok-fn">enrollNinja</span>(<span class="tok-str">"Hidden Leaf"</span>);
+console.<span class="tok-fn">assert</span>(
+  dojoStudents.<span class="tok-fn">get</span>(<span class="tok-str">"Hidden Leaf"</span>) === <span class="tok-num">3</span>,
+  <span class="tok-str">"enrollNinja adds students to existing dojos."</span>,
+);
+
+<span class="tok-fn">enrollNinja</span>(<span class="tok-str">"Snake Way"</span>);
+console.<span class="tok-fn">assert</span>(
+  dojoStudents.<span class="tok-fn">get</span>(<span class="tok-str">"Snake Way"</span>) === <span class="tok-num">1</span>,
+  <span class="tok-str">"enrollNinja adds students to new dojos."</span>,
+);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Creates a <code>Map</code> with the key <code>Hidden Leaf</code> mapped to the value 2.</div>
+            <div><b>#B</b> Checks if the key <code>dojoName</code> exists in the map. If not, adds it with an initial value of 0.</div>
+            <div><b>#C</b> Increments the value for <code>dojoName</code>. The <code>!</code> after <code>get(dojoName)</code> is TypeScript’s non-null assertion operator.</div>
+          </div>
+        </div>
+
+        <p>The code is bug-free, but with the previous configuration the linter reports an error:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx eslint enroll-ninja.ts
+/javascript-ninja-3e-code/ch4/eslint-project/enroll-ninja.ts
+  7:30  error  Forbidden non-null assertion  @typescript-eslint/no-non-null-assertion</pre></div>
+
+        <p>
+          The rule <code>@typescript-eslint/no-non-null-assertion</code> is part of the “strict” set. It forbids
+          TypeScript’s non-null assertion operator because assertions about types can introduce human error into
+          type checking. The problem: without the assertion, the checker will complain that
+          <code>dojoStudents.get(dojoName)</code> could be <code>undefined</code>, when we know the preceding code
+          guarantees a number.
+        </p>
+        <p>There are a few ways to respond:</p>
+        <ul>
+          <li>Rewrite the code to satisfy the rule.</li>
+          <li>Disable the rule for the project.</li>
+          <li>Make an exception to the rule using a comment.</li>
+        </ul>
+        <p>
+          It’s possible to rewrite the code to avoid the non-null assertion, but that isn’t always the best
+          solution — so let’s look at the other two. To write non-null assertions freely, turn the rule off in the
+          TypeScript block of <code>eslint.config.mjs</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Turning the rule off</span><span class="lang">ES module</span></div>
+          <pre><code>extends: [
+  tseslint.configs.strictTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
+],
+rules: {
+  <span class="tok-str">"@typescript-eslint/no-non-null-assertion"</span>: <span class="tok-str">"off"</span>,
+},</code></pre>
+        </div>
+
+        <p>
+          The rule does have merit, though: even if you’re confident you’re using it correctly, the non-null
+          assertion may worry anyone reviewing your code. For that reason it may be a good idea to accompany the
+          operator with an explanatory comment — keeping the rule enabled and making exceptions case by case.
+        </p>
+        <p>
+          ESLint allows exceptions through “inline configuration”: comments in a specific format the linter
+          recognises. The most common format for a one-line exception is:
+        </p>
+
+        <div class="terminal"><pre><span class="tok-com">// eslint-disable-next-line [rule] [-- explanation]</span></pre></div>
+
+        <p>
+          Both the rule and the explanation are optional; with no rule specified, the linter ignores the next line
+          completely. Here’s how you might disable the rule in this case (for a multi-line comment, the “next line”
+          is the line after the comment):
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>An inline exception, with a reason</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-com">/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion --
+ * The previous condition ensured that dojoStudents.get(dojoName) exists.
+ */</span>
+dojoStudents.<span class="tok-fn">set</span>(dojoName, dojoStudents.<span class="tok-fn">get</span>(dojoName)! + <span class="tok-num">1</span>);</code></pre>
+        </div>
+
+        <p>
+          That satisfies the linter and explains to readers why an exception is warranted. So far every rule has
+          been aimed primarily at avoiding bugs — but that isn’t all ESLint is good for.
+        </p>
+
+        <h3 id="c2-style"><span class="num">2.2.3</span> Enforcing a distinctive code style</h3>
+        <p>
+          In 2008 Douglas Crockford wrote <em>JavaScript: The Good Parts</em>, arguing that developers should ignore
+          some of the language’s more esoteric features and focus on a subset that produces readable, maintainable
+          code.
+        </p>
+        <p>
+          Since then ECMAScript has added more and more features (and deprecated a few Crockford complained about,
+          such as the notorious <code>with</code>). With more features comes more complexity: a new feature may make a
+          task easier, but it also means more possible ways to implement it, adding cognitive overhead for those
+          writing and reviewing code.
+        </p>
+        <p>
+          ESLint rules act as a counterweight. By discouraging certain patterns they make it easier to focus on the
+          “good parts” and write clearer code. Developers will always differ on exactly which patterns those are —
+          but once a team decides to disallow a pattern, an ESLint rule makes that decision much easier to enforce.
+        </p>
+        <p>
+          Some style rules live in the core ESLint and typescript-eslint sets. One core rule is <code>no-shadow</code>,
+          which forbids “shadowing”: defining a variable with the same name as one in the outer scope.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.11 — Shadowing a variable</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> count = <span class="tok-num">10</span>;                                 <span class="tok-com">#A</span>
+console.<span class="tok-fn">log</span>(<span class="tok-str">"Outer count:"</span>, count);
+
+<span class="tok-kw">for</span> (<span class="tok-kw">let</span> count = <span class="tok-num">0</span>; count &lt; <span class="tok-num">3</span>; count++) {      <span class="tok-com">#B</span>
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"Inner count:"</span>, count);              <span class="tok-com">#C</span>
+}
+
+console.<span class="tok-fn">log</span>(<span class="tok-str">"Outer count still:"</span>, count);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines a variable named <code>count</code> in the scope of the module.</div>
+            <div><b>#B</b> Defines a variable named <code>count</code> in the scope of the <code>for</code> loop.</div>
+            <div><b>#C</b> References the loop’s <code>count</code>, which shadows the module’s <code>count</code>.</div>
+          </div>
+        </div>
+
+        <p>
+          Shadowing is legal in JavaScript, but bad for readability: readers may struggle to track which variable is
+          referenced at any given point. Although ESLint ships <code>no-shadow</code>, it isn’t in the recommended set,
+          because some developers prefer not to have to invent unique variable names when such a conflict occurs.
+          To use it you have to enable it yourself (or use a third-party config that includes it):
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Enabling no-shadow</span><span class="lang">ES module</span></div>
+          <pre><code><span class="tok-com">// In your project’s ESLint config</span>
+rules: {
+  <span class="tok-str">"no-shadow"</span>: <span class="tok-str">"error"</span>,
+}</code></pre>
+        </div>
+
+        <p>
+          Beyond ESLint and typescript-eslint core, plugins offer all kinds of style rules. Prolific developer Sindre
+          Sorhus has strong opinions, codified in
+          <a href="https://github.com/sindresorhus/eslint-plugin-unicorn">eslint-plugin-unicorn</a> — a grab bag of
+          more than 100 rules, including:
+        </p>
+        <ul>
+          <li>Rules enforcing common JavaScript conventions, like supplying a message string when creating an <code>Error</code>.</li>
+          <li>Rules enforcing a uniform style, like having all filenames use the same casing convention.</li>
+          <li>Rules enforcing opinions on the “good parts”, such as forbidding the use of <code>null</code>.</li>
+        </ul>
+        <p>
+          That’s a taste of what’s possible — there’s a whole world of ESLint plugins to explore. And if you can’t
+          find one that does what you want, you can always write your own rule, as Chapter 15 discusses.
+        </p>
+      </section>
+
+      <section id="c2-prettier">
+        <h2><span class="num">2.3</span> Automating formatting with Prettier</h2>
+        <p>
+          No one likes code that runs on and on like a run-on sentence, forcing readers to scroll horizontally,
+          struggling to match up braces, wishing the author had thought more about formatting.
+        </p>
+        <p>
+          In its infancy ESLint offered a simple line-length rule, but it put the burden on developers to figure out
+          how to get under the limit, and teams spent hours arguing about approaches.
+        </p>
+        <p>
+          Those dark days are gone thanks to <strong>Prettier</strong>, which describes itself as “an opinionated code
+          formatter” — and its opinionated nature made it enormously popular. Where ESLint offers an endless
+          assortment of rules, Prettier has only a handful of configuration options, which most teams consider a
+          blessing. The old arguments have largely given way to an accepted compromise: just use Prettier.
+        </p>
+
+        <h3 id="c2-prettier-setup"><span class="num">2.3.1</span> Setting up Prettier</h3>
+        <p>Create a new directory with an empty <code>package.json</code> so npm can track dependencies:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> echo "{}" &gt; package.json</pre></div>
+
+        <p>As with TypeScript and ESLint, install Prettier as a dev dependency:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm install --save-dev prettier</pre></div>
+
+        <p>Then create an empty JSON file for the Prettier config:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> echo "{}" &gt; .prettierrc</pre></div>
+
+        <p>
+          Even empty, the config file matters: it ensures Prettier doesn’t look outside the project for a config, and
+          it ensures editor plugins like VS Code’s Prettier extension recognise that Prettier is enabled here. The
+          empty config inherits Prettier’s defaults, documented at
+          <a href="https://prettier.io/docs/en/options">prettier.io/docs/en/options</a>. Some of the most frequently
+          changed options are:
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Option</th><th>Default</th><th>What it does</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>singleQuote</code></td>
+                <td><code>false</code></td>
+                <td>If set, <code>'single quote'</code> strings are preferred over <code>"double quote"</code> strings. If the string contains quote characters, Prettier picks the delimiter that minimises escaping.</td>
+              </tr>
+              <tr>
+                <td><code>useTabs</code></td>
+                <td><code>false</code></td>
+                <td>If set, Prettier indents with tabs instead of spaces. If not set, <code>tabWidth</code> (default 2) determines how many spaces each level uses.</td>
+              </tr>
+              <tr>
+                <td><code>semi</code></td>
+                <td><code>true</code></td>
+                <td>If set, semicolons end each statement. If false, semicolons are used only where necessary, since JavaScript (usually) allows newline-separated statements.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>
+          All code in the book is formatted with the Prettier default style, except where lines are broken to fit
+          the page. (Prettier doesn’t enforce a hard line-length limit; it uses a sophisticated algorithm that treats
+          <code>printWidth</code> — default 80 characters — as a goal when longer lines can reasonably be split.)
+        </p>
+        <p>Let’s see it in action. Create <code>ninja-turtle-action.js</code> with some messy code:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.12 — An unformatted JavaScript module</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> generateNinjaTurtleAction =       <span class="tok-com">#A</span>
+() =&gt; {                              <span class="tok-com">#A</span>
+  <span class="tok-kw">const</span> randomNumber = Math.<span class="tok-fn">random</span> ();          <span class="tok-com">#B</span>
+  <span class="tok-kw">if</span> (randomNumber &lt; <span class="tok-num">0.1</span>) { <span class="tok-kw">return</span> <span class="tok-str">'Fight Shredder'</span>;   <span class="tok-com">#C</span>
+  } <span class="tok-kw">else if</span> (randomNumber &lt; <span class="tok-num">0.5</span>) { <span class="tok-kw">return</span> <span class="tok-str">"Rescue April"</span> } <span class="tok-kw">else</span> {   <span class="tok-com">#D</span>
+      <span class="tok-kw">return</span> <span class="tok-str">"Eat pizza"</span>                  <span class="tok-com">#D</span>
+  }                                        <span class="tok-com">#D</span>
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Line is split up for no reason.</div>
+            <div><b>#B</b> Unnecessary space before the parentheses.</div>
+            <div><b>#C</b> Inconsistent quote format (single vs. double).</div>
+            <div><b>#D</b> If/else conditions don’t have the same level of indentation.</div>
+          </div>
+        </div>
+
+        <p>Now run the code through Prettier:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx prettier --write .
+ninja-turtle-action.js   24ms
+package-lock.json        2ms (unchanged)
+package.json             1ms (unchanged)</pre></div>
+
+        <p>The file has been reformatted with tidier, more consistent code:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.13 — A Prettier-formatted JavaScript module</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> generateNinjaTurtleAction = () =&gt; {
+  <span class="tok-kw">const</span> randomNumber = Math.<span class="tok-fn">random</span>();
+  <span class="tok-kw">if</span> (randomNumber &lt; <span class="tok-num">0.1</span>) {
+    <span class="tok-kw">return</span> <span class="tok-str">"Fight Shredder"</span>;
+  } <span class="tok-kw">else if</span> (randomNumber &lt; <span class="tok-num">0.5</span>) {
+    <span class="tok-kw">return</span> <span class="tok-str">"Rescue April"</span>;
+  } <span class="tok-kw">else</span> {
+    <span class="tok-kw">return</span> <span class="tok-str">"Eat pizza"</span>;
+  }
+};</code></pre>
+        </div>
+
+        <p>
+          Beautiful! You may have noticed Prettier also formatted <code>package.json</code> and
+          <code>package-lock.json</code>. By default it formats every file type it recognises — including HTML, CSS,
+          Markdown and JSON as well as JavaScript and TypeScript. That’s nice, but unnecessary for files generated by
+          tools. To prevent it, create a <code>.prettierignore</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>.prettierignore</span><span class="lang">text</span></div>
+          <pre><code><span class="tok-com"># in .prettierignore</span>
+package-lock.json</code></pre>
+        </div>
+
+        <h3 id="c2-husky"><span class="num">2.3.2</span> Running Prettier from a commit hook</h3>
+        <p>
+          The best way to use ESLint and Prettier is continuously, via editor integration. With the right extensions,
+          ESLint’s auto-fixes and Prettier’s formatting apply every time you save, so you never have to think about
+          formatting — you can focus on behaviour.
+        </p>
+        <p>
+          But you can’t assume collaborators work the same way. That’s where
+          <a href="https://typicode.github.io/husky">Husky</a> comes in: it uses git’s pre-commit hook to run scripts
+          against code changes automatically. Install it as a dev dependency in the Prettier project:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm install --save-dev husky
+<span class="prompt">$</span> npx husky init</pre></div>
+
+        <p>Looking at <code>package.json</code>, there’s now a <code>prepare</code> script:</p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-com">// In package.json</span>
+<span class="tok-str">"scripts"</span>: {
+  <span class="tok-str">"prepare"</span>: <span class="tok-str">"husky"</span>
+}</code></pre>
+        </div>
+
+        <p>
+          <code>prepare</code> is one of npm’s “lifecycle scripts”. Like any script it can be run manually with
+          <code>npm run prepare</code>, but it also runs automatically when a user performs <code>npm install</code>
+          with no arguments. Since that’s usually the first thing someone does when starting work on a package, it’s a
+          great place for setup code. Here the setup configures the git repo to use <code>.husky</code> as its hooks
+          path (see <a href="https://git-scm.com/docs/githooks">git-scm.com/docs/githooks</a> to learn more about
+          hooks).
+        </p>
+        <p>
+          That default <code>prepare</code> script won’t work if <code>package.json</code> isn’t at the root of the
+          git repository. In the book’s official repo, for instance, the Prettier project sits in
+          <code>ch4/prettier-project</code>. To handle that, change <code>prepare</code> to run an external shell
+          script, <code>prepare.sh</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-com">// In package.json</span>
+<span class="tok-str">"scripts"</span>: {
+  <span class="tok-str">"prepare"</span>: <span class="tok-str">"sh prepare.sh"</span>
+}</code></pre>
+        </div>
+
+        <p>
+          Extracting complicated npm scripts into separate script files is always a good idea — it makes both the
+          script and <code>package.json</code> more readable. Create <code>prepare.sh</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.14 — A shell script to prepare Husky from a subdirectory</span><span class="lang">shell</span></div>
+          <pre><code><span class="tok-com">#!/bin/env bash</span>                              <span class="tok-com">#A</span>
+PROJECT_PATH=$PWD                            <span class="tok-com">#B</span>
+cd "$(git rev-parse --show-toplevel)"        <span class="tok-com">#C</span>
+husky "$PROJECT_PATH/.husky"                 <span class="tok-com">#D</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Standard shebang to tell the OS to run this as a bash script.</div>
+            <div><b>#B</b> Obtain the path this script was run from and store it as <code>PROJECT_PATH</code>.</div>
+            <div><b>#C</b> Navigate to the root of the git repo.</div>
+            <div><b>#D</b> Tell Husky to change the git repo’s hooks path to the project’s <code>.husky</code> directory.</div>
+          </div>
+        </div>
+
+        <p>
+          With that script in place, run <code>npm run prepare</code> to apply it. Confirm the change with
+          <code>git config core.hooksPath</code> — the hooks path should now be the <code>.husky</code> directory
+          created by <code>husky init</code>.
+        </p>
+        <p>The shell script created in <code>.husky/pre-commit</code> now runs on every commit. Set it up to run Prettier:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 2.15 — A pre-commit script to format files</span><span class="lang">shell</span></div>
+          <pre><code><span class="tok-com">#!/bin/env bash</span>
+cd "$(dirname "$(readlink -f "$0")")/.."      <span class="tok-com">#A</span>
+prettier . --write                            <span class="tok-com">#B</span>
+git update-index --again                      <span class="tok-com">#C</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Navigate to this script’s parent directory, which should be the project root.</div>
+            <div><b>#B</b> Use Prettier to format all files in the project.</div>
+            <div><b>#C</b> Tell git to include any changes Prettier made to the files staged for this commit.</div>
+          </div>
+        </div>
+
+        <p>
+          Done! Now whenever anyone commits, their changes are formatted first — unless they deliberately bypass the
+          hook, for instance with <code>git commit --no-verify</code>.
+        </p>
+        <p>
+          Formatting every file on every commit isn’t ideal in large projects, so there’s
+          <a href="https://github.com/lint-staged/lint-staged">lint-staged</a>, which pairs with Husky to run scripts
+          against staged files (or even staged parts of files) only.
+        </p>
+        <p>
+          That’s only the surface of Husky. As well as modifying staged files, the pre-commit hook can abort a commit
+          by exiting with a non-zero code — a convenient way to run static analysis like TypeScript and ESLint, or
+          unit tests like Vitest.
+        </p>
+        <p>
+          But be careful of the tradeoff: the more the pre-commit hook does, the slower it gets, adding friction when
+          people contribute — especially with type checking, since TypeScript can’t analyse types in staged files
+          independently of the whole project, so it always takes significant time, even with
+          <code>lint-staged</code>. For that reason large projects avoid running TypeScript (or typescript-eslint) in
+          a pre-commit hook and defer those tasks to CI after a commit is pushed.
+        </p>
+      </section>
+
+      <section id="c2-summary">
+        <h2><span class="num">2.4</span> Summary</h2>
+        <div class="takeaway">
+          <ol>
+            <li><strong>Modern JavaScript tools</strong> have transformed the experience of writing JavaScript by detecting potential bugs, providing useful annotations in editors like VS Code, and automatically formatting your code.</li>
+            <li><strong>TypeScript</strong> adds types to JavaScript, allowing many of the most common coding mistakes to be caught early.</li>
+            <li><strong>ESLint</strong> lets you enforce a wide range of customisable coding rules, ranging from error-catchers to stylistic standards.</li>
+            <li><strong>The typescript-eslint plugin</strong> provides TypeScript’s type information to ESLint, opening up many more rules at the expense of linting speed.</li>
+            <li><strong>Prettier</strong> automates code formatting, neatly breaking up long lines and applying consistent indentation.</li>
+            <li><strong>Husky</strong> can run tools like TypeScript, ESLint and Prettier automatically on every commit.</li>
+          </ol>
+        </div>
+      </section>
+
+
+
+      <section id="c2-source">
+        <h2>Source</h2>
+        <p>
+          Chapter 2, “Using modern JavaScript tools”, of <em>Secrets of the JavaScript Ninja, Third Edition</em>
+          (MEAP V10) — Manning Publications. Printed pages 17–43 of the PDF edition in this repository.
+        </p>
+        <p>
+          All fifteen numbered listings of the chapter (2.1–2.15) are reproduced above, together with the command
+          output and short snippets that accompany them, and the book’s <code>#A</code>–<code>#E</code> callouts are
+          kept as annotation keys beneath each snippet. Chapter 2 contains no figures; the two margin icons it
+          references (the ESLint tip and the performance tip) are embedded in Chapter 1 above.
+        </p>
+      </section>
+
+
+
+      <section id="source" class="page-note">
+        <h2>About this page</h2>
+        <p>
+          Chapter summaries of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10, chapters 1–10 of
+          15, 2026) by Trevor Burnham, Bear Bibeault, Josip Maras and John Resig — Manning Publications.
+          Chapter 1, “JavaScript is everywhere”, is printed pages 1–16 of the PDF edition in this repository;
+          chapter 2, “Using modern JavaScript tools”, is pages 17–43.
+        </p>
+        <p>
+          Figure 1.1 and the book’s two margin icons (the ESLint wand and the performance stopwatch) are extracted
+          from the book PDF and embedded in this file as data URIs, so the page is entirely self-contained — no
+          network requests, no external assets. Every code listing reproduces the book’s example, with the original
+          <code>#A</code>–<code>#E</code> callouts kept as annotation keys beneath each snippet instead of inline, so
+          the code stays copy-pasteable.
         </p>
         <p>
           Source PDF:
@@ -891,16 +2186,74 @@ console.<span class="tok-fn">assert</span>(b === <span class="tok-num">2</span>,
         </p>
       </section>
 
+      <p class="chapter-next"><button type="button" data-goto="chapter-1"><span class="n">Back</span> ← Chapter 1 — JavaScript is everywhere</button></p>
+
+      </div>
+
     </main>
   </div>
 </div>
 
 <footer>
   <div class="wrap">
-    <p><strong>Summary prepared from Chapter 1 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
+    <p><strong>Summaries prepared from Chapters 1–2 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
     <p>Text and examples © Manning Publications Co. — summarised here for study purposes. Book reference: manning.com.</p>
   </div>
 </footer>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-nav button[data-target]'));
+  var chapters = Array.prototype.slice.call(document.querySelectorAll('div.chapter'));
+  var tocs = {1: 'toc-1', 2: 'toc-2'};
+
+  function show(id) {
+    chapters.forEach(function (c) {
+      var on = c.id === id;
+      c.hidden = !on;
+      var n = c.dataset.chapter;
+      var toc = document.getElementById(tocs[n]);
+      if (toc) toc.hidden = !on;
+    });
+    tabs.forEach(function (t) {
+      t.setAttribute('aria-selected', String(t.dataset.target === id));
+    });
+    try { history.replaceState(null, '', '#' + id); } catch (e) {}
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  tabs.forEach(function (t) {
+    t.addEventListener('click', function () { show(t.dataset.target); });
+    t.addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(t), j = null;
+      if (e.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      if (e.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      if (j !== null) { e.preventDefault(); tabs[j].focus(); show(tabs[j].dataset.target); }
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-goto]');
+    if (b) { show(b.dataset.goto); }
+  });
+
+  // deep links: #chapter-2 or any chapter-2 section anchor
+  var h = location.hash.replace('#', '');
+  if (h === 'chapter-2' || document.getElementById('chapter-2').querySelector('#' + CSS.escape(h || 'x'))) {
+    show('chapter-2');
+    if (h !== 'chapter-2') {
+      var el = document.getElementById(h);
+      if (el) setTimeout(function () { el.scrollIntoView(); }, 30);
+    }
+  }
+
+  // in-page links inside a hidden chapter shouldn't escape the tab state
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="#c2-"]');
+    if (a) { setTimeout(function () { var el = document.getElementById(a.hash.slice(1)); if (el) el.scrollIntoView(); }, 10); }
+  });
+})();
+</script>
 
 </body>
 </html>
