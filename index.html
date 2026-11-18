@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapters 1–2 | Secrets of the JavaScript Ninja, 3rd Edition</title>
-<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapter 1, “JavaScript is everywhere”, and chapter 2, “Using modern JavaScript tools”, with the book’s figure, icons and code listings embedded.">
+<title>Chapters 1–3 | Secrets of the JavaScript Ninja, 3rd Edition</title>
+<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–3: “JavaScript is everywhere”, “Using modern JavaScript tools” and “Working with Node.js and npm”, with the book’s figures, icons and code listings embedded.">
 <style>
   :root{
     --ink:#14161a;
@@ -260,7 +260,7 @@
   .card > p{font-size:.97rem;}
 
   /* ---------- next-chapter button & page note ---------- */
-  .chapter-next{margin:40px 0 0;padding-top:26px;border-top:1px solid var(--line);}
+  .chapter-next{margin:40px 0 0;padding-top:26px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
   .chapter-next button{
     appearance:none;cursor:pointer;font-family:"Inter",-apple-system,"Segoe UI",Roboto,sans-serif;
     font-size:.86rem;font-weight:600;display:inline-flex;align-items:baseline;gap:10px;
@@ -268,6 +268,9 @@
     background:var(--accent-soft);color:#0b4a3b;transition:background .15s,border-color .15s,transform .15s;
   }
   .chapter-next button:hover{background:#d9ebe4;border-color:var(--accent);transform:translateX(2px);}
+  .chapter-next button.back{background:#f7f6f1;border-color:#ddd8c9;color:var(--ink-soft);}
+  .chapter-next button.back:hover{background:#efece2;border-color:var(--muted);transform:translateX(-2px);}
+  .chapter-next .spacer{flex:1 1 auto;}
   .chapter-next .n{
     font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;opacity:.7;
   }
@@ -311,7 +314,7 @@
   <div class="wrap">
     <p class="kicker">Secrets of the JavaScript Ninja · Third Edition · MEAP V10</p>
     <h1>Chapter summaries
-      <span class="thin">Chapter 1 — “JavaScript is everywhere” · Chapter 2 — “Using modern JavaScript tools”, with the book’s figures, icons and every code listing reproduced.</span>
+      <span class="thin">Chapters 1–3 — “JavaScript is everywhere” · “Using modern JavaScript tools” · “Working with Node.js and npm”, with the book’s figures, icons and every code listing reproduced.</span>
     </h1>
     <p class="byline">
       <strong>Trevor Burnham</strong>, with Bear Bibeault, Josip Maras &amp; John Resig ·
@@ -321,12 +324,17 @@
     <ul class="chapter-nav" role="tablist" aria-label="Choose a chapter">
       <li role="presentation">
         <button type="button" role="tab" id="tab-1" aria-controls="chapter-1" aria-selected="true" data-target="chapter-1">
-          <span class="n">Ch 1</span> JavaScript is everywhere <span class="dots">·</span>
+          <span class="n">Ch 1</span> JavaScript is everywhere
         </button>
       </li>
       <li role="presentation">
         <button type="button" role="tab" id="tab-2" aria-controls="chapter-2" aria-selected="false" data-target="chapter-2">
-          <span class="n">Ch 2</span> Using modern JavaScript tools
+          <span class="n">Ch 2</span> Modern JavaScript tools
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-3" aria-controls="chapter-3" aria-selected="false" data-target="chapter-3">
+          <span class="n">Ch 3</span> Node.js and npm
         </button>
       </li>
     </ul>
@@ -381,6 +389,27 @@
         <li class="sub"><a href="#c2-husky">2.3.2 Running from a commit hook</a></li>
         <li><a href="#c2-summary"><span class="mono">2.4</span> Summary</a></li>
         <li><a href="#c2-source">Source</a></li>
+      </ol>
+    </nav>
+
+    <nav class="toc" id="toc-3" aria-label="Chapter 3 contents" hidden>
+      <h2>Chapter 3 · on this page</h2>
+      <ol>
+        <li><a href="#c3-intro">This chapter covers</a></li>
+        <li><a href="#c3-runtime"><span class="mono">3.1</span> The Node.js runtime</a></li>
+        <li class="sub"><a href="#c3-repl">3.1.1 Running the REPL</a></li>
+        <li class="sub"><a href="#c3-apis">3.1.2 Using Node.js APIs</a></li>
+        <li><a href="#c3-dependencies"><span class="mono">3.2</span> Managing dependencies</a></li>
+        <li class="sub"><a href="#c3-install">3.2.1 Installing with npm</a></li>
+        <li class="sub"><a href="#c3-node-modules">3.2.2 Understanding node_modules</a></li>
+        <li class="sub"><a href="#c3-syncing">3.2.3 Syncing &amp; updating</a></li>
+        <li class="sub"><a href="#c3-patching">3.2.4 Forking &amp; patching</a></li>
+        <li><a href="#c3-scripting"><span class="mono">3.3</span> Scripting with Node.js</a></li>
+        <li class="sub"><a href="#c3-scripts">3.3.1 Scripts in package.json</a></li>
+        <li class="sub"><a href="#c3-executables">3.3.2 Executable scripts</a></li>
+        <li class="sub"><a href="#c3-npx">3.3.3 Package executables with npx</a></li>
+        <li><a href="#c3-summary"><span class="mono">3.4</span> Summary</a></li>
+        <li><a href="#c3-source">Source</a></li>
       </ol>
     </nav>
 
@@ -2186,7 +2215,796 @@ git update-index --again                      <span class="tok-com">#C</span></c
         </p>
       </section>
 
-      <p class="chapter-next"><button type="button" data-goto="chapter-1"><span class="n">Back</span> ← Chapter 1 — JavaScript is everywhere</button></p>
+      <p class="chapter-next">
+        <button type="button" class="back" data-goto="chapter-1"><span class="n">Back</span> ← Chapter 1 — JavaScript is everywhere</button>
+        <span class="spacer"></span>
+        <button type="button" data-goto="chapter-3"><span class="n">Next</span> Chapter 3 — Working with Node.js and npm →</button>
+      </p>
+
+      </div>
+
+      <div class="chapter" id="chapter-3" data-chapter="3" hidden>
+
+      <section class="chapter-head" id="c3-intro">
+        <p class="kicker">Chapter 3</p>
+        <h2 class="chapter-title">Working with Node.js and npm</h2>
+        <div class="card">
+          <h4>This chapter covers</h4>
+          <ul>
+            <li>How Node.js works</li>
+            <li>Managing dependencies with npm</li>
+            <li>Using JavaScript as a system-level scripting language</li>
+          </ul>
+        </div>
+        <p>
+          In 2009 Ryan Dahl announced Node.js. His goal was a system that would operate more efficiently than
+          the venerable Apache HTTP server thanks to <strong>non-blocking IO</strong> — a strategy that keeps the CPU
+          from sitting idle while waiting on the disk or the network. To do that he needed a language in which
+          asynchronous server logic is straightforward to write. JavaScript, he realised, was the perfect fit.
+        </p>
+        <p>
+          Today Node.js has grown beyond its origins into a major platform, not just for servers but for
+          applications of all kinds. The secret to its success is the language itself, which proved far more
+          versatile than its humble browser beginnings suggested.
+        </p>
+        <p>
+          This chapter covers creating and managing JavaScript projects with Node.js and npm. Many of the topics
+          apply to every kind of JavaScript project, even browser-targeted ones: whatever the runtime, Node.js and
+          npm manage dependencies, run tests and build code for production.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Setup and alternatives</h4>
+          <p>
+            The chapter has hands-on exercises requiring Node.js in your development environment, so you can run
+            the <code>node</code>, <code>npm</code> and <code>npx</code> commands. Step-by-step installation and
+            version-management instructions are in Appendix A.
+          </p>
+          <p>
+            Appendix A also covers alternatives to Node.js and npm. The book uses Node.js and npm throughout
+            whenever JavaScript runs outside the browser, but for your own projects consider the alternatives —
+            in particular <strong>pnpm</strong>, which offers several advantages over npm for large projects.
+          </p>
+        </div>
+      </section>
+
+      <section id="c3-runtime">
+        <h2><span class="num">3.1</span> The Node.js runtime</h2>
+        <p>To understand Node.js, look at the problem Ryan Dahl was trying to solve.</p>
+        <p>
+          Imagine a server with <strong>blocking IO</strong> receiving a request for <code>/index.html</code> and
+          returning the file’s contents. The request handler might look something like this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Blocking IO — the wasteful version</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">indexHandler</span>(req, res) {
+  <span class="tok-kw">const</span> html = <span class="tok-fn">readFile</span>(<span class="tok-str">"index.html"</span>, <span class="tok-str">"utf8"</span>);
+  res.<span class="tok-fn">send</span>(html);
+}</code></pre>
+        </div>
+
+        <p>
+          This straightforward-looking code glosses over a big waste of resources: the CPU sits idle for thousands
+          of cycles while the file contents are read, leaving other requests waiting. Web servers like Apache use
+          <strong>threads</strong> to mitigate that inefficiency, letting the CPU be interrupted mid-task and
+          assigned to another — but threads add overhead of their own.
+        </p>
+        <p>Under Node.js, the request handler might look like this instead:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Non-blocking IO with a callback</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">indexHandler</span>(req, res) {
+  fs.<span class="tok-fn">readFile</span>(<span class="tok-str">"index.html"</span>, <span class="tok-str">"utf8"</span>, (html) =&gt; {
+    res.<span class="tok-fn">send</span>(html);
+  });
+}</code></pre>
+        </div>
+
+        <p>
+          This code, like all JavaScript, runs in a single thread — so only one part of the program can run at a
+          time. But it uses a <strong>callback</strong>, a function passed as an argument to
+          <code>fs.readFile</code> and invoked when the read completes. That leaves the CPU free to handle other
+          requests until then.
+        </p>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-performance.png" alt="Book icon: a stopwatch with motion lines, used to mark performance tips.">
+          <div>
+            <p><span class="label">Note</span>
+              Because JavaScript is single-threaded, callbacks like the one above are “blocked” until all
+              JavaScript code has finished executing. One of the most important tenets of JavaScript performance
+              is: <strong>don’t block the thread!</strong> Chapter 17 shows how long computations can be delegated
+              outside the thread using workers.</p>
+          </div>
+        </div>
+
+        <p>
+          In recent years it has become more common to express this logic with promises instead of callbacks,
+          especially with the <code>async</code>/<code>await</code> syntax added in ES2017 — the same non-blocking
+          behaviour without complicating the code with nested functions:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The same handler with async/await</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">async function</span> <span class="tok-fn">indexHandler</span>(req, res) {
+  <span class="tok-kw">const</span> html = <span class="tok-kw">await</span> fsPromises.<span class="tok-fn">readFile</span>(<span class="tok-str">"index.html"</span>, <span class="tok-str">"utf8"</span>);
+  res.<span class="tok-fn">send</span>(html);
+}</code></pre>
+        </div>
+
+        <p>Chapter 8 goes deeper on promises and <code>async</code>/<code>await</code>. For now, on to some hands-on coding.</p>
+
+        <h3 id="c3-repl"><span class="num">3.1.1</span> Running the Node.js REPL</h3>
+        <p>
+          Run <code>node</code> with no arguments and you land in an interactive environment called a
+          <strong>REPL</strong> (Read-Eval-Print Loop) where you can run JavaScript directly:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">&gt;</span> console.log("Hello world!")
+Hello world!
+undefined</pre></div>
+
+        <p>
+          Notice the return value of your command is displayed after the code executes. For
+          <code>console.log</code>, the return value is always <code>undefined</code>.
+        </p>
+        <p>The REPL is a fun way to explore the runtime. Try looking at the global object to see the available globals:</p>
+
+        <div class="terminal"><pre><span class="prompt">&gt;</span> global
+&lt;ref *1&gt; Object [global] {
+  global: [Circular *1],
+  clearImmediate: [Function: clearImmediate],
+  setImmediate: [Function: setImmediate] {
+    [Symbol(nodejs.util.promisify.custom)]: [Getter]
+  },
+  clearInterval: [Function: clearInterval],
+  clearTimeout: [Function: clearTimeout],
+  setInterval: [Function: setInterval],
+  setTimeout: [Function: setTimeout] {
+    [Symbol(nodejs.util.promisify.custom)]: [Getter]
+  },
+  queueMicrotask: [Function: queueMicrotask],
+  structuredClone: [Function: structuredClone],
+  atob: [Getter/Setter],
+  btoa: [Getter/Setter],
+  performance: [Getter/Setter],
+  fetch: [Function: value],
+  crypto: [Getter]
+}</pre></div>
+
+        <p>
+          If you’re used to the browser, where hundreds of globals hang off <code>window</code>, this sparse
+          selection may surprise you. Browser APIs are usually exposed as globals; Node.js instead provides its
+          APIs as <strong>modules</strong>.
+        </p>
+        <p>
+          The next section looks at that modular API design in more detail. The REPL isn’t needed for the rest of
+          the chapter, so enter <code>.exit</code> to return to your shell.
+        </p>
+
+        <h3 id="c3-apis"><span class="num">3.1.2</span> Using Node.js APIs</h3>
+        <p>
+          Node.js offers an extensive set of APIs, documented at
+          <a href="https://nodejs.org/docs/latest/api">nodejs.org/docs/latest/api</a>. Let’s use some of them for a
+          simple project: a command-line calculator. Start with a project directory containing a single file,
+          <code>index.mjs</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 3.1 — A calculator program in Node.js</span><span class="lang">ES module</span></div>
+          <pre><code><span class="tok-kw">import</span> * <span class="tok-kw">as</span> readlinePromises <span class="tok-kw">from</span> <span class="tok-str">"node:readline/promises"</span>;  <span class="tok-com">// #A</span>
+<span class="tok-kw">import</span> { stdin, stdout } <span class="tok-kw">from</span> <span class="tok-str">"node:process"</span>;            <span class="tok-com">// #B</span>
+
+<span class="tok-kw">const</span> rl = readlinePromises.<span class="tok-fn">createInterface</span>({
+  input: stdin,
+  output: stdout,
+});
+
+<span class="tok-kw">while</span> (<span class="tok-kw">true</span>) {
+  <span class="tok-kw">const</span> input = <span class="tok-kw">await</span> rl.<span class="tok-fn">question</span>(<span class="tok-str">'Enter expression or ".exit":\n&gt; '</span>);  <span class="tok-com">// #C</span>
+  <span class="tok-kw">if</span> (input === <span class="tok-str">".exit"</span>) {
+    rl.<span class="tok-fn">close</span>();
+    <span class="tok-kw">break</span>;
+  } <span class="tok-kw">else</span> {
+    console.<span class="tok-fn">log</span>(<span class="tok-fn">eval</span>(input));                                  <span class="tok-com">// #D</span>
+  }
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The <code>import *</code> syntax creates an object containing all exports from the specified module — here <code>"node:readline/promises"</code>.</div>
+            <div><b>#B</b> The <code>import { stdin, stdout }</code> syntax takes the two specified exports and assigns them to variables with the same names.</div>
+            <div><b>#C</b> The <code>await</code> keyword effectively pauses the program until it receives a line of input. Chapter 8 explains how this syntax works.</div>
+            <div><b>#D</b> The <code>eval</code> function executes the given string as JavaScript code. <strong>Never use <code>eval</code> with untrusted user input!</strong></div>
+          </div>
+        </div>
+
+        <p>
+          The program uses the <strong>readline</strong> API to read a line of input. Node.js offers readline in two
+          flavours — callback-based and promise-based — and the promise-based one is generally considered more
+          modern and convenient, so that’s what’s used here (promises are covered in detail in Chapter 8).
+        </p>
+
+        <div class="card sidebar">
+          <h4>What is the .mjs extension?</h4>
+          <p>
+            When Node.js was created it used a module standard called <strong>CommonJS</strong>. Later, a new standard
+            known as <strong>ECMAScript Modules (ESM)</strong> was incorporated into the ECMAScript spec itself, and much
+            of the ecosystem has transitioned from CommonJS to ESM.
+          </p>
+          <p>
+            Node.js has supported both since v12.17.0, but for backward compatibility it treats <code>.js</code>
+            files as CommonJS by default. The <code>.mjs</code> extension tells Node.js the file should be treated as
+            an ESM — as is the case with all code in this book.
+          </p>
+          <p>
+            In general <code>require</code> is associated with CommonJS while <code>import</code> is associated with
+            ESM; Chapter 14 compares the standards in depth.
+          </p>
+        </div>
+
+        <p>Go ahead and execute the program:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> node index.mjs
+Enter expression or ".exit": (3 * 2) + 5
+11</pre></div>
+
+        <p>
+          Congratulations — you’ve essentially reproduced the REPL using Node.js’s readline API. As a follow-up,
+          try restricting the input to a subset of characters so users can enter calculations but not execute
+          arbitrary JavaScript on your system. That’s a good use case for regular expressions (Chapter 13).
+        </p>
+        <p>
+          For most real-world applications you’ll want to tap into JavaScript’s rich open-source ecosystem, which
+          is exactly what the next section covers.
+        </p>
+      </section>
+
+      <section id="c3-dependencies">
+        <h2><span class="num">3.2</span> Managing Node.js dependencies</h2>
+        <p>
+          In its original life as a browser scripting language, JavaScript had no notion of dependencies. Node.js
+          changed that: it popularised the concept of <strong>modules</strong> — JavaScript files that run in their own
+          namespace — and introduced the convention of a <code>node_modules</code> directory that modules could load
+          each other from without specifying a complete file path.
+        </p>
+        <p>
+          Shortly after Node.js appeared, Isaac Schlueter created a Node.js package manager called simply
+          <strong>npm</strong>, along with a public registry. Together those innovations made sharing JavaScript code
+          dramatically easier.
+        </p>
+        <p>
+          Even on a web application there’s a good chance you’ll use Node.js and npm to manage dependencies and
+          prepare code for deployment; building code for the web is covered in Chapter 14.
+        </p>
+
+        <h3 id="c3-install"><span class="num">3.2.1</span> Installing dependencies with npm</h3>
+        <p>Create a directory called <code>http-server</code> and run:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm init -y</pre></div>
+
+        <p>
+          This creates a skeletal <code>package.json</code>. (Without the <code>-y</code> flag it would have prompted
+          for information to fill in some of the blanks.)
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The generated package.json</span><span class="lang">JSON</span></div>
+          <pre><code>{
+  <span class="tok-str">"name"</span>: <span class="tok-str">"http-server"</span>,        <span class="tok-com">// #A</span>
+  <span class="tok-str">"version"</span>: <span class="tok-str">"1.0.0"</span>,
+  <span class="tok-str">"main"</span>: <span class="tok-str">"index.js"</span>,          <span class="tok-com">// #B</span>
+  <span class="tok-str">"scripts"</span>: {                  <span class="tok-com">// #C</span>
+    <span class="tok-str">"test"</span>: <span class="tok-str">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span>
+  },
+  <span class="tok-str">"keywords"</span>: [],
+  <span class="tok-str">"author"</span>: <span class="tok-str">""</span>,
+  <span class="tok-str">"license"</span>: <span class="tok-str">"ISC"</span>,
+  <span class="tok-str">"description"</span>: <span class="tok-str">""</span>
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> npm inferred the name from the current directory.</div>
+            <div><b>#B</b> The entry point for the project. Entry points are explained when we discuss <code>node_modules</code>.</div>
+            <div><b>#C</b> Package scripts are very useful — see the scripting section of this chapter.</div>
+          </div>
+        </div>
+
+        <p>
+          Most of the initial fields are metadata we can ignore, since we don’t intend to distribute this package.
+          For now <code>package.json</code> matters for one reason: saving dependencies.
+        </p>
+        <p>
+          Node.js provides low-level HTTP APIs, but very few projects use them directly; instead they use
+          open-source packages that make those APIs easier. One of the most popular is <strong>express</strong>, a
+          simple and extensible web server framework. Install it and see what happens:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm install express@5</pre></div>
+
+        <p>
+          npm connects to the public registry and downloads the package with the specified name and version. Then
+          the real work begins: it recursively downloads that package’s dependencies, and theirs, until the
+          dependency tree is complete. The fruits of that labour appear in the project’s new
+          <code>node_modules</code> directory, containing all the downloaded packages — plus a new
+          <code>package-lock.json</code> describing the contents of <code>node_modules</code>.
+        </p>
+        <p>Looking at <code>package.json</code>, it now lists the new dependency:</p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json after install</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"dependencies"</span>: {
+  <span class="tok-str">"express"</span>: <span class="tok-str">"^5.1.0"</span>
+}</code></pre>
+        </div>
+
+        <p>
+          The exact version you see will likely be newer, reflecting the latest available in the registry. That
+          <code>^</code> prefix is explained in Section 3.2.3. First, some code that uses the new dependency — create
+          <code>index.mjs</code> (note the <code>.mjs</code> extension, indicating an ESM module):
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>A minimal Express server</span><span class="lang">ES module</span></div>
+          <pre><code><span class="tok-kw">import</span> express <span class="tok-kw">from</span> <span class="tok-str">"express"</span>;
+
+<span class="tok-kw">const</span> app = <span class="tok-fn">express</span>();
+app.<span class="tok-fn">get</span>(<span class="tok-str">"/"</span>, (req, res) =&gt; {
+  res.<span class="tok-fn">send</span>(<span class="tok-str">"Hello, dependencies!"</span>);
+});
+
+<span class="tok-kw">const</span> PORT = <span class="tok-num">3000</span>;
+app.<span class="tok-fn">listen</span>(PORT, () =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">`Now listening at http://localhost:${PORT}`</span>)
+});</code></pre>
+        </div>
+
+        <p>Run it to start the server:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> node index.mjs</pre></div>
+
+        <p>
+          Open <code>http://localhost:3000</code> in a browser to confirm it’s running. When you’re done, press
+          Ctrl+C in the terminal to send a SIGINT signal, causing Node.js to exit.
+        </p>
+        <p>You’ve now installed a dependency from the npm registry and used it in code. Next: how that import statement actually works.</p>
+
+        <h3 id="c3-node-modules"><span class="num">3.2.2</span> Understanding node_modules</h3>
+        <p>In Node.js code you’ll typically see three kinds of import statements:</p>
+        <ul>
+          <li>Imports that reference a core Node.js API, with or without the <code>node:</code> prefix.</li>
+          <li>Imports that use a relative file path prefixed with <code>./</code> or <code>../</code>.</li>
+          <li>Imports that start with a package name.</li>
+        </ul>
+        <p>
+          An import name that starts with a package name is a <strong>bare specifier</strong>. When Node.js meets one,
+          it searches for the closest <code>node_modules</code> directory containing that package: starting from the
+          directory containing the importing module, it checks <code>./node_modules/&lt;package&gt;</code>, then
+          <code>../node_modules/&lt;package&gt;</code>, and so on up to the filesystem root.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              Resolving bare specifiers by searching <code>node_modules</code> is Node.js’s default behaviour, but it
+              can be overridden. Yarn and pnpm offer a “Plug’n’Play mode” in which the package manager tells Node.js
+              to resolve external dependencies directly from a central cache. That has advantages for build
+              performance and security, but can confuse IDEs and other tooling that expect dependencies in
+              <code>node_modules</code>.</p>
+          </div>
+        </div>
+
+        <p>Once the package directory is found, Node.js looks for the package code’s entry point. The rules are:</p>
+        <ol>
+          <li>
+            If <code>package.json</code> has an <code>exports</code> field, Node.js tries to map the import statement
+            to the corresponding export. The field is quite versatile — specifics are in Chapter 14.
+          </li>
+          <li>
+            If <code>exports</code> is not defined and the import statement includes a file path, Node.js uses that
+            path relative to the package directory as the entry point. For example
+            <code>import "package/lib/module.js"</code> resolves to <code>lib/module.js</code> inside the package.
+          </li>
+          <li>
+            If <code>exports</code> is not defined and the import has no file path, Node.js uses the entry point
+            defined by <code>main</code> in <code>package.json</code>.
+          </li>
+        </ol>
+        <p>
+          This resolution algorithm lets multiple versions of the same package coexist in one project — which
+          happens frequently with indirect dependencies. Suppose your project depends on <code>dep1</code> and
+          <code>dep2</code>, but <code>dep1</code> depends on <code>lodash@3</code> while <code>dep2</code> depends on
+          <code>lodash@4</code>. Both can be satisfied by structuring <code>node_modules</code> like this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Nested node_modules for conflicting versions</span><span class="lang">tree</span></div>
+          <pre><code>node_modules/
+  dep1/
+    node_modules/
+      lodash/     <span class="tok-com"># contains lodash@3</span>
+  dep2/
+    node_modules/
+      lodash/     <span class="tok-com"># contains lodash@4</span></code></pre>
+        </div>
+
+        <p>
+          This works because import statements in <code>dep1</code> and <code>dep2</code> load lodash from their
+          respective <code>node_modules</code> directories. Note that importing lodash in your own project’s
+          <code>index.mjs</code> would fail to resolve.
+        </p>
+        <p>
+          Happily npm handles all this automatically, creating nested <code>node_modules</code> directories for
+          indirect dependencies as needed. It also reduces duplication by <strong>hoisting</strong> indirect
+          dependencies to the top level when there are no conflicting version requirements — so if
+          <code>dep1</code> and <code>dep2</code> both depend on the same lodash version, the tree looks like this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Hoisted, deduplicated tree</span><span class="lang">tree</span></div>
+          <pre><code>node_modules/
+  dep1/
+  dep2/
+  lodash/</code></pre>
+        </div>
+
+        <div class="card sidebar">
+          <h4>Importing code from local packages</h4>
+          <p>
+            Import another module from your package with a relative path; import a dependency installed with npm
+            by package name. But what if you want to import a module from another package on your system?
+          </p>
+          <p>The standard solution is a symlink in <code>node_modules</code> so you can treat it as a dependency. npm offers two ways:</p>
+          <ul>
+            <li>
+              If you’re working on one of your project’s dependencies, run
+              <code>npm link &lt;dependency-dir&gt;</code> to add a symlink to that package’s directory in
+              <code>node_modules</code>.
+            </li>
+            <li>
+              If your project involves multiple interdependent packages, declare a <code>workspaces</code> list in
+              <code>package.json</code>, which tells npm to create symlinks for all of those packages in
+              <code>node_modules</code> when you run <code>npm install</code>. The packages can then import one
+              another.
+            </li>
+          </ul>
+        </div>
+
+        <h3 id="c3-syncing"><span class="num">3.2.3</span> Syncing and updating dependencies</h3>
+        <p>
+          In npm’s early days developers faced a conundrum: checking the entire <code>node_modules</code> tree into
+          version control created large diffs whenever a dependency changed, but the alternative risked
+          inconsistencies whenever the project was installed elsewhere, because the dependency list in
+          <code>package.json</code> didn’t contain enough information to reconstitute the same tree.
+        </p>
+        <p>
+          The solution was a <strong>lockfile</strong>, <code>package-lock.json</code>. When a user downloads a project
+          and runs <code>npm install</code>, npm uses the lockfile to reconstitute the exact same
+          <code>node_modules</code> tree. Today the norm is to commit <code>package-lock.json</code> but not
+          <code>node_modules</code>, which keeps teams in sync with minimal effort. npm even has built-in merge
+          conflict resolution for the lockfile: if you hit a conflict in <code>package-lock.json</code>, just run
+          <code>npm install</code>.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              JavaScript developers are divided on whether to use <code>package-lock.json</code> in packages consumed
+              by others. Doing so freezes your package versions during development but doesn’t affect the downstream
+              project, which can cause drift. As Sindre Sorhus put it: “If you use a lockfile for packages, your local
+              dependency tree will not match the dependency tree of users having your package as a dependency.”</p>
+          </div>
+        </div>
+
+        <p>
+          Having dependencies in both files confuses people: what’s the purpose of each? The key reason is that the
+          lockfile rigidly specifies the exact version of every dependency in the tree, while
+          <code>package.json</code> allows <strong>version ranges</strong> — which provide a smooth path for routine
+          updates.
+        </p>
+        <p>Take another look at the dependencies list in the <code>http-server</code> project:</p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json dependencies</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"dependencies"</span>: {
+  <span class="tok-str">"express"</span>: <span class="tok-str">"^5.1.0"</span>
+}</code></pre>
+        </div>
+
+        <p>
+          When we told npm to install express we only specified a major version. npm’s default behaviour is to find
+          the latest exact version matching the specifier, then prefix the version in <code>package.json</code> with
+          <code>^</code>, creating a <strong>caret range</strong>.
+        </p>
+        <p>To understand caret ranges you first need <strong>semver</strong> (“semantic versioning”). Each version has three components:</p>
+
+        <div class="terminal"><pre>&lt;major&gt;.&lt;minor&gt;.&lt;patch&gt;</pre></div>
+
+        <p>
+          A version may also have a pre-release tag appended with a hyphen: <code>1.0.0-beta.1</code> is a pre-release
+          considered earlier than <code>1.0.0</code>.
+        </p>
+        <p>
+          The key to semver is the convention that <strong>incompatible changes must come with a newer major version
+          number</strong> (pre-releases and versions below 1.0.0 are exceptions). As long as package authors honour
+          that convention, newer minor and patch versions of the same dependency are safe to install.
+        </p>
+        <p>
+          That’s what the caret range means: it covers all newer but <em>compatible</em> versions, so you benefit
+          from bug fixes and improvements. With <code>"express": "^5.1.0"</code>, both
+          <code>express@5.1.1</code> and <code>express@5.2.0</code> are compatible, but <code>express@6.0.0</code> is
+          not. (There’s a neat tool at <a href="https://semver.npmjs.com">semver.npmjs.com</a> for trying out range
+          specifiers and seeing which versions they cover.)
+        </p>
+        <p>
+          To update a package to the latest version within the range in <code>package.json</code>, use
+          <code>npm update --save &lt;package&gt;</code>. The <code>update</code> command installs the new version in
+          <code>node_modules</code> and revises the lockfile, while <code>--save</code> also modifies
+          <code>package.json</code> to indicate the new version as the minimum.
+        </p>
+        <p>
+          To get the latest release regardless of the range, use <code>npm install &lt;package&gt;@latest</code>. Note
+          that <code>install</code> saves its changes to <code>package.json</code> by default while
+          <code>update</code> does not — which is why the <code>--save</code> flag is recommended when updating, so
+          you keep a clear, readable record of all version changes.
+        </p>
+
+        <h3 id="c3-patching"><span class="num">3.2.4</span> Forking and patching dependencies</h3>
+        <p>
+          One great virtue of open source is that you’re free to change any dependency you use, fixing bugs or
+          adding features without seeking the maintainers’ approval.
+        </p>
+        <p>
+          The traditional mechanism is to <strong>fork</strong>: create a full copy of the package’s repository, then
+          apply your changes to the source. Most packages list their repository in <code>package.json</code>
+          metadata, viewable with <code>npm view &lt;package&gt;</code> or by searching
+          <a href="https://www.npmjs.com">npmjs.com</a>. Once you’ve forked, replace the version string in
+          <code>package.json</code> with a direct git link to your fork:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Pointing at a fork</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"dependencies"</span>: {
+  <span class="tok-str">"express"</span>: <span class="tok-str">"git+ssh://git@github.com:trevorburnham/express#5.1.0"</span>  <span class="tok-com">// #A</span>
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The <code>#</code> suffix indicates a git tag, which in this case points to a release version.</div>
+          </div>
+        </div>
+
+        <p>
+          When you run <code>npm install</code>, npm downloads the repo, runs its build script (if defined) to
+          generate the package artifacts, and adds them to <code>node_modules</code> as if it had downloaded the
+          package from the registry.
+        </p>
+        <p>
+          Forking makes sense if you want to maintain a differentiated copy, but suppose you just want a quick bug
+          fix while waiting for the maintainers to merge your pull request — or you need to change an <em>indirect</em>
+          dependency. Editing code in <code>node_modules</code> directly isn’t stable: the change isn’t in version
+          control, collaborators don’t receive it, and npm may overwrite it. The solution that persists patches is
+          <a href="https://www.npmjs.com/package/patch-package">patch-package</a>.
+        </p>
+        <p>First install it as a dev dependency:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm install --save-dev patch-package</pre></div>
+
+        <p>
+          The <code>--save-dev</code> flag adds the package to the <code>devDependencies</code> section instead of
+          <code>dependencies</code>, differentiating what’s needed at runtime from what’s only needed in
+          development. When you install a package, its transitive dependencies are installed but its transitive
+          devDependencies are not.
+        </p>
+        <p>Make your changes in <code>node_modules</code>, then run:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx patch-package &lt;package&gt;</pre></div>
+
+        <p>
+          (The <code>npx</code> command runs binaries from packages — more in Section 3.3.2.) This generates a
+          <code>.patch</code> file with your changes, which you can check into version control. To make sure the patch
+          is applied every time npm installs that package, add a <code>postinstall</code> entry to the
+          <code>scripts</code> section of <code>package.json</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"postinstall"</span>: <span class="tok-str">"patch-package"</span></code></pre>
+        </div>
+
+        <p>
+          The <code>postinstall</code> script runs automatically after <code>npm install</code> and other commands
+          that install packages into <code>node_modules</code>; lifecycle scripts are covered in section 3.3.1.
+        </p>
+        <p>
+          That’s dependency management, including changing dependencies via forking and patching. Next: how Node.js
+          and npm can be used to write all kinds of scripts, from project automation to system management.
+        </p>
+      </section>
+
+      <section id="c3-scripting">
+        <h2><span class="num">3.3</span> Scripting with Node.js</h2>
+        <p>
+          Once Node.js freed JavaScript from the confines of the browser, many developers discovered it was the
+          only language they needed. They began using it for tasks that previously required a foray into shell
+          scripting or firing up a Python or Ruby interpreter.
+        </p>
+        <p>
+          This section looks at several approaches to running scripts with Node.js, and at how to distribute
+          scripts in an npm package anyone can run with a single command.
+        </p>
+
+        <h3 id="c3-scripts"><span class="num">3.3.1</span> Defining scripts in package.json</h3>
+        <p>The <code>scripts</code> section of <code>package.json</code> is a simple way to define short scripts:</p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"scripts"</span>: {
+  <span class="tok-str">"hello"</span>: <span class="tok-str">"echo 'Hello, scripts!'"</span>
+}</code></pre>
+        </div>
+
+        <p>To execute a script, use <code>npm run &lt;script&gt;</code>:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm run hello
+Hello, scripts!</pre></div>
+
+        <p>
+          You can pass additional arguments, which get appended to the script. Use the <code>--</code> separator
+          before them so they aren’t treated as arguments to npm itself:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npm run hello -- "And goodbye."
+Hello, scripts! And goodbye.</pre></div>
+
+        <p>A few script names have special rules:</p>
+        <ul>
+          <li>The <code>test</code>, <code>start</code>, <code>restart</code> and <code>stop</code> scripts can be run with the shorthand <code>npm &lt;script&gt;</code> instead of <code>npm run &lt;script&gt;</code>.</li>
+          <li>If a script name starts with <code>pre</code>/<code>post</code>, it runs before/after the matching script. With <code>prebuild</code>, <code>build</code> and <code>postbuild</code> defined, <code>npm run build</code> runs all three in order.</li>
+          <li>Several npm commands trigger <strong>life cycle scripts</strong>: <code>preinstall</code> and <code>postinstall</code> run before and after <code>npm install</code>. Consult the npm documentation for details.</li>
+          <li>The <code>prepare</code> script runs automatically whenever the package is installed in another package — a common use case being compiling binaries.</li>
+        </ul>
+        <p>
+          One of the most powerful features is that npm puts every executable exported by the project’s installed
+          packages on the <code>PATH</code> for scripts. A project with a dev dependency on ESLint might have:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"scripts"</span>: {
+  <span class="tok-str">"lint"</span>: <span class="tok-str">"eslint ."</span>
+}</code></pre>
+        </div>
+
+        <p>Scripts can also use <code>npm run</code> to trigger other npm scripts:</p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"scripts"</span>: {
+  <span class="tok-str">"lint"</span>: <span class="tok-str">"eslint ."</span>,
+  <span class="tok-str">"build"</span>: <span class="tok-str">"npm run lint &amp;&amp; ./build.sh"</span>
+}</code></pre>
+        </div>
+
+        <h3 id="c3-executables"><span class="num">3.3.2</span> Writing executable scripts with Node.js</h3>
+        <p>
+          Node.js supports the <strong>shebang</strong> syntax (so called because the two characters <code>#!</code> are
+          the “sharp” and “bang”), letting Mac/Linux systems treat a JavaScript file as an executable. Create
+          <code>hello.mjs</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>hello.mjs</span><span class="lang">ES module</span></div>
+          <pre><code>#!/usr/bin/env node
+console.<span class="tok-fn">log</span>(<span class="tok-str">"Hello, execution!"</span>);</code></pre>
+        </div>
+
+        <p>
+          Then <code>chmod +x hello.mjs</code> to give the file executable permissions. Now you can run it with
+          <code>./hello.mjs</code> instead of <code>node hello.mjs</code>.
+        </p>
+        <p>
+          However the script is run, Node.js resolves any import statements with the <code>node_modules</code>
+          algorithm relative to the script’s location — so including dependencies is straightforward if the script
+          ships as part of an npm package.
+        </p>
+        <p>
+          Node.js has several built-in APIs in its <code>child_process</code> namespace for calling arbitrary system
+          commands, but they’re very verbose, requiring several parameters even for simple cases. Several npm
+          packages therefore offer a more succinct syntax. One of the most popular is Google’s
+          <a href="https://google.github.io/zx">zx</a>, which provides a function named <code>$</code> that calls any
+          shell command:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>A script using zx</span><span class="lang">ES module</span></div>
+          <pre><code>#!/usr/bin/env node
+<span class="tok-kw">import</span> { $ } <span class="tok-kw">from</span> <span class="tok-str">"zx"</span>;
+
+<span class="tok-kw">const</span> { stdout: dirContents } = <span class="tok-kw">await</span> $<span class="tok-str">`ls`</span>;
+console.<span class="tok-fn">log</span>(
+  dirContents.<span class="tok-fn">split</span>(<span class="tok-str">"\n"</span>).<span class="tok-fn">includes</span>(<span class="tok-str">"package.json"</span>)
+    ? <span class="tok-str">"Yes, this dir contains a package.json file."</span>
+    : <span class="tok-str">"No, this dir does not contain a package.json file."</span>,
+);</code></pre>
+        </div>
+
+        <p>
+          Suppose you want to run a Node.js script where installing npm dependencies is impractical — a CI process
+          with a firewall blocking the npm registry, for instance. In that case use a bundler such as
+          <a href="https://esbuild.github.io">esbuild</a> to create a single JavaScript file containing the script and
+          all its dependencies. Chapter 14 looks at esbuild more closely.
+        </p>
+
+        <h3 id="c3-npx"><span class="num">3.3.3</span> Running package executables with npx</h3>
+        <p>
+          Section 3.2.1 showed how npm packages provide entry points so import statements can reference their code
+          once installed in <code>node_modules</code>. But packages aren’t limited to code: it’s common for them to
+          distribute executables that can be run from the command line.
+        </p>
+        <p>
+          Typically such an executable is a JavaScript file written as described in Section 3.3.2. To make it an
+          executable, add a <code>bin</code> entry to <code>package.json</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>package.json</span><span class="lang">JSON</span></div>
+          <pre><code><span class="tok-str">"bin"</span>: {
+  <span class="tok-str">"my-command"</span>: <span class="tok-str">"bin/my-command.js"</span>
+}</code></pre>
+        </div>
+
+        <p>
+          When npm installs the package with that declaration, it creates an executable called
+          <code>my-command</code> linked to the package’s <code>bin/my-command.js</code>. Once installed, the
+          executable can be run from <code>package.json</code> scripts.
+        </p>
+        <p>
+          You can also run package executables directly with <strong>npx</strong>, a command bundled with npm. If ESLint
+          is installed, <code>npx</code> runs its <code>eslint</code> executable without creating a
+          <code>scripts</code> entry:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> npx eslint .</pre></div>
+
+        <p>
+          But npx’s power goes far beyond that. When you run <code>npx &lt;command&gt;</code> for a command that
+          doesn’t match an executable in the local project, npx checks the registry for a package with that name. If
+          it finds one, and if one of that package’s executables has the same name as the package (or it defines only
+          one executable with any name), it temporarily installs the package and runs that executable.
+        </p>
+        <p>
+          Running a package executable straight from the registry is enormously convenient for packages you don’t
+          need often, because it avoids the overhead of adding them to your <code>node_modules</code> tree and
+          lockfile.
+        </p>
+      </section>
+
+      <section id="c3-summary">
+        <h2><span class="num">3.4</span> Summary</h2>
+        <div class="takeaway">
+          <ol>
+            <li><strong>Node.js</strong> is a popular JavaScript runtime that provides APIs for the file system, networking and other OS interactions.</li>
+            <li><strong>JavaScript code always runs in a single thread.</strong> Callbacks and promises allow I/O operations to be performed asynchronously, keeping the JavaScript thread unblocked.</li>
+            <li><strong>npm</strong> installs packages into a <code>node_modules</code> directory containing a project’s entire dependency tree, saves top-level dependencies in <code>package.json</code>, and uses <code>package-lock.json</code> to track the full contents of <code>node_modules</code> for version control.</li>
+            <li><strong>Bare specifiers</strong> — imports using a package name rather than a complete file path — are resolved by recursing through the closest <code>node_modules</code> directory.</li>
+            <li><strong>Node.js supports executable scripts</strong> with the shebang syntax, and packages can make executables available by declaring them in the <code>bin</code> field of <code>package.json</code>.</li>
+            <li><strong>npx</strong> runs executables from other packages; if the specified package isn’t installed, it’s downloaded from the registry and temporarily installed while the command runs.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="c3-source">
+        <h2>Source</h2>
+        <p>
+          Chapter 3, “Working with Node.js and npm”, of <em>Secrets of the JavaScript Ninja, Third Edition</em>
+          (MEAP V10) — Manning Publications. Printed pages 44–60 of the PDF edition in this repository.
+        </p>
+        <p>
+          Listing 3.1 is reproduced in full, together with the command output and short snippets that accompany
+          it; the book’s <code>#A</code>–<code>#D</code> callouts are kept as annotation keys beneath each snippet.
+          Chapter 3 contains no figures — the stopwatch icon used for the “don’t block the thread” note is the
+          book’s performance-tip icon, embedded in Chapter 1.
+        </p>
+      </section>
+
+      <p class="chapter-next"><button type="button" class="back" data-goto="chapter-2"><span class="n">Back</span> ← Chapter 2 — Using modern JavaScript tools</button></p>
 
       </div>
 
@@ -2205,7 +3023,7 @@ git update-index --again                      <span class="tok-com">#C</span></c
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-nav button[data-target]'));
   var chapters = Array.prototype.slice.call(document.querySelectorAll('div.chapter'));
-  var tocs = {1: 'toc-1', 2: 'toc-2'};
+  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3'};
 
   function show(id) {
     chapters.forEach(function (c) {
@@ -2237,20 +3055,21 @@ git update-index --again                      <span class="tok-com">#C</span></c
     if (b) { show(b.dataset.goto); }
   });
 
-  // deep links: #chapter-2 or any chapter-2 section anchor
+  // deep links: #chapter-N or any section anchor inside a chapter
   var h = location.hash.replace('#', '');
-  if (h === 'chapter-2' || document.getElementById('chapter-2').querySelector('#' + CSS.escape(h || 'x'))) {
-    show('chapter-2');
-    if (h !== 'chapter-2') {
-      var el = document.getElementById(h);
-      if (el) setTimeout(function () { el.scrollIntoView(); }, 30);
+  if (h) {
+    var el = document.getElementById(h);
+    var host = el && el.closest ? el.closest('div.chapter') : null;
+    if (host) {
+      show(host.id);
+      if (h !== host.id) setTimeout(function () { if (el.scrollIntoView) el.scrollIntoView(); }, 30);
     }
   }
 
   // in-page links inside a hidden chapter shouldn't escape the tab state
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="#c2-"]');
-    if (a) { setTimeout(function () { var el = document.getElementById(a.hash.slice(1)); if (el) el.scrollIntoView(); }, 10); }
+    if (a) { setTimeout(function () { var el = document.getElementById(a.hash.slice(1)); if (el && el.scrollIntoView) el.scrollIntoView(); }, 10); }
   });
 })();
 </script>
