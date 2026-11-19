@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapters 1–6 | Secrets of the JavaScript Ninja, 3rd Edition</title>
-<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–6, from “JavaScript is everywhere” to “Functions for the journeyman”, with the book’s figures, icons and code listings embedded.">
+<title>Chapters 1–7 | Secrets of the JavaScript Ninja, 3rd Edition</title>
+<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–7, from “JavaScript is everywhere” to “Functions for the master: closures and scopes”, with the book’s figures, icons and code listings embedded.">
 <style>
   :root{
     --ink:#14161a;
@@ -337,7 +337,7 @@
   <div class="wrap">
     <p class="kicker">Secrets of the JavaScript Ninja · Third Edition · MEAP V10</p>
     <h1>Chapter summaries
-      <span class="thin">Chapters 1–6 — from “JavaScript is everywhere” through “First-class functions for the novice” to “Functions for the journeyman: understanding function invocation”, with the book’s figures, icons and every code listing reproduced.</span>
+      <span class="thin">Chapters 1–7 — from “JavaScript is everywhere” through “First-class functions for the novice” and “Functions for the journeyman” to “Functions for the master: closures and scopes”, with the book’s figures, icons and every code listing reproduced.</span>
     </h1>
     <p class="byline">
       <strong>Trevor Burnham</strong>, with Bear Bibeault, Josip Maras &amp; John Resig ·
@@ -373,6 +373,11 @@
       <li role="presentation">
         <button type="button" role="tab" id="tab-6" aria-controls="chapter-6" aria-selected="false" data-target="chapter-6">
           <span class="n">Ch 6</span> Function invocation
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-7" aria-controls="chapter-7" aria-selected="false" data-target="chapter-7">
+          <span class="n">Ch 7</span> Closures and scopes
         </button>
       </li>
     </ul>
@@ -512,6 +517,26 @@
         <li class="sub"><a href="#c6-arrows">6.3.2 Using arrow functions</a></li>
         <li><a href="#c6-summary"><span class="mono">6.4</span> Summary</a></li>
         <li><a href="#c6-source">Source</a></li>
+      </ol>
+    </nav>
+
+    <nav class="toc" id="toc-7" aria-label="Chapter 7 contents" hidden>
+      <h2>Chapter 7 · on this page</h2>
+      <ol>
+        <li><a href="#c7-intro">This chapter covers</a></li>
+        <li><a href="#c7-closures"><span class="mono">7.1</span> Understanding closures</a></li>
+        <li><a href="#c7-putting"><span class="mono">7.2</span> Putting closures to work</a></li>
+        <li class="sub"><a href="#c7-memoize">7.2.1 Function-scoped variables</a></li>
+        <li class="sub"><a href="#c7-callbacks">7.2.2 Closures in callbacks</a></li>
+        <li><a href="#c7-scope"><span class="mono">7.3</span> Variable scope &amp; hoisting</a></li>
+        <li class="sub"><a href="#c7-block-scopes">7.3.1 Creating block scopes</a></li>
+        <li class="sub"><a href="#c7-hoisting">7.3.2 Execution order &amp; hoisting</a></li>
+        <li class="sub"><a href="#c7-parsing">7.3.3 Parsing and scope analysis</a></li>
+        <li><a href="#c7-global"><span class="mono">7.4</span> The global scope object</a></li>
+        <li class="sub"><a href="#c7-typeof">Checking a global with typeof</a></li>
+        <li><a href="#c7-leaks"><span class="mono">7.5</span> Preventing memory leaks</a></li>
+        <li><a href="#c7-summary"><span class="mono">7.6</span> Summary</a></li>
+        <li><a href="#c7-source">Source</a></li>
       </ol>
     </nav>
 
@@ -2302,7 +2327,7 @@ git update-index --again                      <span class="tok-com">#C</span></c
           Chapter summaries of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10, chapters 1–10 of
           15, 2026) by Trevor Burnham, Bear Bibeault, Josip Maras and John Resig — Manning Publications.
           Chapter 1, “JavaScript is everywhere”, is printed pages 1–16 of the PDF edition in this repository;
-          chapter 2, “Using modern JavaScript tools”, is pages 17–43.
+          chapter 2, “Using modern JavaScript tools”, is pages 17–43. Chapter 7, “Functions for the master: closures and scopes”, is pages 135–153.
         </p>
         <p>
           Figure 1.1 and the book’s two margin icons (the ESLint wand and the performance stopwatch) are extracted
@@ -5899,7 +5924,928 @@ Math.<span class="tok-fn">max</span>(...numbers); <span class="tok-com">// 7</sp
         </p>
       </section>
 
-      <p class="chapter-next"><button type="button" class="back" data-goto="chapter-5"><span class="n">Back</span> ← Chapter 5 — First-class functions</button></p>
+      <p class="chapter-next">
+        <button type="button" class="back" data-goto="chapter-5"><span class="n">Back</span> ← Chapter 5 — First-class functions</button>
+        <span class="spacer"></span>
+        <button type="button" data-goto="chapter-7"><span class="n">Next</span> Chapter 7 — Closures and scopes →</button>
+      </p>
+
+      </div>
+
+      <div class="chapter" id="chapter-7" data-chapter="7" hidden>
+
+      <section class="chapter-head" id="c7-intro">
+        <p class="kicker">Chapter 7</p>
+        <h2 class="chapter-title">Functions for the master: closures and scopes</h2>
+        <div class="card">
+          <h4>This chapter covers</h4>
+          <ul>
+            <li>Exploring how closures work</li>
+            <li>How variables are scoped</li>
+            <li>When hoisting occurs</li>
+          </ul>
+        </div>
+        <p>
+          Closely tied to the functions we learned about in previous chapters, <strong>closures</strong> are a defining
+          feature of JavaScript. Although many JavaScript developers write code without understanding exactly how
+          closures work, their use is essential to many common JavaScript patterns. For example, any tasks involving
+          callbacks, such as event handling or animations, would be significantly more complex without closures.
+        </p>
+        <p>
+          Closures are a side effect of how scopes work in JavaScript. For that reason, this chapter will explore the
+          scoping rules of JavaScript. Understanding scopes will allow you to take full advantage of closures. Let’s
+          jump right in!
+        </p>
+
+        <div class="card sidebar">
+          <h4>Do you know?</h4>
+          <ul>
+            <li>How can callback functions cause memory leaks?</li>
+            <li>When does JavaScript create a new scope?</li>
+            <li>Why can some functions be referenced before they’re defined?</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="c7-closures">
+        <h2><span class="num">7.1</span> Understanding closures</h2>
+        <p>
+          A <strong>closure</strong> allows a function to access and manipulate variables that are external to that
+          function. Closures allow a function to access all the variables, as well as other functions, that are in
+          scope when the function itself is defined.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              A <strong>scope</strong> refers to the visibility of identifiers in certain parts of a program. A scope
+              is a part of the program in which a certain name is bound to a certain variable.</p>
+          </div>
+        </div>
+
+        <p>
+          That may seem intuitive until you remember that a declared function can be called at any later time, even
+          after the scope in which it was declared has gone away. That kind of reference simply isn’t possible in
+          traditional imperative languages like C.
+        </p>
+        <p>This concept is probably best explained through code:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.1 — A simple closure</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> outerValue = <span class="tok-str">"ninja"</span>;              <span class="tok-com">// #A</span>
+<span class="tok-kw">const</span> <span class="tok-fn">outerFunction</span> = () =&gt; {          <span class="tok-com">// #B</span>
+  console.<span class="tok-fn">assert</span>(outerValue === <span class="tok-str">"ninja"</span>, <span class="tok-str">"I see the ninja."</span>);
+};
+
+<span class="tok-fn">outerFunction</span>();</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines a value in module scope</div>
+            <div><b>#B</b> Declares a function in the same scope as the value</div>
+          </div>
+        </div>
+
+        <p>
+          In this code example, we declare a variable <code>outerValue</code> and a function
+          <code>outerFunction</code> in the same scope. Afterward, we call <code>outerFunction</code>. The function is
+          able to “see” the <code>outerValue</code> variable.
+        </p>
+        <p>
+          That might not seem so impressive. But consider what happens if you export the function and later call it
+          from another module: the assertion would still pass. Even though the module has finished execution, the
+          scope is still “live,” and will be for as long as any reference to <code>outerFunction</code> exists.
+        </p>
+        <p>Let’s look at how this concept extends to nested scopes:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.2 — Another closure example</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> outerValue = <span class="tok-str">"samurai"</span>;
+<span class="tok-kw">let</span> func = () =&gt; {
+  console.<span class="tok-fn">assert</span>(<span class="tok-kw">false</span>, <span class="tok-str">"The original func should never be called."</span>);
+};
+
+<span class="tok-kw">const</span> <span class="tok-fn">outerFunction</span> = () =&gt; {
+  <span class="tok-kw">const</span> innerValue = <span class="tok-str">"ninja"</span>;              <span class="tok-com">// #A</span>
+  <span class="tok-kw">const</span> <span class="tok-fn">innerFunction</span> = () =&gt; {             <span class="tok-com">// #B</span>
+    console.<span class="tok-fn">assert</span>(outerValue === <span class="tok-str">"samurai"</span>, <span class="tok-str">"I see the samurai."</span>);
+    console.<span class="tok-fn">assert</span>(innerValue === <span class="tok-str">"ninja"</span>, <span class="tok-str">"I see the ninja."</span>);
+  };
+  func = innerFunction;                        <span class="tok-com">// #C</span>
+};
+
+<span class="tok-fn">outerFunction</span>();
+<span class="tok-fn">func</span>();</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Declares a value within the <code>outerFunction</code> scope</div>
+            <div><b>#B</b> Declares a function within the <code>outerFunction</code> scope</div>
+            <div><b>#C</b> Stores a reference to <code>innerFunction</code> in the variable <code>func</code>, which was declared outside of the <code>outerFunction</code> scope</div>
+          </div>
+        </div>
+
+        <p>
+          When we run this code, the assertions pass. That means that <code>outerValue</code> and
+          <code>innerValue</code> are both visible to <code>innerFunction</code>, even when <code>innerFunction</code>
+          is reassigned and invoked from a scope where <code>innerValue</code> doesn’t exist.
+        </p>
+        <p>
+          How can that be? What magic allows the <code>innerValue</code> variable to still be “live” when we execute
+          the inner function, long after the scope in which it was created has gone away? The answer is closures.
+        </p>
+        <p>
+          When we declare <code>innerFunction</code> inside the outer function, not only is the function declaration
+          defined, but a closure is created that encompasses the function definition as well as all variables in scope
+          at the point of function definition. When <code>innerFunction</code> eventually executes, even if it’s
+          executed after the scope in which it was declared goes away, it has access to the original scope in which it
+          was declared through its closure, as shown in figure 7.1.
+        </p>
+
+        <figure>
+          <img src="data:image/webp;base64,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" alt="Figure 7.1 — a large protective bubble surrounding the code for outerFunction, func, innerFunction and the variables it closes over.">
+          <figcaption><b>Figure 7.1</b> Like a protective bubble, the closure for <code>innerFunction</code> keeps the variables in the function’s scope alive for as long as the function exists.</figcaption>
+        </figure>
+
+        <p>
+          That’s what closures are all about. They create a “bubble” containing the function and all of the variables
+          in scope from the function, so that the function has all it needs to execute. This bubble stays around as
+          long as the function does. In technical terms, the closure prevents the JavaScript engine from
+          garbage-collecting the variables in scope until the function itself is garbage-collected. We’ll look at the
+          downsides of that garbage-collection behavior in section 7.5.
+        </p>
+        <p>Now that you understand closures as a concept, let’s look at their practical uses.</p>
+      </section>
+
+      <section id="c7-putting">
+        <h2><span class="num">7.2</span> Putting closures to work</h2>
+        <p>
+          Now that we have a high-level understanding of closures, let’s see how to put them to work in our JavaScript
+          applications. For now, we’ll focus on their practical aspects and benefits. Later in the chapter, we’ll
+          revisit the same examples to see exactly what’s going on behind the scenes.
+        </p>
+
+        <h3 id="c7-memoize"><span class="num">7.2.1</span> Saving values in function-scoped variables</h3>
+        <p>
+          Back in chapter 5, we introduced this memoization function, which is a great example of a common closure
+          pattern:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The memoize function, revisited</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">memoize</span>(func) {
+  <span class="tok-kw">const</span> cache = <span class="tok-kw">new</span> <span class="tok-fn">Map</span>();
+  <span class="tok-kw">return</span> (arg) =&gt; {
+    <span class="tok-kw">if</span> (!cache.<span class="tok-fn">has</span>(arg)) {
+      cache.<span class="tok-fn">set</span>(arg, <span class="tok-fn">func</span>(arg));
+    }
+    <span class="tok-kw">return</span> cache.<span class="tok-fn">get</span>(arg);
+  };
+}
+
+<span class="tok-com">// Memoize functions with expensive computations:</span>
+<span class="tok-kw">const</span> memoizedIsPrime = <span class="tok-fn">memoize</span>(isPrime);</code></pre>
+        </div>
+
+        <p>
+          Every time <code>memoize</code> is called, it creates a new <code>cache</code> which, thanks to its scope, is
+          only usable from the function returned by <code>memoize</code>. The <code>cache</code> will remain in memory
+          as long as there are any live references to that function.
+        </p>
+        <p>
+          Back in the early days of JavaScript, this was touted to developers coming from object-oriented languages
+          like C++ and Java as the best way to approximate the “private variables” those developers were used to.
+          Since then, JavaScript has added a syntax for private variables in classes, as we’ll see in chapter 9. But
+          using function scope to control access to variables remains common and useful.
+        </p>
+
+        <h3 id="c7-callbacks"><span class="num">7.2.2</span> Referencing surrounding variables from callbacks</h3>
+        <p>
+          Another common use of closures occurs when dealing with <strong>callbacks</strong> — when a function is
+          called at an unspecified later time. Often, within such functions, we frequently need to access outside
+          data. The following listing shows an example that creates a simple animation with callback timers.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.3 — Using a closure in a timer interval callback</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">let</span> tick = <span class="tok-num">0</span>;
+<span class="tok-kw">const</span> timerId = <span class="tok-fn">setInterval</span>(() =&gt; {          <span class="tok-com">// #A</span>
+  tick++;
+  console.<span class="tok-fn">log</span>(<span class="tok-str">`tick ${tick}`</span>);
+  <span class="tok-kw">if</span> (tick === <span class="tok-num">5</span>) {                       <span class="tok-com">// #B</span>
+    <span class="tok-fn">clearInterval</span>(timerId);                <span class="tok-com">// #B</span>
+  }                                      <span class="tok-com">// #B</span>
+}, <span class="tok-num">10</span>);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Sets up a timer to call the given callback every 10 milliseconds</div>
+            <div><b>#B</b> Turns off the timer once the callback has been called 5 times</div>
+          </div>
+        </div>
+
+        <div class="terminal"><pre>tick 1
+tick 2
+tick 3
+tick 4
+tick 5</pre></div>
+
+        <p>
+          This code will run the callback 5 times. Here, the callback can see not only the <code>tick</code> variable
+          that was defined before the callback, but also the <code>timerId</code> variable that was defined in the same
+          line as the callback. It might be surprising that JavaScript allows that, but functions are allowed to
+          reference anything in their lexical scope — even variables that are declared <em>after</em> the function.
+          We’ll discuss the rules around this more in the next section. For now, the important thing to note is that
+          we’re allowed to reference <code>timerId</code> as long as it’s initialized (assigned a value) before we do
+          so.
+        </p>
+        <p>Closures are closely related to scopes, so we’ll spend the rest of this chapter exploring scoping rules in JavaScript.</p>
+      </section>
+
+      <section id="c7-scope">
+        <h2><span class="num">7.3</span> Variable scope and hoisting</h2>
+        <p>
+          In this section, we’ll drill down on exactly what defines a scope in JavaScript. We’ll also take a brief look
+          at the oft-misunderstood concept of “hoisting,” where JavaScript allows certain entities to be referenced
+          before they’re declared.
+        </p>
+
+        <h3 id="c7-block-scopes"><span class="num">7.3.1</span> Creating block scopes</h3>
+        <p>
+          In all of the examples in this chapter so far, we’ve used function bodies to create new scopes. And indeed,
+          a function body always creates a scope. But functions aren’t the only way to create a scope in JavaScript:
+        </p>
+        <ul>
+          <li>A module always creates its own scope.</li>
+          <li>Constructs like <code>for</code>, <code>if</code>, and <code>switch</code> create their own scope.</li>
+          <li>Curly brackets can be used on their own to create scope, a pattern known as a <strong>standalone block</strong>.</li>
+        </ul>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              The <code>var</code> keyword plays by its own rules: it’s scoped to the nearest function (or module),
+              ignoring other blocks. However, <code>var</code> is considered something of a legacy keyword. Most modern
+              JavaScript developers prefer to consistently use <code>const</code> and <code>let</code> instead. For
+              that reason, none of the code examples in this book use <code>var</code>. You can enforce that convention
+              with ESLint’s <a href="https://eslint.org/docs/latest/rules/no-var">no-var</a> rule.</p>
+          </div>
+        </div>
+
+        <p>
+          As a rule of thumb, you can determine a variable’s scope by looking for the closest pair of curly brackets,
+          excluding the curly brackets used in the object literal syntax. A notable exception is variables declared in
+          a <code>for</code> loop’s initialization, as we’ll demonstrate shortly.
+        </p>
+        <p>This example shows several nested scopes in action:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.4 — Nested block scopes</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> moduleScope = <span class="tok-str">"module"</span>;                       <span class="tok-com">// #A</span>
+{
+  <span class="tok-kw">const</span> standaloneBlockScope = <span class="tok-str">"standalone"</span>;         <span class="tok-com">// #B</span>
+  <span class="tok-kw">for</span> (<span class="tok-kw">let</span> loopScope = <span class="tok-num">0</span>; loopScope &lt; <span class="tok-num">3</span>; loopScope++) {  <span class="tok-com">// #C</span>
+    <span class="tok-kw">switch</span> (loopScope) {
+      <span class="tok-kw">case</span> <span class="tok-num">0</span>:
+        console.<span class="tok-fn">log</span>(moduleScope);
+        <span class="tok-kw">break</span>;
+      <span class="tok-kw">case</span> <span class="tok-num">1</span>:
+        console.<span class="tok-fn">log</span>(standaloneBlockScope);
+        <span class="tok-kw">break</span>;
+      <span class="tok-kw">case</span> <span class="tok-num">2</span>: {
+        <span class="tok-kw">const</span> caseBlockScope = <span class="tok-str">"case"</span>;              <span class="tok-com">// #D</span>
+        console.<span class="tok-fn">log</span>(caseBlockScope);
+      }
+    }
+  }
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Declares a variable in the scope of the module</div>
+            <div><b>#B</b> Declares a variable in the scope of the standalone block</div>
+            <div><b>#C</b> Declares a variable in the scope of the <code>for</code> loop</div>
+            <div><b>#D</b> Declares a variable in the scope of the <code>case</code> block</div>
+          </div>
+        </div>
+
+        <p>
+          Each variable here has its own scope. Aside from the module scope, each of these is called a
+          <strong>block scope</strong> because it’s delimited as a “block” by curly brackets (with the exception of the
+          <code>for</code> loop, where the initializer is considered to be part of the same block as the loop body).
+        </p>
+        <p>
+          It’s worth highlighting a feature of <code>for</code> loop block scope: each iteration of the loop is
+          considered a new block, which means that closures that reference any values in the loop scope will reference
+          those values as of the loop iteration the closure was created in.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.5 — Loop scope and closures</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">let</span> i = <span class="tok-num">0</span>; i &lt; <span class="tok-num">3</span>; i++) {
+  <span class="tok-fn">setTimeout</span>(() =&gt; {
+    console.<span class="tok-fn">log</span>(i);
+  }, <span class="tok-num">10</span>);
+}</code></pre>
+        </div>
+
+        <div class="terminal"><pre>0
+1
+2</pre></div>
+
+        <p>
+          Each iteration of this loop sets up a timer, and those timers won’t go off until after the loop has finished
+          iterating. So you might expect the final value of <code>i</code> to be emitted three times. And indeed, that
+          would be the behavior if the loop variable were declared with <code>var i</code>, scoping it to the closest
+          function or module. But because we used <code>let i</code>, each timer callback sees the value of
+          <code>i</code> from the loop iteration it was declared in.
+        </p>
+        <p>This more-intuitive loop behavior is one of the major advantages of <code>let</code> over <code>var</code>!</p>
+        <p>
+          Now you know how to create scopes without creating functions. Next, we’ll take a look at a question that’s
+          closely related to scope: what happens when we reference a variable or function that comes later in our
+          code?
+        </p>
+
+        <h3 id="c7-hoisting"><span class="num">7.3.2</span> Execution order and hoisting</h3>
+        <p>Just because a variable is in scope doesn’t mean you can reference it. Consider this code:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Referencing a block-scoped variable too early</span><span class="lang">JavaScript</span></div>
+          <pre><code>console.<span class="tok-fn">assert</span>(x === <span class="tok-num">1</span>, <span class="tok-str">"x is 1"</span>);
+<span class="tok-kw">const</span> x = <span class="tok-num">1</span>;</code></pre>
+        </div>
+
+        <p>
+          The reference to <code>x</code> is executed before <code>x</code> is initialized. If you type check the code
+          with TypeScript, it’ll describe the problem this way:
+        </p>
+
+        <div class="terminal"><pre>Block-scoped variable 'x' used before its declaration.</pre></div>
+
+        <p>If you were to ignore that warning and run the code anyway, you’d get a runtime error:</p>
+
+        <div class="terminal"><pre>ReferenceError: Cannot access 'x' before initialization</pre></div>
+
+        <p>
+          Note the specificity of the error message. If not for the later <code>const x = 1</code> declaration on the
+          second line, the first line would trigger this error instead:
+        </p>
+
+        <div class="terminal"><pre>ReferenceError: x is not defined</pre></div>
+
+        <p>
+          This highlights a key fact about how JavaScript runs: all code in a scope is parsed to determine which
+          variables are in that scope <em>before</em> execution begins. We’ll examine this behavior in more detail in
+          section 7.3.3.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Lost in the temporal dead zone</h4>
+          <p>
+            The behavior of a <code>ReferenceError</code> being thrown when an uninitialized variable is referenced is
+            unique to variables defined with <code>let</code>, <code>const</code>, and <code>class</code>. If you
+            reference an uninitialized variable declared with <code>var</code>, it’ll have the value
+            <code>undefined</code>. And if you reference a function declared with <code>function</code>, it’ll be
+            hoisted, as described later in this section.
+          </p>
+          <p>
+            To differentiate these cases, the ECMAScript spec refers to variables that are in scope but will trigger a
+            <code>ReferenceError</code> if referenced as being in the <strong>Temporal Dead Zone</strong>.
+          </p>
+        </div>
+
+        <p>
+          To avoid the dreaded <code>ReferenceError</code>, we need to make sure that all variables are initialized
+          before they’re referenced. Importantly, that’s a statement about execution order, not the order of the code
+          itself. Consider this example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Order of execution, not order of code</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> <span class="tok-fn">verifyX</span> = () =&gt; {
+  console.<span class="tok-fn">assert</span>(x === <span class="tok-num">1</span>, <span class="tok-str">"x is 1"</span>);
+};
+<span class="tok-kw">const</span> x = <span class="tok-num">1</span>;
+<span class="tok-fn">verifyX</span>();</code></pre>
+        </div>
+
+        <p>
+          This code runs perfectly fine with no errors. The fact that the body of the <code>verifyX</code> function
+          references <code>x</code> before it’s defined is irrelevant; what matters is that the function is executed
+          after <code>x</code> is defined.
+        </p>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              TypeScript can’t determine whether a function is called before or after all of the variables referenced
+              from that function are defined. To avoid potential runtime errors, you can use ESLint’s
+              <a href="https://eslint.org/docs/latest/rules/no-use-before-define">no-use-before-define</a> rule to
+              ensure that variables are always defined before they’re used.</p>
+          </div>
+        </div>
+
+        <p>
+          Where things get interesting is function declarations. As you’ll recall from chapter 5, a function
+          declaration refers specifically to a function that’s defined with the syntax
+          <code>function functionName( /* parameters */ ) { /* function body */ }</code>. Function declarations have
+          the special property that they’re always treated as if they were declared at the top of the scope, meaning
+          that they can be referenced from anywhere within the same scope. This feature is known as
+          <strong>hoisting</strong>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.6 — Accessing a function before its declaration</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-fn">greetNinja</span>();
+<span class="tok-kw">function</span> <span class="tok-fn">greetNinja</span>() {
+  console.<span class="tok-fn">log</span>(<span class="tok-fn">getGreeting</span>());
+}
+<span class="tok-kw">function</span> <span class="tok-fn">getGreeting</span>() {
+  <span class="tok-kw">return</span> <span class="tok-str">"Ossu!"</span>;
+}</code></pre>
+        </div>
+
+        <div class="terminal"><pre>Ossu!</pre></div>
+
+        <p>
+          If you run this code, you’ll get the output above. Hoisting defies our intuitive expectations of execution
+          order. When the <code>greetNinja()</code> call runs, none of the code after that line has been executed. And
+          yet, not only is the reference to the function resolved successfully, but that function is also able to
+          reference an even later function.
+        </p>
+        <p>
+          It’s worth emphasizing: functions defined with any other syntax don’t have this strange behavior! Only
+          function declarations do. Aside from function declarations, the only other constructs that get hoisted in
+          JavaScript (assuming that strict mode is enabled) are imports defined with the <code>import</code> keyword.
+          We’ll learn about imports in chapter 13.
+        </p>
+        <p>Before we move on, let’s take a peek under the hood and learn how JavaScript engines implement these scoping rules.</p>
+
+        <h3 id="c7-parsing"><span class="num">7.3.3</span> Parsing and scope analysis</h3>
+        <p>
+          As we’ve seen, the JavaScript engine “knows” that a variable is in scope even before the declaration for that
+          variable runs. It’s able to pull off this magic trick by parsing the code and constructing scopes before
+          execution begins. In fact, modern JavaScript engines generally perform parsing in two separate passes:
+        </p>
+        <ol>
+          <li><strong>Syntax validation</strong> to identify syntax errors.</li>
+          <li><strong>Full parsing</strong> where the engine compiles the code to bytecode.</li>
+        </ol>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              Modern JavaScript engines are extremely complex. The description here is a simplified model that may not
+              always apply. For instance, an engine may sometimes combine syntax validation and full parsing in a
+              single pass as an optimization. If you want to dive deep and learn more about how JavaScript engines
+              actually work, the site for Google’s <a href="https://v8.dev">V8</a> has a number of articles detailing
+              its inner workings.</p>
+          </div>
+        </div>
+
+        <p>The syntax validation pass runs over <em>all</em> code. Consider this example:</p>
+
+        <div class="listing">
+          <div class="bar"><span>A syntax error, found before anything runs</span><span class="lang">JavaScript</span></div>
+          <pre><code>console.<span class="tok-fn">log</span>(<span class="tok-str">"func is not defined yet."</span>);
+<span class="tok-kw">const</span> func = () =&gt; {
+  <span class="tok-kw">let</span> a = <span class="tok-num">1</span>;
+  <span class="tok-kw">const</span> a = <span class="tok-num">2</span>;
+};</code></pre>
+        </div>
+
+        <p>
+          Using the same identifier for a variable in the exact same scope is considered a syntax error in JavaScript,
+          just as a mismatched curly bracket would be. Trying to run the example above yields this error:
+        </p>
+
+        <div class="terminal"><pre>SyntaxError: Identifier 'a' has already been declared</pre></div>
+
+        <p>
+          The <code>console.log</code> at the top of the script never runs, because syntax validation occurs before
+          code execution. Performing syntax validation up-front like this is mandated by the ECMAScript spec.
+        </p>
+        <p>
+          That fact has a major implication for performance: as JavaScript programs get larger, they’ll necessarily
+          take more time to start up, as the engine has to scan through all of its code looking for syntax errors
+          before execution can begin. (This can be solved with lazy loading, which we’ll look at in chapter 13.)
+          Fortunately, syntax validation is much faster than full parsing.
+        </p>
+        <p>
+          It’s during the full parsing pass that the engine constructs scopes, a process called
+          <strong>scope analysis</strong>. As we’ve seen, scope analysis precedes code execution. Crucially, though,
+          the JavaScript engine can wait until code execution begins in a particular scope to perform scope analysis.
+        </p>
+        <p>
+          This, too, has a major implication for performance: in order to start code execution as quickly as possible,
+          JavaScript engines will often defer full parsing, an optimization known as <strong>lazy parsing</strong>. In
+          practice, the best candidates for lazy parsing are large functions. Consider a complex JavaScript CLI
+          program:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Everything parsed up-front</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">import</span> * <span class="tok-kw">as</span> readlinePromises <span class="tok-kw">from</span> <span class="tok-str">"node:readline/promises"</span>;
+<span class="tok-kw">import</span> { stdin, stdout } <span class="tok-kw">from</span> <span class="tok-str">"node:process"</span>;
+
+<span class="tok-kw">const</span> rl = readlinePromises.<span class="tok-fn">createInterface</span>({
+  input: stdin,
+  output: stdout,
+});
+
+<span class="tok-kw">while</span> (<span class="tok-kw">true</span>) {
+  <span class="tok-kw">const</span> input = <span class="tok-kw">await</span> rl.<span class="tok-fn">question</span>(<span class="tok-str">'Enter command or ".exit":\n&gt; '</span>);
+  <span class="tok-kw">switch</span> (input) {
+    <span class="tok-kw">case</span> <span class="tok-str">".exit"</span>:
+      process.<span class="tok-fn">exit</span>(<span class="tok-num">0</span>);
+    <span class="tok-com">// Handlers for hundreds of other commands...</span>
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          As the switch statement grows, so too will the program’s startup time. The JavaScript engine will not only
+          scan the program for syntax errors, but also fully parse all of the code. Now consider what happens if we
+          move that complex logic into a function:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The same program, with the big switch in a function</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">import</span> * <span class="tok-kw">as</span> readlinePromises <span class="tok-kw">from</span> <span class="tok-str">"node:readline/promises"</span>;
+<span class="tok-kw">import</span> { stdin, stdout } <span class="tok-kw">from</span> <span class="tok-str">"node:process"</span>;
+
+<span class="tok-kw">const</span> <span class="tok-fn">handleInput</span> = (input: <span class="tok-kw">string</span>) =&gt; {
+  <span class="tok-kw">switch</span> (input) {
+    <span class="tok-kw">case</span> <span class="tok-str">".exit"</span>:
+      process.<span class="tok-fn">exit</span>(<span class="tok-num">0</span>);
+    <span class="tok-com">// Handlers for hundreds of other cases...</span>
+  }
+};
+
+<span class="tok-kw">const</span> rl = readlinePromises.<span class="tok-fn">createInterface</span>({
+  input: stdin,
+  output: stdout,
+});
+
+<span class="tok-kw">while</span> (<span class="tok-kw">true</span>) {
+  <span class="tok-kw">const</span> input = <span class="tok-kw">await</span> rl.<span class="tok-fn">question</span>(<span class="tok-str">'Enter command or ".exit":\n&gt; '</span>);
+  <span class="tok-fn">handleInput</span>(input);
+}</code></pre>
+        </div>
+
+        <p>
+          Now the JavaScript engine only needs to scan the program for syntax errors and fully parse the outer scope
+          before execution can begin, which means that the user will get the prompt faster. And modern JavaScript
+          engines perform background compilation while the event loop is idle, which means that at least some of the
+          work of fully parsing the <code>handleInput</code> function would likely be completed before the user enters
+          their first command.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              Google’s Lighthouse tool offers a breakdown of the time spent running JavaScript on a web page, with
+              parse time shown separately from evaluation time:
+              <a href="https://developer.chrome.com/docs/lighthouse/performance/bootup-time">bootup time</a>.</p>
+          </div>
+        </div>
+
+        <p>In the next section, we’ll look at one very special JavaScript scope.</p>
+      </section>
+
+      <section id="c7-global">
+        <h2><span class="num">7.4</span> The global scope object</h2>
+        <p>
+          Back in the early days of JavaScript, declaring global variables was easy. Too easy. There were no modules;
+          if you wanted a non-global scope, you had to wrap your code in a function. And even then, you could easily
+          create a global variable by accident:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The old accidental-global trick</span><span class="lang">JavaScript</span></div>
+          <pre><code>(<span class="tok-kw">function</span> <span class="tok-fn">localScope</span>() {
+  ninjaName = <span class="tok-str">"Naruto"</span>;
+  <span class="tok-com">// other code...</span>
+})();
+
+console.<span class="tok-fn">assert</span>(ninjaName === <span class="tok-str">"Naruto"</span>, <span class="tok-str">"ninjaName is global"</span>);</code></pre>
+        </div>
+
+        <p>
+          Without the <code>var</code> keyword (or, starting in ES5, <code>const</code> and <code>let</code>),
+          assigning a value to an unrecognized variable name would simply create a global variable with that name.
+          Worse, assigning a variable to an existing global variable name would overwrite that variable (if that
+          global was overwritable)!
+        </p>
+        <p>
+          Thankfully, as JavaScript has modernized, the problem of accidental globals has largely faded away. Code is
+          typically written in modules, in which the top-level scope is the module’s scope, not the global scope. And
+          as long as strict mode is enabled, assigning a value to a variable that hasn’t been declared is illegal:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Strict mode rejects accidental globals</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-str">"use strict"</span>;
+ninjaName = <span class="tok-str">"Naruto"</span>; <span class="tok-com">// ReferenceError: ninjaName is not defined</span></code></pre>
+        </div>
+
+        <p>
+          But what if you do want to define a variable globally, so that even code in other modules can access it
+          without importing it? No problem: just attach it to the global object.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.7 — Attaching a value to the global object</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-com">// In globals.mts</span>
+<span class="tok-kw">declare</span> global {                           <span class="tok-com">// #A</span>
+  <span class="tok-kw">var</span> ninjaName: <span class="tok-kw">string</span>;               <span class="tok-com">// #A</span>
+}                                        <span class="tok-com">// #A</span>
+globalThis.ninjaName = <span class="tok-str">"Naruto"</span>;            <span class="tok-com">// #B</span>
+
+<span class="tok-com">// In main.mts</span>
+<span class="tok-kw">import</span> <span class="tok-str">"./globals.mts"</span>;                    <span class="tok-com">// #C</span>
+console.<span class="tok-fn">log</span>(<span class="tok-str">`It's me, ${ninjaName}!`</span>);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> A TypeScript construct that tells the type checker that we’re defining a global variable</div>
+            <div><b>#B</b> Attaches a value to the <code>ninjaName</code> property of the global object, <code>globalThis</code></div>
+            <div><b>#C</b> Imports our globals module, executing its code</div>
+          </div>
+        </div>
+
+        <p>Running <code>main.mts</code> emits this output:</p>
+
+        <div class="terminal"><pre>It's me, Naruto!</pre></div>
+
+        <p>
+          Before the <code>globalThis.ninjaName</code> line was executed, trying to reference <code>ninjaName</code>
+          would’ve caused a <code>ReferenceError</code>. After it’s executed, <code>ninjaName</code> can be referenced
+          from anywhere in the program, either as <code>ninjaName</code> by itself or as
+          <code>globalThis.ninjaName</code>. Needless to say, the global object is a very special object!
+        </p>
+        <p>
+          A fun feature of the global object is that, since it’s a global variable, it can be referenced as a property
+          of itself:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The global object contains itself</span><span class="lang">JavaScript</span></div>
+          <pre><code>console.<span class="tok-fn">assert</span>(globalThis.globalThis === globalThis)</code></pre>
+        </div>
+
+        <p>
+          The <code>globalThis</code> identifier is relatively new, having been introduced as part of ECMAScript 2020.
+          Back when JavaScript was confined to the web browser, you could always expect the global object to be named
+          <code>window</code>. Then Node.js came along and gave its global object the name <code>global</code>. That
+          was a sensible name, but it made it tedious and error-prone to deal with globals in code that might run in
+          either a browser or a standalone runtime. <code>globalThis</code> solves that problem: it’s a
+          cross-environment standard for referencing the global object. In the browser,
+          <code>globalThis === window</code>, and in Node.js, <code>globalThis === global</code>.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              In today’s world where the lines are blurred between different JavaScript environments, it’s a good idea
+              to prefer <code>globalThis</code> over other global object names, except when referencing
+              environment-specific APIs like <code>window.addEventListener</code>. The
+              <code>eslint-plugin-unicorn</code> package offers a
+              <a href="https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/prefer-global-this.md">prefer-global-this</a>
+              rule to enforce that preference.</p>
+          </div>
+        </div>
+
+        <p>
+          Let’s put everything we know about scopes together. Whenever you reference a variable, the JavaScript engine
+          resolves it by traversing the <strong>scope chain</strong>, which refers to all of the scopes from the local
+          scope on up to the global scope. The algorithm goes like this, starting in the local scope:
+        </p>
+        <ol>
+          <li>Check if the current scope has a variable with that name. If it does:
+            <ol type="a">
+              <li>If the variable is initialized (or can be hoisted), resolve to that variable.</li>
+              <li>If the variable is uninitialized, throw a <code>ReferenceError</code>.</li>
+            </ol>
+          </li>
+          <li>If no match was found in the current scope:
+            <ol type="a">
+              <li>If we’re in the global scope, throw a <code>ReferenceError</code>.</li>
+              <li>Otherwise, repeat this process in the parent scope.</li>
+            </ol>
+          </li>
+        </ol>
+
+        <h3 id="c7-typeof">Checking whether a global exists with typeof</h3>
+        <p>
+          What if you want to reference a variable that may or may not have been initialized? You could use a
+          <code>try</code>/<code>catch</code> block to deal with the <code>ReferenceError</code>, but a more elegant
+          approach is to use <code>typeof</code>. When you put the <code>typeof</code> keyword in front of an
+          undeclared variable, you’ll get the string <code>"undefined"</code> instead of a <code>ReferenceError</code>.
+          For example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Guarding an optional global with typeof</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> <span class="tok-fn">initializeGlobalName</span> = () =&gt; {
+  <span class="tok-kw">if</span> (<span class="tok-kw">typeof</span> ninjaName === <span class="tok-str">"undefined"</span>) {
+    globalThis.ninjaName = <span class="tok-str">"Naruto"</span>;
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          Since the global object is an object, you could also do a check like
+          <code>if ("ninjaName" in globalThis)</code>. But the <code>typeof</code> check is generally more common.
+        </p>
+        <p>
+          Note that under most circumstances, checking <code>typeof ninjaName === "undefined"</code> is equivalent to
+          checking <code>ninjaName === undefined</code>. The two checks only differ in the case where
+          <code>ninjaName</code> may or may not have been declared as a global, since referencing an undeclared global
+          without <code>typeof</code> would trigger a <code>ReferenceError</code>.
+        </p>
+        <p>
+          One word of caution: <code>typeof</code> can only be used to check whether a variable exists in the
+          <em>global</em> scope. If you try to use it with a variable that’s declared in a local scope, you’ll run into
+          the dreaded Temporal Dead Zone:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>typeof can’t rescue a local variable</span><span class="lang">JavaScript</span></div>
+          <pre><code>console.<span class="tok-fn">log</span>(<span class="tok-kw">typeof</span> x); <span class="tok-com">// throws ReferenceError</span>
+<span class="tok-kw">const</span> x = <span class="tok-num">1</span>;</code></pre>
+        </div>
+
+        <p>
+          If you really need to know whether a local variable has been initialized, your only option is the
+          <code>try</code>/<code>catch</code> block. In practice, you should be able to avoid this situation by moving
+          the variable declaration to the top of the scope block.
+        </p>
+        <p>
+          In the next section, we’ll look at one of the downsides of JavaScript’s flexible scoping rules: the potential
+          for memory leaks.
+        </p>
+      </section>
+
+      <section id="c7-leaks">
+        <h2><span class="num">7.5</span> Preventing memory leaks</h2>
+        <p>
+          JavaScript is a garbage-collected language, meaning that the runtime automatically frees up memory from
+          objects that are no longer referenced. But what, exactly, does “no longer referenced” mean?
+        </p>
+        <p>
+          As we’ve seen in the preceding sections, a JavaScript function can reference all variables from its
+          surrounding scope. Thanks to closures, that function can even reference variables defined in an outer scope
+          that’s finished execution. The scope is kept “live” by the function that has access to that scope.
+        </p>
+        <p>
+          So, will the JavaScript runtime free up a specific object if that object isn’t directly referenced but its
+          scope is still live? The answer is: sometimes! The exact garbage-collection behavior isn’t prescribed by the
+          ECMAScript spec, so each JavaScript engine has its own set of heuristics. In a blog post,
+          <a href="https://jakearchibald.com/2024/garbage-collection-and-closures">“Garbage collection and closures”</a>,
+          Jake Archibald gives an example of a situation where all of the major JavaScript engines keep an object alive
+          long after it’s needed, causing a memory leak. Listing 7.8 is adapted from his example.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              Unlike most of the code in this book, listing 7.8 must be run in one specific JavaScript runtime:
+              Node.js. That’s because we’re hooking in to the internals of Node.js’s JavaScript engine, V8, which it
+              exposes for debugging purposes. You can find the docs for the Node.js
+              <a href="https://nodejs.org/api/v8.html">v8 module</a> online.</p>
+          </div>
+        </div>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 7.8 — A closure-induced memory leak</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">import</span> { writeHeapSnapshot } <span class="tok-kw">from</span> <span class="tok-str">"v8"</span>;
+
+<span class="tok-kw">const</span> <span class="tok-fn">prepareNinjaPower</span> = () =&gt; {
+  <span class="tok-kw">const</span> powerBuffer = <span class="tok-kw">new</span> <span class="tok-fn">ArrayBuffer</span>(<span class="tok-num">99_000_000</span>);      <span class="tok-com">// #A</span>
+  (() =&gt; {                                             <span class="tok-com">// #B</span>
+    console.<span class="tok-fn">log</span>(<span class="tok-str">`Ninja power level: ${</span>               <span class="tok-com">// #B</span>
+      <span class="tok-str">powerBuffer.byteLength.toLocaleString()}`</span>);       <span class="tok-com">// #B</span>
+  })();                                                <span class="tok-com">// #B</span>
+  <span class="tok-kw">return</span> () =&gt; {                                       <span class="tok-com">// #C</span>
+    console.<span class="tok-fn">log</span>(<span class="tok-str">"The ninja power is safe."</span>);       <span class="tok-com">// #C</span>
+  };                                                   <span class="tok-com">// #C</span>
+};
+
+<span class="tok-kw">const</span> reportNinjaPower = <span class="tok-fn">prepareNinjaPower</span>();
+<span class="tok-fn">reportNinjaPower</span>();
+<span class="tok-fn">writeHeapSnapshot</span>(<span class="tok-str">"1-before-gc.heapsnapshot"</span>);           <span class="tok-com">// #D</span>
+
+<span class="tok-kw">if</span> (global.gc) {                                       <span class="tok-com">// #E</span>
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"Running garbage collection"</span>);        <span class="tok-com">// #E</span>
+  global.<span class="tok-fn">gc</span>(<span class="tok-kw">true</span>);                                  <span class="tok-com">// #E</span>
+  <span class="tok-fn">writeHeapSnapshot</span>(<span class="tok-str">"2-after-gc.heapsnapshot"</span>);         <span class="tok-com">// #E</span>
+}                                                     <span class="tok-com">// #E</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Creates a large object. <code>ArrayBuffer</code>’s constructor takes a number of bytes to allocate</div>
+            <div><b>#B</b> Immediately runs a function that references the <code>ArrayBuffer</code></div>
+            <div><b>#C</b> Returns a function that doesn’t reference the <code>ArrayBuffer</code></div>
+            <div><b>#D</b> Saves a heap snapshot to a file</div>
+            <div><b>#E</b> Forces garbage collection to run immediately (if the API is available), then saves a second heap snapshot</div>
+          </div>
+        </div>
+
+        <p>
+          If you examine the heap snapshot files, you can see that there’s an object that’s approximately 100 MB in
+          size in both the before and after, which means that <code>powerBuffer</code> isn’t garbage-collected. By
+          contrast, if you run <code>prepareNinjaPower</code> without assigning its return value to a variable, that
+          100 MB object disappears!
+        </p>
+        <p>
+          The problem is that (as of this writing) the V8 engine used by Node.js uses heuristic reasoning along these
+          lines:
+        </p>
+        <ol>
+          <li>There’s a closure that references <code>powerBuffer</code>.</li>
+          <li>There’s a function in the same scope that lives after <code>prepareNinjaPower</code> runs.</li>
+          <li>Therefore, <code>powerBuffer</code> must be kept in memory as long as that returned function is alive.</li>
+        </ol>
+
+        <p>
+          That reasoning is wrong, of course: <code>powerBuffer</code> isn’t needed after the IIFE runs. A lot of very
+          smart engineers work on the V8 engine, and they’re aware of this issue. The problem is that fixing it would
+          require the engine to manage more information about which closures reference which variables, which would
+          reduce performance in other situations. It’s a challenging tradeoff with no easy solutions. The best thing
+          you can do as a JavaScript Ninja is to be aware of the issue.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              If there’s ever any doubt about whether the JavaScript engine will garbage-collect a large object, the
+              most reliable option is to explicitly delete it when it’s no longer needed. TypeScript 5.2 introduced a
+              <code>using</code> keyword, based on a proposed ECMAScript feature, that can simplify the process — see
+              the <a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#using-declarations-and-explicit-resource-management">TypeScript
+              5.2 release notes</a>.</p>
+          </div>
+        </div>
+
+        <p>
+          And with that, you can consider yourself a master of JavaScript’s scope rules. In the next chapter, we’ll
+          look at promises and generators, two invaluable features for working with asynchronous code.
+        </p>
+      </section>
+
+      <section id="c7-summary">
+        <h2><span class="num">7.6</span> Summary</h2>
+        <div class="card">
+          <h4>Six things to remember</h4>
+          <ol>
+            <li>
+              <strong>Closures</strong> are a built-in feature of all JavaScript functions that allow a function to
+              access all variables that are in scope when the function itself was defined. They create a “safety
+              bubble” of the function and the variables that are in scope at the point of the function’s definition.
+              This way, the function has all it needs to execute, even if the scope in which the function was created
+              is long gone.
+            </li>
+            <li>
+              Any block of code with <code>{</code> and <code>}</code> defines a new scope — unless that block is an
+              object literal.
+              <ul>
+                <li>
+                  Variables defined in a <code>for</code> loop initializer are considered to be in the same scope as
+                  the loop body, and each iteration has its own scope.
+                </li>
+              </ul>
+            </li>
+            <li>
+              The <code>let</code> and <code>const</code> keywords define a variable in the closest scope, as do
+              keywords like <code>function</code> and <code>class</code>. The older <code>var</code> keyword has its
+              own scoping rules, but most JavaScript developers prefer not to use it.
+            </li>
+            <li>
+              A variable can’t be referenced until its declaration has been executed, with the exception of
+              <strong>function declarations</strong> and imports, which are “hoisted” to the top of their scope.
+            </li>
+            <li>
+              The global scope in JavaScript contains the properties of an object called <code>globalThis</code>. You
+              can declare global variables by attaching them to that global object.
+            </li>
+            <li>
+              JavaScript engines may sometimes avoid garbage-collecting variables in a scope with live closures, which
+              can lead to <strong>memory leaks</strong>.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="c7-source">
+        <h2>Source</h2>
+        <p>
+          Chapter 7, “Functions for the master: closures and scopes”, of
+          <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10) — Manning Publications. Printed pages
+          135–153 of the PDF edition in this repository.
+        </p>
+        <p>
+          Figure 7.1 and all eight listings (7.1–7.8) are included above, with the book’s
+          <code>#A</code>–<code>#E</code> callouts kept as annotation keys beneath each snippet. The chapter has no
+          second figure: the only illustration in it is the closure “bubble” of figure 7.1.
+        </p>
+      </section>
+
+      <p class="chapter-next">
+        <button type="button" class="back" data-goto="chapter-6"><span class="n">Back</span> ← Chapter 6 — Function invocation</button>
+        <span class="spacer"></span>
+        <button type="button" data-goto="chapter-8"><span class="n">Next</span> Chapter 8 — Promises and generators →</button>
+      </p>
 
       </div>
 
@@ -5909,7 +6855,7 @@ Math.<span class="tok-fn">max</span>(...numbers); <span class="tok-com">// 7</sp
 
 <footer>
   <div class="wrap">
-    <p><strong>Summaries prepared from Chapters 1–2 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
+    <p><strong>Summaries prepared from Chapters 1–7 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
     <p>Text and examples © Manning Publications Co. — summarised here for study purposes. Book reference: manning.com.</p>
   </div>
 </footer>
@@ -5918,7 +6864,7 @@ Math.<span class="tok-fn">max</span>(...numbers); <span class="tok-com">// 7</sp
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-nav button[data-target]'));
   var chapters = Array.prototype.slice.call(document.querySelectorAll('div.chapter'));
-  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6'};
+  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6', 7: 'toc-7'};
 
   function show(id) {
     chapters.forEach(function (c) {
@@ -5963,7 +6909,7 @@ Math.<span class="tok-fn">max</span>(...numbers); <span class="tok-com">// 7</sp
 
   // in-page links inside a hidden chapter shouldn't escape the tab state
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href^="#c2-"]');
+    var a = e.target.closest && e.target.closest('a[href^="#c"], a[href^="#covers"]');
     if (a) { setTimeout(function () { var el = document.getElementById(a.hash.slice(1)); if (el && el.scrollIntoView) el.scrollIntoView(); }, 10); }
   });
 })();
