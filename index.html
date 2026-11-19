@@ -1,0 +1,1176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f2e9">
+  <title>JavaScript, from the first line — Chapter 1 notes</title>
+  <style>
+    :root{--paper:#f5f2e9;--ink:#14231e;--muted:#67716b;--line:#d9d8cc;--green:#b7ef73;--green-dark:#1b4a32;--card:#fffef9;--code:#17241f;--code-ink:#e9f3e9;--orange:#f2a66f;--blue:#91c9e8;--serif:Georgia,'Times New Roman',serif;--sans:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--mono:'SFMono-Regular',Consolas,'Liberation Mono',monospace}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.6}a{color:inherit}.wrap{width:min(1120px,calc(100% - 48px));margin-inline:auto}.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:12px;letter-spacing:.09em;text-transform:uppercase}.brand{display:flex;gap:10px;align-items:center;font-weight:750;letter-spacing:.05em}.brand-mark{width:22px;height:22px;background:var(--green);display:grid;place-items:center;border-radius:50%;font-family:var(--mono);font-size:13px;color:var(--green-dark)}.topbar nav{display:flex;gap:18px;max-width:76%;overflow-x:auto;white-space:nowrap;scrollbar-width:none;color:var(--muted)}.topbar nav::-webkit-scrollbar{display:none}.topbar nav a{text-decoration:none}.topbar nav a:hover{color:var(--ink)}
+    .hero{padding:76px 0 66px;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:10px;color:var(--green-dark);font-size:12px;font-weight:750;letter-spacing:.13em;text-transform:uppercase}.eyebrow:before{content:"";height:1px;width:30px;background:currentColor}.hero h1{font-family:var(--serif);font-weight:400;letter-spacing:-.055em;line-height:.99;font-size:clamp(54px,7vw,88px);margin:22px 0}.hero h1 em{font-weight:400;color:#54795d}.hero-copy{font-size:17px;max-width:520px;color:#526059}.bookline{border-top:1px solid var(--line);margin-top:28px;padding-top:18px;color:var(--muted);font-size:13px}.bookline strong{color:var(--ink)}.hero-art{position:relative;padding:14px}.hero-art svg{display:block;width:100%;height:auto;overflow:visible}.art-caption{font-family:var(--mono);font-size:11px;letter-spacing:.04em;color:var(--muted);padding:0 22px}
+    .summary-strip{display:grid;grid-template-columns:repeat(3,1fr);background:var(--ink);color:white;border-radius:8px;overflow:hidden;margin:0 auto 80px}.strip-item{padding:24px 28px;border-right:1px solid #3a4942}.strip-item:last-child{border:0}.strip-number{font-family:var(--serif);font-size:31px;color:var(--green);line-height:1}.strip-item p{font-size:13px;color:#c0c9c3;margin:10px 0 0;line-height:1.5}
+    section{scroll-margin-top:30px}.section-head{display:grid;grid-template-columns:.55fr 1.45fr;gap:35px;align-items:start;margin-bottom:32px}.section-index{font-family:var(--mono);font-size:12px;color:var(--green-dark);padding-top:9px}.section-head h2{font-family:var(--serif);font-weight:400;letter-spacing:-.035em;font-size:clamp(36px,5vw,54px);line-height:1.06;margin:0}.section-head p{max-width:650px;color:var(--muted);margin:14px 0 0}.overview{padding-bottom:78px}.idea-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.idea{background:var(--card);border:1px solid var(--line);padding:24px;border-radius:6px;min-height:204px}.idea .tag{font-family:var(--mono);font-size:11px;color:var(--green-dark);text-transform:uppercase;letter-spacing:.08em}.idea h3{font-size:18px;margin:16px 0 8px;letter-spacing:-.02em}.idea p{font-size:14px;color:var(--muted);margin:0}.idea.wide{grid-column:span 2}
+    .sandbox{background:#e8e9de;padding:76px 0}.sandbox-layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:start}.sandbox-intro h2{font-family:var(--serif);font-weight:400;font-size:clamp(38px,5vw,56px);line-height:1.04;letter-spacing:-.04em;margin:16px 0}.sandbox-intro p{color:#5c665f;max-width:430px}.tip{display:flex;gap:12px;margin-top:27px;color:#526059;font-size:13px}.tip b{color:var(--green-dark);font-size:18px}.demo-card{background:var(--card);border:1px solid #d4d7ca;border-radius:8px;overflow:hidden;box-shadow:0 18px 55px #1d32200c}.demo-top{padding:15px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-size:12px}.live{display:inline-flex;align-items:center;gap:7px;color:#4e7255;font-weight:700}.live:before{content:"";width:7px;height:7px;border-radius:50%;background:#7dc676}.demo-body{padding:22px}.demo-body label{font-size:12px;font-weight:700;display:block;margin-bottom:9px}.demo-body textarea{width:100%;min-height:105px;resize:vertical;border:1px solid var(--line);background:#fbfaf5;border-radius:4px;padding:12px;font:13px/1.55 var(--mono);color:var(--ink);outline-color:#729d6d}.demo-controls{display:flex;align-items:center;gap:12px;margin:14px 0 20px}.button{border:0;background:var(--ink);color:white;border-radius:4px;padding:10px 15px;font-weight:700;font-size:12px;cursor:pointer}.button:hover{background:#31543f}.quiet{font-size:12px;color:var(--muted)}.result{border-top:1px solid var(--line);padding-top:18px}.result-title{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}.bar-row{display:grid;grid-template-columns:24px 1fr 58px;gap:10px;align-items:center;margin:9px 0;font:12px var(--mono)}.bar-track{height:8px;background:#ecece4;border-radius:8px;overflow:hidden}.bar{height:100%;background:#80b965;border-radius:8px;transition:width .3s ease}.empty{font-size:13px;color:var(--muted)}
+    .language{padding:82px 0}.language-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}.language-copy{padding:8px 16px 8px 0}.language-copy h2{font:400 clamp(38px,5vw,55px)/1.04 var(--serif);letter-spacing:-.04em;margin:15px 0}.language-copy>p{max-width:480px;color:var(--muted)}.concept-list{padding:0;margin:27px 0 0;list-style:none}.concept-list li{padding:12px 0;border-top:1px solid var(--line);font-size:14px}.concept-list b{display:inline-block;width:110px}.code-card{background:var(--code);color:var(--code-ink);border-radius:8px;overflow:hidden;box-shadow:0 18px 55px #1d322016}.code-head{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid #35443c;color:#b9c7bc;font:11px var(--mono)}.dots{display:flex;gap:5px}.dots i{width:7px;height:7px;border-radius:50%;background:#73847a}.code-card pre{overflow:auto;margin:0;padding:23px 22px 26px;font:12px/1.8 var(--mono);color:#e7efe6}.kw{color:#b7ef73}.str{color:#f2a66f}.fn{color:#91c9e8}.comment{color:#8b9b90}.code-foot{border-top:1px solid #35443c;padding:13px 20px;font-size:11px;color:#aab9ad}
+    .takeaway{background:var(--green);padding:48px 0}.takeaway-inner{display:grid;grid-template-columns:.55fr 1.45fr;gap:35px}.takeaway .section-index{color:#315c39}.takeaway h2{font:400 36px/1.05 var(--serif);letter-spacing:-.035em;margin:0 0 18px}.takeaway p{max-width:670px;margin:0;color:#334638}.takeaway .source{font-size:12px;margin-top:20px;color:#526a56}.footer{padding:26px 0;display:flex;justify-content:space-between;gap:20px;font-size:11px;color:var(--muted)}.footer a{text-decoration:none}.footer a:hover{text-decoration:underline}
+    .chapter-two{padding:78px 0 82px;border-top:1px solid var(--line)}.chapter-two .section-head{margin-bottom:34px}.lexical-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.lexical-card{padding:22px;background:var(--card);border:1px solid var(--line);border-radius:6px}.lexical-card h3{margin:3px 0 9px;font-size:17px}.lexical-card p{margin:0;color:var(--muted);font-size:14px}.lexical-card .tag{font:11px var(--mono);letter-spacing:.08em;color:var(--green-dark);text-transform:uppercase}.lexical-card code{font:12px var(--mono);background:#eeefe7;padding:2px 4px;border-radius:3px}.lexical-wide{grid-column:span 2}.lexical-demo{margin-top:18px;padding:22px;background:#e8e9de;border-radius:7px;display:grid;grid-template-columns:.9fr 1.1fr;gap:22px;align-items:center}.lexical-demo h3{font:400 27px/1.1 var(--serif);margin:5px 0 9px}.lexical-demo p{font-size:13px;color:#59645d;margin:0}.identifier-form{display:flex;gap:8px}.identifier-form input{min-width:0;flex:1;padding:11px 12px;border:1px solid #c9cdbf;border-radius:4px;background:#fffef9;font:13px var(--mono);outline-color:#729d6d}.identifier-output{min-height:44px;margin-top:9px;padding:11px 13px;border-radius:4px;background:#fffef9;color:#526059;font-size:12px}.identifier-output.good{color:#285b39}.identifier-output.bad{color:#9a492d}.identifier-output code{font:12px var(--mono)}.small-note{font-size:11px;color:#758078;margin-top:8px}.dom-note.is-highlighted{background:#b7ef73!important;color:#173322}.value-lab{margin-top:18px;padding:22px;border-radius:7px;background:#17241f;color:#eef5eb}.value-lab h3{font:400 28px/1.1 var(--serif);margin:6px 0 8px}.value-lab p{margin:0;color:#bbc8bc;font-size:13px}.value-lab .eyebrow{color:#b7ef73}.lab-buttons{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0 12px}.lab-buttons .button{background:#b7ef73;color:#173322}.lab-buttons .button:hover{background:#d0f9a5}.lab-output{min-height:104px;margin:0;padding:15px;border:1px solid #3a4a40;border-radius:4px;background:#101a16;color:#d8e8d7;white-space:pre-wrap;overflow:auto;font:12px/1.7 var(--mono)}.flow-demo-form{min-width:0}.flow-demo-form label{display:block;font-size:12px;font-weight:700;margin-bottom:8px}.flow-demo-form textarea{width:100%;min-height:74px;resize:vertical;border:1px solid #c9cdbf;border-radius:4px;padding:10px;background:#fffef9;font:12px/1.55 var(--mono);color:var(--ink);outline-color:#729d6d}.flow-options{display:flex;align-items:end;gap:9px;margin:10px 0}.flow-options label{flex:1;margin:0}.flow-options input{display:block;width:100%;margin-top:6px;padding:9px;border:1px solid #c9cdbf;border-radius:4px;background:#fffef9;font:13px var(--mono)}.flow-output{min-height:96px;max-height:220px;overflow:auto;margin:10px 0 0;padding:12px;border-radius:4px;background:#17241f;color:#e4f0df;white-space:pre-wrap;font:11px/1.65 var(--mono)}
+    @media(max-width:760px){.wrap{width:min(100% - 34px,580px)}.topbar{height:auto;min-height:62px;flex-wrap:wrap;gap:10px;padding:10px 0}.topbar nav{width:100%;max-width:100%;gap:12px;font-size:10px;overflow-x:auto;white-space:nowrap;scrollbar-width:none}.topbar nav::-webkit-scrollbar{display:none}.hero{grid-template-columns:1fr;gap:18px;padding:55px 0 42px}.hero h1{font-size:clamp(54px,14vw,76px)}.hero-art{max-width:520px;margin-inline:auto}.summary-strip{grid-template-columns:1fr;margin-bottom:60px}.strip-item{padding:18px 22px;border-right:0;border-bottom:1px solid #3a4942}.strip-item:last-child{border-bottom:0}.strip-number{font-size:26px}.overview,.language{padding-bottom:58px;padding-top:58px}.section-head{grid-template-columns:1fr;gap:8px}.idea-grid{grid-template-columns:1fr 1fr}.idea.wide{grid-column:span 2}.sandbox{padding:60px 0}.sandbox-layout,.language-grid{grid-template-columns:1fr;gap:28px}.sandbox-intro h2,.language-copy h2{font-size:45px}.takeaway-inner{grid-template-columns:1fr;gap:12px}.footer{flex-direction:column}.art-caption{padding-inline:10px}.lexical-grid{grid-template-columns:1fr}.lexical-wide{grid-column:auto}.lexical-demo{grid-template-columns:1fr}}
+    @media(max-width:430px){.topbar{height:auto;min-height:62px;align-items:flex-start;flex-direction:column;justify-content:center;gap:8px;padding:10px 0}.topbar nav{width:100%;overflow-x:auto;scrollbar-width:none}.topbar nav::-webkit-scrollbar{display:none}.idea-grid{grid-template-columns:1fr}.idea.wide{grid-column:auto}.idea{min-height:unset}.demo-body{padding:16px}.code-card pre{font-size:11px;padding:18px 15px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="wrap topbar">
+    <a class="brand" href="#top" aria-label="Back to top"><span class="brand-mark">JS</span><span>Field notes / 01</span></a>
+    <nav aria-label="Page navigation"><a href="#overview">Chapter 1</a><a href="#chapter2">Chapter 2</a><a href="#chapter3">Chapter 3</a><a href="#chapter4">Chapter 4</a><a href="#chapter5">Chapter 5</a><a href="#chapter6">Chapter 6</a><a href="#chapter7">Chapter 7</a><a href="#chapter8">Chapter 8</a><a href="#chapter9">Chapter 9</a><a href="#chapter10">Chapter 10</a><a href="#chapter11">Chapter 11</a><a href="#chapter12">Chapter 12</a><a href="#chapter13">Chapter 13</a><a href="#chapter14">Chapter 14</a><a href="#chapter15">Chapter 15</a><a href="#chapter16">Chapter 16</a><a href="#chapter17">Chapter 17</a><a href="#bonus-modern-js">Bonus</a><a href="#conclusion">Conclusion</a></nav>
+  </header>
+  <main id="top">
+    <div class="wrap hero">
+      <div>
+        <div class="eyebrow">A concise chapter guide</div>
+        <h1>JavaScript,<br><em>from the first line.</em></h1>
+        <p class="hero-copy">Chapter one is a map of the territory: where JavaScript runs, how to experiment with it, and the building blocks that later chapters unpack in depth.</p>
+        <div class="bookline">Reading note for <strong>JavaScript: The Definitive Guide, 7th Edition</strong><br>David Flanagan · O’Reilly Media · Chapter 1</div>
+      </div>
+      <div class="hero-art" aria-label="Original diagram showing JavaScript at the center of browser and Node environments">
+        <svg viewBox="0 0 520 390" role="img" aria-labelledby="arttitle artdesc">
+          <title id="arttitle">One language, two common environments</title><desc id="artdesc">An original illustrated diagram: JavaScript connects to browser experiences and to Node.js services.</desc>
+          <defs><pattern id="grid" width="22" height="22" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#c9c9bc"/></pattern></defs>
+          <rect x="22" y="15" width="474" height="350" rx="8" fill="url(#grid)"/>
+          <path d="M256 143V95M192 208H120M320 208h78M256 271v45" stroke="#7b927d" stroke-width="2" stroke-dasharray="5 6"/>
+          <rect x="176" y="143" width="160" height="128" rx="8" fill="#17241f"/>
+          <text x="256" y="191" text-anchor="middle" fill="#b7ef73" font-family="monospace" font-size="12" letter-spacing="3">THE LANGUAGE</text>
+          <text x="256" y="226" text-anchor="middle" fill="#fffef9" font-family="Georgia,serif" font-size="30">JavaScript</text>
+          <circle cx="256" cy="255" r="4" fill="#91c9e8"/>
+          <rect x="31" y="167" width="130" height="82" rx="6" fill="#fffef9" stroke="#d9d8cc"/>
+          <rect x="42" y="177" width="108" height="8" rx="2" fill="#e8e9de"/><circle cx="49" cy="181" r="2" fill="#f2a66f"/><circle cx="57" cy="181" r="2" fill="#b7ef73"/><circle cx="65" cy="181" r="2" fill="#91c9e8"/>
+          <rect x="43" y="194" width="34" height="42" rx="2" fill="#e8e9de"/><rect x="82" y="194" width="61" height="6" rx="2" fill="#b7ef73"/><rect x="82" y="205" width="49" height="5" rx="2" fill="#c9c9bc"/><rect x="82" y="215" width="54" height="5" rx="2" fill="#c9c9bc"/>
+          <text x="96" y="272" text-anchor="middle" fill="#526059" font-family="monospace" font-size="10">BROWSER</text>
+          <rect x="389" y="167" width="105" height="82" rx="6" fill="#fffef9" stroke="#d9d8cc"/>
+          <rect x="401" y="180" width="80" height="10" rx="2" fill="#e8e9de"/><circle cx="407" cy="185" r="2" fill="#80b965"/>
+          <text x="410" y="213" fill="#54795d" font-family="monospace" font-size="11">$ node app.js</text><rect x="402" y="222" width="70" height="4" rx="2" fill="#d9d8cc"/>
+          <text x="441" y="272" text-anchor="middle" fill="#526059" font-family="monospace" font-size="10">NODE.JS</text>
+          <rect x="193" y="316" width="126" height="34" rx="17" fill="#b7ef73"/><text x="256" y="337" text-anchor="middle" fill="#315c39" font-family="monospace" font-size="10" letter-spacing="1">ECMASCRIPT</text>
+          <text x="37" y="46" fill="#728077" font-family="monospace" font-size="10" letter-spacing="1">FIG. 01 / ORIGINAL DIAGRAM</text>
+        </svg>
+        <div class="art-caption">The core language travels; the host environment provides the tools.</div>
+      </div>
+    </div>
+    <div class="wrap summary-strip" aria-label="Three chapter takeaways">
+      <div class="strip-item"><div class="strip-number">01</div><p>JavaScript is a general-purpose language—not just a small browser scripting tool.</p></div>
+      <div class="strip-item"><div class="strip-number">02</div><p>The browser and Node.js are different hosts for the same core language.</p></div>
+      <div class="strip-item"><div class="strip-number">03</div><p>Learn by running tiny examples, then build toward real programs and abstractions.</p></div>
+    </div>
+
+    <section class="wrap overview" id="overview">
+      <div class="section-head"><div class="section-index">CHAPTER 01 / THE BIG PICTURE</div><div><h2>A language, its hosts,<br>and a learning path.</h2><p>The opening chapter introduces JavaScript’s character before giving a fast tour of syntax. It establishes a useful distinction: the language itself is not the same thing as the environment in which a program runs.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / What it is</div><h3>Dynamic and expressive</h3><p>JavaScript is a high-level, interpreted language. It supports object-oriented and functional styles, and its variables can refer to values of different types over time.</p></article>
+        <article class="idea"><div class="tag">02 / Where it runs</div><h3>Language ≠ platform</h3><p>The core language supplies values, operators, objects, and functions. Browsers add page, input, and network APIs; Node.js offers file, process, and server capabilities.</p></article>
+        <article class="idea"><div class="tag">03 / A naming note</div><h3>JavaScript and ECMAScript</h3><p>ECMAScript is the standardized language specification; JavaScript is the familiar name used in practice. Despite the name, JavaScript is a distinct language from Java.</p></article>
+        <article class="idea wide"><div class="tag">04 / How to learn</div><h3>Experiment in short loops</h3><p>Use a browser developer console or Node’s interactive prompt to test expressions. When examples grow, move them into a <code>.js</code> file and run them with Node or load them into a web page. Change a value, predict the result, then check it.</p></article>
+        <article class="idea"><div class="tag">05 / The route ahead</div><h3>From details to design</h3><p>The book builds from syntax and values to expressions, statements, objects, functions, classes, modules, asynchronous programming, and host APIs.</p></article>
+      </div>
+    </section>
+
+    <section class="sandbox" id="demo">
+      <div class="wrap sandbox-layout">
+        <div class="sandbox-intro"><div class="eyebrow">A tiny working example</div><h2>Let the text<br>show its shape.</h2><p>The chapter closes with a character-frequency histogram: a compact example of turning input into counts, ordering the results, and presenting a useful summary. Try your own text here.</p><div class="tip"><b>↳</b><span>Whitespace is ignored and letters are normalized to uppercase. The bars show each character’s share of the analyzed text.</span></div></div>
+        <div class="demo-card">
+          <div class="demo-top"><span>CHARACTER FREQUENCY / LIVE</span><span class="live">Runs in this page</span></div>
+          <div class="demo-body">
+            <label for="sampleText">Text to analyze</label>
+            <textarea id="sampleText" spellcheck="false">JavaScript is the language of the web. Small experiments make the details easier to understand.</textarea>
+            <div class="demo-controls"><button class="button" id="analyze">Analyze text ↗</button><span class="quiet" id="countNote" aria-live="polite"></span></div>
+            <div class="result" aria-live="polite"><div class="result-title"><span>Most frequent characters</span><span id="resultMeta"></span></div><div id="chart"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap language" id="syntax">
+      <div class="section-head"><div class="section-index">CHAPTER 01 / THE TOUR</div><div><h2>The pieces you’ll<br>see everywhere.</h2><p>The syntax tour is intentionally quick: it gives names to familiar building blocks and shows how they fit together, saving the detailed rules for the chapters that follow.</p></div></div>
+      <div class="language-grid">
+        <div class="language-copy"><div class="eyebrow">A first mental model</div><h2>Values, expressions,<br>and actions.</h2><p>Expressions produce values; statements organize actions and change program state. Functions package reusable behavior, while objects group related data and methods.</p>
+          <ul class="concept-list"><li><b>Values</b> numbers, strings, booleans, <code>null</code>, and <code>undefined</code></li><li><b>Collections</b> objects use named properties; arrays use ordered numeric positions</li><li><b>Operators</b> calculate, compare, and combine values</li><li><b>Control flow</b> <code>if</code>, loops, and function calls direct execution</li><li><b>Modern syntax</b> arrow functions, classes, and optional chaining appear in the tour</li></ul>
+        </div>
+        <div class="code-card"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>an original example / app.js</span></div><pre><code><span class="comment">// Small original example: data + function + control flow</span>
+<span class="kw">const</span> readings = [12, 18, 15, 21];
+
+<span class="kw">function</span> <span class="fn">average</span>(values) {
+  <span class="kw">let</span> total = 0;
+  <span class="kw">for</span> (<span class="kw">const</span> value <span class="kw">of</span> values) {
+    total += value;
+  }
+  <span class="kw">return</span> total / values.length;
+}
+
+<span class="kw">const</span> report = {
+  label: <span class="str">"Afternoon readings"</span>,
+  mean: <span class="fn">average</span>(readings)
+};
+
+<span class="kw">if</span> (report.mean &gt; 16) {
+  console.log(report.label, report.mean);
+}</code></pre><div class="code-foot">Run from a browser console or with Node.js. The example is independently written for these notes.</div></div>
+      </div>
+    </section>
+    <section class="wrap chapter-two" id="chapter2">
+      <div class="section-head"><div class="section-index">CHAPTER 02 / THE SOURCE RULES</div><div><h2>Before meaning,<br>there are tokens.</h2><p>Lexical structure is the smallest layer of JavaScript syntax: the rules for how source text is split into meaningful pieces. This chapter covers the details that make code readable to both people and the parser—characters, comments, names, literals, and statement boundaries.</p></div></div>
+      <div class="lexical-grid">
+        <article class="lexical-card"><div class="tag">01 / Text &amp; whitespace</div><h3>Formatting is flexible</h3><p>JavaScript is case-sensitive: <code>score</code> and <code>Score</code> are different names. Spaces, tabs, and most line breaks separate tokens but otherwise don’t change a program’s meaning, so use them to make code clear.</p></article>
+        <article class="lexical-card"><div class="tag">02 / Comments</div><h3>Notes for humans</h3><p><code>//</code> comments end at the line break. <code>/* ... */</code> comments can span lines, but cannot be nested. Comments are ignored by the parser except that they still separate surrounding tokens.</p></article>
+        <article class="lexical-card"><div class="tag">03 / Literals</div><h3>Values written directly</h3><p>A literal is a value appearing directly in source: <code>42</code>, <code>"hello"</code>, <code>true</code>, or <code>null</code>. The literal’s spelling is part of the program, unlike a value held in a variable.</p></article>
+        <article class="lexical-card"><div class="tag">04 / Identifiers</div><h3>Names have rules</h3><p>Names identify variables, functions, classes, and more. They generally begin with a letter, <code>_</code>, or <code>$</code>; later characters can also include digits. Reserved words such as <code>return</code> have language-defined roles and cannot be used as ordinary bindings.</p></article>
+        <article class="lexical-card"><div class="tag">05 / Unicode</div><h3>More than ASCII</h3><p>JavaScript source supports Unicode in strings, comments, and identifiers, with Unicode escape forms available when needed. Visually identical text can have different underlying code-point sequences; normalize external text before comparing or using it as a key.</p></article>
+        <article class="lexical-card"><div class="tag">06 / Semicolons</div><h3>Automatic insertion has limits</h3><p>Semicolons can be omitted in many line-ending positions, but line breaks are not simply interchangeable with semicolons. A following <code>(</code> or <code>[</code> can continue the previous expression, and a newline immediately after <code>return</code> ends it early.</p></article>
+        <article class="lexical-card lexical-wide"><div class="tag">A reliable habit</div><h3>Use semicolons consistently; keep sensitive syntax together.</h3><p>Consistency makes boundaries easy to see. In particular, keep a return value on the same line as <code>return</code>, and be deliberate when a new statement begins with a parenthesis or bracket. These simple habits avoid common automatic-semicolon-insertion surprises.</p></article>
+      </div>
+      <div class="lexical-demo">
+        <div><div class="eyebrow">Quick identifier check</div><h3>Is this a valid name?</h3><p>Check a simple identifier against JavaScript’s Unicode-aware start/continue character rules and common reserved words. This small teaching aid doesn’t handle escaped spellings or every early-error edge case.</p></div>
+        <div><label for="identifierInput" style="display:block;font-size:12px;font-weight:700;margin-bottom:8px">Try a name</label><div class="identifier-form"><input id="identifierInput" value="mañana_2" autocomplete="off" spellcheck="false" aria-describedby="identifierHelp"><button class="button" id="checkIdentifier">Check name</button></div><div class="identifier-output" id="identifierResult" aria-live="polite"></div><div class="small-note" id="identifierHelp">Examples: <code>total</code> · <code>$price</code> · <code>class</code> (reserved)</div></div>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>two easy-to-miss boundaries / notes.js</span></div><pre><code><span class="comment">// Newline does not always mean “new statement”:</span>
+<span class="kw">const</span> result = calculate
+  (left, right); <span class="comment">// parsed as calculate(left, right)</span>
+
+<span class="comment">// Keep a returned expression on the same line:</span>
+<span class="kw">function</span> <span class="fn">makeLabel</span>() {
+  <span class="kw">return</span> <span class="str">"ready"</span>; <span class="comment">// returns the string</span>
+}</code></pre><div class="code-foot">Original illustrative snippets. A newline after return would terminate the return statement before the value.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter3">
+      <div class="section-head"><div class="section-index">CHAPTER 03 / DATA &amp; STATE</div><div><h2>Values have types.<br>Names hold references.</h2><p>This chapter moves from source syntax to the things programs manipulate: values, types, and variables. It explains JavaScript’s primitive data, its objects, how conversion works, and how declarations control the lifetime and visibility of names.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Numbers</div><h3>One Number type, finite precision</h3><p><code>Number</code> represents integers and fractions using binary floating point. Some decimal fractions therefore round unexpectedly. <code>NaN</code> signals an invalid numeric result; <code>Infinity</code> represents overflow or division by zero. <code>BigInt</code> supports very large exact integers, but is a distinct type and does not mix implicitly with Number.</p></article>
+        <article class="idea"><div class="tag">02 / Text</div><h3>Strings and templates</h3><p>Strings are immutable sequences of text. Quotes and escape sequences form string literals; template literals use backticks for multiline text and embedded expressions. Regular expressions provide a compact tool for matching and searching text.</p></article>
+        <article class="idea"><div class="tag">03 / Other primitives</div><h3>Boolean, null, undefined, Symbol</h3><p>Booleans represent true/false. <code>null</code> commonly means an intentional absence; <code>undefined</code> often marks a missing value. Symbols create unique identifiers, often useful as object keys.</p></article>
+        <article class="idea"><div class="tag">04 / Objects</div><h3>Mutable values by reference</h3><p>Arrays, ordinary objects, functions, and many built-ins are objects. Their properties can change. Assigning an object to another variable copies the reference, so both names can observe the same underlying object. Unreachable objects are reclaimed automatically.</p></article>
+        <article class="idea"><div class="tag">05 / Conversion</div><h3>Be explicit about intent</h3><p>JavaScript converts values in some contexts—for example, when testing truthiness or combining unlike types. Prefer predictable explicit conversions and strict equality (<code>===</code>) when comparing values; loose equality (<code>==</code>) applies coercion rules.</p></article>
+        <article class="idea"><div class="tag">06 / Variables</div><h3>Bindings and scope</h3><p>Use <code>const</code> for a binding you won’t reassign and <code>let</code> when reassignment is needed; both are block-scoped. <code>const</code> does not freeze an object. Legacy <code>var</code> is function-scoped and hoisted in ways that can surprise, so it is usually avoided in new code.</p></article>
+        <article class="idea wide"><div class="tag">07 / Destructuring</div><h3>Unpack structured data at the boundary.</h3><p>Array and object destructuring bind selected values to local names. It can make function results and records convenient to work with; keep patterns simple enough that readers can see which value goes where.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive value lab</div><h3>See the type rules in action.</h3><p>Pick a small experiment. The output is generated in the browser using original examples, and shows the result plus a short explanation.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose a JavaScript value example"><button class="button" data-case="number">Number precision</button><button class="button" data-case="coercion">Coercion</button><button class="button" data-case="reference">Object references</button><button class="button" data-case="binding">Destructuring</button></div>
+        <pre class="lab-output" id="valueOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / bindings.js</span></div><pre><code><span class="kw">const</span> item = { name: <span class="str">"field journal"</span>, pages: 64 };
+<span class="kw">const</span> { name, pages } = item; <span class="comment">// object destructuring</span>
+<span class="kw">let</span> remaining = pages;
+remaining -= 4; <span class="comment">// let binding can be reassigned</span>
+
+<span class="kw">const</span> labels = [name, <span class="str">`Pages left: ${remaining}`</span>];
+console.log(labels);
+<span class="comment">// The array is still mutable, even though its binding is const.</span>
+labels.push(<span class="str">"stored in a folder"</span>);</code></pre><div class="code-foot">Original illustrative code. A const binding is fixed; the object or array it points to may still be mutable.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter4">
+      <div class="section-head"><div class="section-index">CHAPTER 04 / EXPRESSIONS</div><div><h2>Combine values.<br>Make meaning.</h2><p>Expressions are the value-producing phrases of JavaScript. This chapter shows how property access, function calls, object creation, and operators combine into larger expressions—and why precedence, coercion, and short-circuit behavior matter.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Expression forms</div><h3>Values can be composed</h3><p>Literals and names are basic expressions. Arrays and objects can be initialized inline; functions can be defined as expressions; properties can be read with dot or bracket notation, and functions can be invoked with arguments.</p></article>
+        <article class="idea"><div class="tag">02 / Safe access</div><h3>Optional chaining</h3><p><code>?.</code> stops a property or method-access chain when its left side is <code>null</code> or <code>undefined</code>, returning <code>undefined</code> rather than throwing. Use it where absence is expected—not to hide a broken assumption.</p></article>
+        <article class="idea"><div class="tag">03 / Operators</div><h3>Order changes the result</h3><p>Operators have arity, operand/result types, and precedence. Parentheses make intent explicit. Precedence groups the expression; associativity determines grouping when operators of the same precedence repeat. Parenthesize complex combinations for readability.</p></article>
+        <article class="idea"><div class="tag">04 / Arithmetic</div><h3>Plus has two jobs</h3><p>Arithmetic includes numeric operations and unary operators. <code>+</code> adds numbers, but can concatenate after string conversion when a string is involved. Bitwise operators work on integer representations; use them for bit-level tasks, not ordinary arithmetic.</p></article>
+        <article class="idea"><div class="tag">05 / Comparisons</div><h3>Test without surprises</h3><p>Prefer <code>===</code> and <code>!==</code> to avoid implicit conversion in equality checks. Relational comparisons order numbers or strings; <code>in</code> checks for a property name, while <code>instanceof</code> checks a prototype relationship.</p></article>
+        <article class="idea"><div class="tag">06 / Logical expressions</div><h3>Short-circuit, return values</h3><p><code>&amp;&amp;</code> and <code>||</code> stop once the result is determined and return one of their operands—not necessarily a Boolean. <code>!</code> negates truthiness. <code>??</code> falls back only for <code>null</code> or <code>undefined</code>.</p></article>
+        <article class="idea"><div class="tag">07 / Assignment &amp; tools</div><h3>Expressions can change state</h3><p>Assignments (including compound forms) produce a value as they update a binding. The conditional <code>?:</code> chooses between two expressions; <code>typeof</code>, <code>delete</code>, <code>await</code>, and the comma operator have specialized uses. Avoid <code>eval()</code> for ordinary program logic.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Know what an operator returns—not just what it tests.</h3><p>Logical operators are often used to select values because they short-circuit. The nullish coalescing operator is useful when only missing values should trigger a default, whereas <code>||</code> also treats <code>0</code>, <code>false</code>, and the empty string as fallback cases.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive expression lab</div><h3>Same symbols, different behavior.</h3><p>Choose a case to see the evaluated result and the rule that produced it. These examples are computed locally in the page.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose an expression example"><button class="button" data-expression="precedence">Precedence</button><button class="button" data-expression="plus">Addition &amp; strings</button><button class="button" data-expression="logical">Logical defaults</button><button class="button" data-expression="equality">Equality</button><button class="button" data-expression="optional">Optional access</button></div>
+        <pre class="lab-output" id="expressionOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / defaults.js</span></div><pre><code><span class="kw">const</span> settings = { retries: 0, nickname: <span class="str">""</span> };
+<span class="kw">const</span> retries = settings.retries ?? 3;
+<span class="kw">const</span> nickname = settings.nickname || <span class="str">"Guest"</span>;
+
+console.log(retries);  <span class="comment">// 0: zero is not nullish</span>
+console.log(nickname); <span class="comment">// "Guest": empty string is falsy</span>
+
+<span class="kw">const</span> label = settings.profile?.displayName ?? <span class="str">"Anonymous"</span>;
+console.log(label); <span class="comment">// optional access + nullish fallback</span></code></pre><div class="code-foot">Original illustration: choose <code>??</code> when zero/false/empty text are valid values; use <code>||</code> only when all falsy values should fall back.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter5">
+      <div class="section-head"><div class="section-index">CHAPTER 05 / STATEMENTS</div><div><h2>Expressions are phrases.<br>Statements move the program.</h2><p>Statements are JavaScript’s executable commands: they sequence work, branch on conditions, repeat actions, declare names, and handle control transfer. This chapter surveys the structures that turn expressions into complete program flow.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Statement basics</div><h3>Actions and blocks</h3><p>An expression statement evaluates an expression for its effects. Curly-brace blocks group statements; an empty statement does nothing and is occasionally intentional, but can also hide a stray-semicolon bug.</p></article>
+        <article class="idea"><div class="tag">02 / Branching</div><h3>Choose a path</h3><p><code>if</code>/<code>else</code> selects work based on truthiness. <code>switch</code> compares a value against cases and normally continues through later cases unless you exit explicitly; use <code>break</code> when fall-through is not intended.</p></article>
+        <article class="idea"><div class="tag">03 / Repetition</div><h3>Loop over work</h3><p><code>while</code> tests before each pass; <code>do/while</code> tests after, so it runs at least once. A classic <code>for</code> combines setup, test, and update. <code>for/of</code> iterates values from an iterable; <code>for/in</code> iterates enumerable property names.</p></article>
+        <article class="idea"><div class="tag">04 / Jump statements</div><h3>Change the next step</h3><p><code>break</code> exits a loop or switch; <code>continue</code> skips to the next loop pass. Labels can target an outer loop, but should be used sparingly. <code>return</code> leaves a function, while <code>throw</code> signals an exceptional condition.</p></article>
+        <article class="idea"><div class="tag">05 / Errors</div><h3>Recover or clean up</h3><p><code>try</code>/<code>catch</code> handles exceptions; <code>finally</code> runs cleanup whether the try succeeds or fails. Keep cleanup reliable, and rethrow errors when the current layer cannot meaningfully handle them.</p></article>
+        <article class="idea"><div class="tag">06 / Declarations</div><h3>Names are statements too</h3><p><code>let</code>, <code>const</code>, and legacy <code>var</code> declare bindings. Function and class declarations define reusable abstractions; <code>import</code> and <code>export</code> connect modules. <code>"use strict"</code> opts older scripts into stricter rules.</p></article>
+        <article class="idea wide"><div class="tag">07 / Modern control flow</div><h3>Async and generators add suspension points.</h3><p><code>await</code> suspends an async function until a promise settles. <code>yield</code> pauses a generator and exposes a value to its caller. The legacy <code>with</code> statement is discouraged because it makes name lookup unpredictable; <code>debugger</code> is a development aid.</p></article>
+      </div>
+      <div class="lexical-demo">
+        <div><div class="eyebrow">Interactive flow trace</div><h3>Follow the loop, one statement at a time.</h3><p>Enter comma-separated numbers. The demo skips odd values with <code>continue</code>, stops before an even value above the threshold with <code>break</code>, and totals the accepted values. This is an original miniature example of loop control.</p></div>
+        <div class="flow-demo-form"><label for="flowValues">Values, separated by commas</label><textarea id="flowValues" spellcheck="false">2, 5, 8, 11, 14</textarea><div class="flow-options"><label for="flowLimit">Stop before even values above<input id="flowLimit" type="number" value="10" step="1"></label><button class="button" id="runFlow">Run trace</button></div><pre class="flow-output" id="flowOutput" aria-live="polite"></pre></div>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / process.js</span></div><pre><code><span class="kw">function</span> <span class="fn">summarize</span>(records) {
+  <span class="kw">let</span> total = 0;
+  <span class="kw">for</span> (<span class="kw">const</span> record <span class="kw">of</span> records) {
+    <span class="kw">if</span> (!record.active) <span class="kw">continue</span>;
+    <span class="kw">if</span> (record.stop) <span class="kw">break</span>;
+    total += record.value;
+  }
+  <span class="kw">return</span> total;
+}
+
+<span class="kw">try</span> {
+  console.log(<span class="fn">summarize</span>(records));
+} <span class="kw">catch</span> (error) {
+  console.error(<span class="str">"Could not summarize records"</span>, error);
+}</code></pre><div class="code-foot">The example is independently written to illustrate iteration, conditionals, loop jumps, returning, and exception handling.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter6">
+      <div class="section-head"><div class="section-index">CHAPTER 06 / OBJECTS</div><div><h2>Properties make<br>objects useful.</h2><p>Objects group values under property names, but they are more than simple dictionaries: they are mutable, dynamic, and connected through prototypes. This chapter focuses on creating objects and working with their properties, from everyday access to the details behind inheritance and serialization.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / The object model</div><h3>Named properties, shared references</h3><p>An object maps string or Symbol keys to values. Properties may be data or accessors. Objects are mutable and assigned by reference, so different bindings can observe the same object.</p></article>
+        <article class="idea"><div class="tag">02 / Creating objects</div><h3>Literals are the everyday tool</h3><p>Use object literals for records; constructors and built-in APIs create specialized objects. <code>Object.create(proto)</code> makes an object with an explicit prototype, including <code>null</code> when you need no inherited properties.</p></article>
+        <article class="idea"><div class="tag">03 / Read and write</div><h3>Dot or computed access</h3><p><code>item.title</code> is concise when the key is a known identifier. <code>item[key]</code> computes the property name at runtime and supports keys that aren’t identifier-shaped. Writes can add or update own properties.</p></article>
+        <article class="idea"><div class="tag">04 / Prototype chain</div><h3>Lookup can be inherited</h3><p>If a property is not found directly on an object, JavaScript searches its prototype, then the prototype’s prototype, continuing up the chain. An own property can shadow an inherited one; deleting it may expose the inherited value again.</p></article>
+        <article class="idea"><div class="tag">05 / Presence &amp; enumeration</div><h3>Own is not the same as visible</h3><p><code>in</code> checks own and inherited properties. <code>hasOwnProperty</code> checks only own properties. <code>Object.keys()</code> lists own enumerable string keys; <code>for/in</code> can also visit inherited enumerable keys.</p></article>
+        <article class="idea"><div class="tag">06 / Copy &amp; serialize</div><h3>Copies are usually shallow</h3><p><code>Object.assign()</code> and object spread copy own enumerable properties into a target or new object. Nested objects remain shared references. JSON serialization is a data interchange format with limits: it omits or transforms some values and can’t represent cycles.</p></article>
+        <article class="idea"><div class="tag">07 / Property behavior</div><h3>Methods, accessors, attributes</h3><p>Modern literals support shorthand, computed keys, spread, Symbols, concise methods, getters, and setters. Properties also have writable, enumerable, and configurable attributes, which govern assignment, enumeration, and deletion.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Choose a data structure for the job.</h3><p>Objects work naturally for records with named properties and prototype-based behavior. When you need arbitrary keys with no prototype behavior, consider <code>Map</code>; when you need a sequence, use an array. Avoid confusing inherited properties with data owned by a record.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive object lab</div><h3>Own property—or inherited?</h3><p>Explore how a small object behaves when it inherits a property, is copied with spread, or is enumerated and serialized.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose an object behavior example"><button class="button" data-object="lookup">Prototype lookup</button><button class="button" data-object="spread">Object spread</button><button class="button" data-object="enumeration">Enumeration</button><button class="button" data-object="json">JSON serialization</button></div>
+        <pre class="lab-output" id="objectOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / object-record.js</span></div><pre><code><span class="kw">const</span> defaults = { unit: <span class="str">"°C"</span>, precision: 1 };
+<span class="kw">const</span> reading = { value: 21.46, ...defaults };
+<span class="kw">const</span> display = {
+  ...reading,
+  get rounded() {
+    <span class="kw">return</span> this.value.toFixed(this.precision) + this.unit;
+  }
+};
+console.log(display.rounded); <span class="comment">// "21.5°C"</span>
+
+<span class="kw">const</span> key = <span class="str">"station"</span>;
+display[key] = <span class="str">"north-window"</span>; <span class="comment">// computed property access</span></code></pre><div class="code-foot">Original example: object spread is shallow, and reading an accessor property runs its getter.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter7">
+      <div class="section-head"><div class="section-index">CHAPTER 07 / ARRAYS</div><div><h2>Ordered data.<br>Useful operations.</h2><p>Arrays are JavaScript’s indexed, ordered collections. This chapter moves from creating and accessing elements to iteration and the rich set of methods for transforming, searching, sorting, and reshaping sequences.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Fundamentals</div><h3>Zero-based and dynamic</h3><p>Array elements are addressed by integer-like indexes starting at <code>0</code>; <code>length</code> is one greater than the last index. Arrays can grow or shrink, and their elements may contain any mix of values.</p></article>
+        <article class="idea"><div class="tag">02 / Creation</div><h3>Prefer clear construction</h3><p>Array literals are the common choice. Spread copies iterable elements into a new array. <code>Array.of()</code> treats arguments as elements; <code>Array.from()</code> builds an array from an iterable or array-like value. A single numeric argument to <code>Array()</code> means length, not one element.</p></article>
+        <article class="idea"><div class="tag">03 / Length &amp; holes</div><h3>Missing is not undefined</h3><p>Increasing <code>length</code> creates empty slots; reducing it truncates elements. Deleting an index leaves a hole without shifting later values. Sparse arrays can behave differently across iteration and methods, so dense arrays are easier to reason about.</p></article>
+        <article class="idea"><div class="tag">04 / Iteration</div><h3>Choose the right loop</h3><p><code>for/of</code> visits array values. Index-based <code>for</code> loops give direct control over positions. Avoid using <code>for/in</code> for array elements: it enumerates property names and can include non-index or inherited properties.</p></article>
+        <article class="idea"><div class="tag">05 / Transform</div><h3>Map, filter, reduce</h3><p>Iterator methods such as <code>map()</code>, <code>filter()</code>, <code>some()</code>, <code>every()</code>, and <code>reduce()</code> express common collection tasks. They do not all return the same kind of result; choose by whether you need a transformed array, a test, or an accumulated value.</p></article>
+        <article class="idea"><div class="tag">06 / Mutating methods</div><h3>Know what changes in place</h3><p><code>push()</code>/<code>pop()</code> and <code>shift()</code>/<code>unshift()</code> add or remove at the ends. <code>splice()</code> edits a range in place; <code>slice()</code> returns a shallow portion without changing the source. Sorting also mutates the array.</p></article>
+        <article class="idea"><div class="tag">07 / Search &amp; shape</div><h3>Find, flatten, combine</h3><p>Search methods locate values or indexes; provide a comparator for numeric sorting because default sort compares string forms. <code>flat()</code>/<code>flatMap()</code> reshape nested data, while <code>concat()</code> combines sequences. Multidimensional arrays are arrays of arrays, not special matrices.</p></article>
+        <article class="idea wide"><div class="tag">08 / Related structures</div><h3>Array-like is not necessarily an array.</h3><p>Some objects have numbered properties and a <code>length</code> but lack array methods; convert them when needed. Strings have indexed text access but are immutable, and their UTF-16 representation means an index is not always the same as a user-perceived character.</p></article>
+      </div>
+      <div class="lexical-demo">
+        <div><div class="eyebrow">Interactive array workbench</div><h3>Transform or mutate?</h3><p>Try array operations on comma-separated numbers. Compare a non-mutating transformation with an in-place edit, and observe why numeric sorting needs a comparator.</p></div>
+        <div class="flow-demo-form"><label for="arrayValues">Numbers, separated by commas</label><textarea id="arrayValues" spellcheck="false">8, 3, 12, 5, 2</textarea><div class="lab-buttons" role="group" aria-label="Choose an array operation"><button class="button" data-array="transform">map / filter / reduce</button><button class="button" data-array="splice">splice a copy</button><button class="button" data-array="sort">compare sorting</button><button class="button" data-array="flatten">flatten</button></div><pre class="flow-output" id="arrayOutput" aria-live="polite"></pre></div>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / arrays.js</span></div><pre><code><span class="kw">const</span> temperatures = [18, 23, 16, 27];
+<span class="kw">const</span> warm = temperatures.filter(value =&gt; value &gt;= 20);
+<span class="kw">const</span> fahrenheit = warm.map(c =&gt; c * 9 / 5 + 32);
+<span class="kw">const</span> total = fahrenheit.reduce((sum, value) =&gt; sum + value, 0);
+
+console.log(warm);       <span class="comment">// [23, 27]</span>
+console.log(fahrenheit); <span class="comment">// a new transformed array</span>
+console.log(total);      <span class="comment">// accumulated result</span>
+console.log(temperatures); <span class="comment">// original array remains unchanged</span></code></pre><div class="code-foot">Original example: filter and map produce new arrays; reduce combines values into one result.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter8">
+      <div class="section-head"><div class="section-index">CHAPTER 08 / FUNCTIONS</div><div><h2>Reusable behavior.<br>First-class values.</h2><p>Functions are one of JavaScript’s central abstractions: they package behavior, travel as values, and carry access to the scope in which they were created. This chapter explains how functions are defined, called, parameterized, and composed into higher-order patterns.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Defining functions</div><h3>Declaration, expression, arrow</h3><p>Function declarations name reusable behavior. Function expressions create values, often for callbacks. Arrow functions are concise and capture <code>this</code> lexically; they are not constructors and should not replace methods that need their own receiver.</p></article>
+        <article class="idea"><div class="tag">02 / Calling functions</div><h3>Invocation sets the context</h3><p>A plain call, a method call, and a constructor call have different behavior. For regular functions, <code>this</code> depends on how the function is invoked. <code>call()</code>/<code>apply()</code> choose a receiver immediately; <code>bind()</code> creates a function with a fixed receiver.</p></article>
+        <article class="idea"><div class="tag">03 / Parameters</div><h3>Defaults, rest, spread</h3><p>Default parameter values apply when an argument is omitted or <code>undefined</code>. Rest parameters gather remaining arguments into an array; spread expands iterable values at a call site. Destructuring can unpack object or array arguments into named parameters.</p></article>
+        <article class="idea"><div class="tag">04 / Functions as values</div><h3>Pass behavior around</h3><p>Functions can be assigned, stored in objects, passed as arguments, and returned from other functions. That makes callbacks and higher-order functions natural tools for customizing behavior and building abstractions.</p></article>
+        <article class="idea"><div class="tag">05 / Closures</div><h3>Remember the surrounding scope</h3><p>A nested function retains access to lexical bindings from its outer function even after that outer call has returned. Closures enable private state, factories, and callbacks—but retained references can also keep data alive longer than expected.</p></article>
+        <article class="idea"><div class="tag">06 / Function objects</div><h3>Functions have properties too</h3><p>Functions expose useful properties such as <code>name</code> and <code>length</code>; traditional constructor functions also use <code>prototype</code>. Function objects have methods including <code>bind()</code>, <code>call()</code>, and <code>apply()</code>.</p></article>
+        <article class="idea wide"><div class="tag">07 / Functional techniques</div><h3>Build behavior by composing functions.</h3><p>Functional programming emphasizes functions that can be combined, passed into collection methods, and reused. Higher-order functions accept or return functions; partial application preconfigures some arguments; memoization caches results. Prefer clear functions with predictable inputs and outputs.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive closure demo</div><h3>The outer call is over. The state remains.</h3><p>Each click calls a function returned by a factory. That function still has access to the factory’s private counter through its closure.</p>
+        <div class="lab-buttons" role="group" aria-label="Closure counter controls"><button class="button" id="incrementClosure">Invoke counter()</button><button class="button" id="resetClosure">Create a fresh counter</button></div>
+        <pre class="lab-output" id="closureOutput" aria-live="polite">Counter starts at 0. Invoke it to increment the value.</pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / functions.js</span></div><pre><code><span class="kw">function</span> <span class="fn">makeFormatter</span>(prefix, suffix = <span class="str">""</span>) {
+  <span class="kw">return</span> value =&gt; <span class="str">`${prefix}${value}${suffix}`</span>;
+}
+
+<span class="kw">const</span> asBadge = <span class="fn">makeFormatter</span>(<span class="str">"[ "</span>, <span class="str">" ]"</span>);
+<span class="kw">const</span> labels = [<span class="str">"ready"</span>, <span class="str">"in progress"</span>].map(asBadge);
+console.log(labels); <span class="comment">// ["[ ready ]", "[ in progress ]"]</span>
+
+<span class="kw">const</span> total = (...values) =&gt;
+  values.reduce((sum, value) =&gt; sum + value, 0);
+console.log(total(3, 4, 5)); <span class="comment">// 12</span></code></pre><div class="code-foot">Original example: default and rest parameters, returned functions, closure over prefix/suffix, and a callback passed to map.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter9">
+      <div class="section-head"><div class="section-index">CHAPTER 09 / CLASSES</div><div><h2>Objects with a<br>shared blueprint.</h2><p>Classes provide a familiar way to define objects that share behavior, but JavaScript classes are built on the language’s prototype system. This chapter connects class syntax to constructors and prototypes, then develops inheritance, static behavior, and alternatives such as delegation.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Classes &amp; prototypes</div><h3>Syntax on top of delegation</h3><p>A class describes how to create instances and where shared methods live. JavaScript’s underlying model is still prototype-based: instances delegate property lookup through a prototype chain rather than receiving copied methods.</p></article>
+        <article class="idea"><div class="tag">02 / Constructors</div><h3>Initialize with <code>new</code></h3><p>A constructor initializes each instance. Calling a class without <code>new</code> throws. The prototype relationship is what connects instances to class methods; <code>instanceof</code> tests that prototype-chain relationship, not every notion of “type.”</p></article>
+        <article class="idea"><div class="tag">03 / Methods</div><h3>Shared behavior on the prototype</h3><p>Methods declared in a class body are installed on its prototype and shared by instances. Getters and setters provide property-like accessors. Class bodies run in strict mode, and class declarations have their own initialization rules.</p></article>
+        <article class="idea"><div class="tag">04 / Static members</div><h3>Behavior belonging to the class</h3><p>Static methods and fields belong to the class itself rather than each instance, making them useful for utilities, factories, or shared configuration. Instance fields create per-instance state; private fields use names prefixed with <code>#</code>.</p></article>
+        <article class="idea"><div class="tag">05 / Extending classes</div><h3>Subclass with <code>extends</code></h3><p>A subclass inherits from a base class. Its constructor calls <code>super()</code> before using <code>this</code>; it can add behavior or override inherited methods. A child method can call the parent implementation with <code>super.method()</code>.</p></article>
+        <article class="idea"><div class="tag">06 / Class hierarchies</div><h3>Model only useful relationships</h3><p>Inheritance can express “is-a” relationships, but deep hierarchies couple code and can become brittle. Delegation or composition—building an object from smaller collaborating objects—often offers a more flexible design.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Use a class when instances share a clear contract.</h3><p>Define state and behavior together when that makes the API easier to understand. Keep constructors focused on initialization, prefer small cohesive methods, and avoid creating a hierarchy just to reuse a few lines of code.</p></article>
+      </div>
+      <div class="lexical-demo">
+        <div><div class="eyebrow">Interactive class demo</div><h3>One class, many instances.</h3><p>Enter dimensions to create a rectangle and a square. Each instance has its own state, while the area getter and scaling method are shared class behavior. The square subclass delegates initialization to its parent with <code>super()</code>.</p></div>
+        <div class="flow-demo-form"><div class="flow-options"><label for="rectWidth">Width<input id="rectWidth" type="number" value="8" min="0" step="any"></label><label for="rectHeight">Height<input id="rectHeight" type="number" value="5" min="0" step="any"></label></div><button class="button" id="runClassDemo">Create instances</button><pre class="flow-output" id="classOutput" aria-live="polite"></pre></div>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / geometry.js</span></div><pre><code><span class="kw">class</span> Rectangle {
+  constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+  get area() { <span class="kw">return</span> this.width * this.height; }
+  scale(factor) {
+    <span class="kw">return new</span> Rectangle(this.width * factor, this.height * factor);
+  }
+}
+
+<span class="kw">class</span> Square <span class="kw">extends</span> Rectangle {
+  constructor(side) { <span class="kw">super</span>(side, side); }
+}
+<span class="kw">const</span> tile = <span class="kw">new</span> Square(4);
+console.log(tile.area); <span class="comment">// 16</span></code></pre><div class="code-foot">Original example: methods are shared via the prototype; a subclass initializes its base-class portion with super().</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter10">
+      <div class="section-head"><div class="section-index">CHAPTER 10 / MODULES</div><div><h2>Organize code<br>around clear seams.</h2><p>Modules let programs be assembled from separate files with explicit boundaries and dependencies. This chapter moves from closure-based patterns and Node’s CommonJS system to standardized ECMAScript modules used by modern browsers and Node.js.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Why modules</div><h3>Encapsulate and compose</h3><p>Modules divide a large program into units with focused responsibilities. Encapsulation limits accidental name collisions and exposes a deliberate public API. Before native modules, objects, classes, and closures could provide similar boundaries.</p></article>
+        <article class="idea"><div class="tag">02 / CommonJS in Node</div><h3><code>require()</code> and exports</h3><p>Node’s traditional CommonJS modules expose values through <code>module.exports</code> (or properties on <code>exports</code>) and load dependencies with <code>require()</code>. The exported value is the module’s public interface; keep it intentional.</p></article>
+        <article class="idea"><div class="tag">03 / ECMAScript modules</div><h3>Explicit imports and exports</h3><p>ES modules use <code>export</code> declarations and <code>import</code> statements. Named exports let a module expose several bindings; a default export provides one primary value. Imports can be renamed, and exports can be re-exported from a barrel or facade module.</p></article>
+        <article class="idea"><div class="tag">04 / Module scope</div><h3>Each file has its own scope</h3><p>Top-level declarations in an ES module are module-scoped rather than automatically becoming global variables. ES modules are strict by default. Imports are static, read-only live bindings, and a module is evaluated once per loaded module identity.</p></article>
+        <article class="idea"><div class="tag">05 / Browsers</div><h3>Load a module graph</h3><p>A browser can load a module entry point with <code>&lt;script type="module"&gt;</code>. Its imports form a dependency graph fetched by the browser; cross-origin rules and correct server responses apply. Module scripts are deferred by default.</p></article>
+        <article class="idea"><div class="tag">06 / Dynamic loading</div><h3>Import when needed</h3><p><code>import()</code> loads a module dynamically and returns a Promise, useful for conditional features or splitting work. <code>import.meta.url</code> provides the current module’s URL, which can help locate related resources.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Make dependencies visible and APIs small.</h3><p>Prefer explicit imports and exports for new code. Separate stable public names from implementation details, avoid tangled circular dependencies, and choose a module system that matches the runtime and build setup rather than mixing formats casually.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive module map</div><h3>See the contract between files.</h3><p>Switch module systems to compare how a small utility is exposed and consumed. The snippets are illustrative; this demo shows the boundary, not a live multi-file import.</p>
+        <div class="lab-buttons" role="group" aria-label="Select a module format"><button class="button" data-module="esm">ECMAScript modules</button><button class="button" data-module="commonjs">CommonJS</button></div>
+        <pre class="lab-output" id="moduleOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / modules</span></div><pre><code><span class="comment">// geometry.js — named exports plus a default export</span>
+<span class="kw">export const</span> double = value =&gt; value * 2;
+<span class="kw">export default function</span> clamp(value, min, max) {
+  <span class="kw">return</span> Math.min(max, Math.max(min, value));
+}
+
+<span class="comment">// app.js — explicit dependency names</span>
+<span class="kw">import</span> clampValue, { double as twice } <span class="kw">from</span> <span class="str">"./geometry.js"</span>;
+console.log(twice(clampValue(7, 0, 5))); <span class="comment">// 10</span></code></pre><div class="code-foot">Original example: named exports can be aliased at import; the default export can be given any local name.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter11">
+      <div class="section-head"><div class="section-index">CHAPTER 11 / STANDARD LIBRARY</div><div><h2>Useful tools beyond<br>the core syntax.</h2><p>This chapter tours built-in objects and APIs that JavaScript programs use every day. The library extends the core language with specialized collections, binary data, text matching, dates, serialization, locale-aware formatting, URLs, and host-provided utilities.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Collections</div><h3>Set, Map, and weak collections</h3><p><code>Set</code> stores unique values; <code>Map</code> maps keys of any type to values and preserves insertion order. <code>WeakMap</code>/<code>WeakSet</code> hold object keys weakly, making them useful for metadata tied to object lifetimes; they are intentionally not enumerable.</p></article>
+        <article class="idea"><div class="tag">02 / Binary data</div><h3>Typed arrays and buffers</h3><p>Typed arrays expose fixed-width numeric views over binary buffers, useful for files, network formats, and performance-sensitive data. <code>DataView</code> gives more control over reading and writing different numeric types and byte orders.</p></article>
+        <article class="idea"><div class="tag">03 / Pattern matching</div><h3>Regular expressions</h3><p>Regexps describe text patterns for matching, searching, splitting, and replacing. String methods such as <code>match()</code>, <code>replace()</code>, and <code>split()</code> integrate with them; flags change matching behavior. Test global expressions carefully because they maintain state.</p></article>
+        <article class="idea"><div class="tag">04 / Dates &amp; errors</div><h3>Time is not just a string</h3><p><code>Date</code> represents an instant as milliseconds from an epoch, while display depends on time zone and locale. Use ISO timestamps for interchange and format for people explicitly. Built-in error classes communicate common failure categories.</p></article>
+        <article class="idea"><div class="tag">05 / JSON</div><h3>Interchange, not cloning</h3><p><code>JSON.stringify()</code> converts supported data into JSON text; <code>JSON.parse()</code> reads it back. JSON is a data format, not the full JavaScript object model: it cannot represent cycles, functions, Symbols, or undefined values.</p></article>
+        <article class="idea"><div class="tag">06 / Internationalization</div><h3>Let the locale do the formatting</h3><p>The <code>Intl</code> API provides locale-sensitive number and date formatting and string comparison. Supply an explicit locale and options when output must be predictable; avoid hand-formatting decimal separators or date strings.</p></article>
+        <article class="idea"><div class="tag">07 / URLs</div><h3>Parse structured addresses</h3><p><code>URL</code> parses and manipulates URLs by component; <code>URLSearchParams</code> helps read and update query parameters safely. Prefer these APIs over manually splitting URL strings.</p></article>
+        <article class="idea"><div class="tag">08 / Host utilities</div><h3>Console and timers</h3><p>Console methods aid inspection and diagnostics. Timers such as <code>setTimeout()</code> and <code>setInterval()</code> schedule work through the host environment. These APIs are widely available, but they are supplied by browsers or Node—not by the ECMAScript core itself.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Use the purpose-built API; know what it guarantees.</h3><p>Choose <code>Map</code> for arbitrary keys, <code>Set</code> for uniqueness, <code>Intl</code> for human-facing formats, and URL/JSON APIs for their defined data formats. Standard library methods have specific edge cases—check whether an operation mutates, what values it omits, and which runtime provides it.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive library sampler</div><h3>Same data, specialized tools.</h3><p>Select a built-in API to see a small example and its result. These snippets run locally in this page.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose a standard library example"><button class="button" data-library="collections">Set &amp; Map</button><button class="button" data-library="regex">Regular expression</button><button class="button" data-library="json">JSON</button><button class="button" data-library="intl">Intl formatting</button><button class="button" data-library="url">URL parsing</button><button class="button" data-library="typed">Typed array</button></div>
+        <pre class="lab-output" id="libraryOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / library.js</span></div><pre><code><span class="kw">const</span> distinct = [...new Set([<span class="str">"maple"</span>, <span class="str">"oak"</span>, <span class="str">"maple"</span>])];
+<span class="kw">const</span> counts = <span class="kw">new</span> Map([[<span class="str">"maple"</span>, 2], [<span class="str">"oak"</span>, 1]]);
+<span class="kw">const</span> price = <span class="kw">new</span> Intl.NumberFormat(<span class="str">"nl-NL"</span>, {
+  style: <span class="str">"currency"</span>, currency: <span class="str">"EUR"</span>
+}).format(1234.5);
+console.log(distinct, counts.get(<span class="str">"maple"</span>), price);</code></pre><div class="code-foot">Original example: use dedicated collection and localization APIs rather than encoding their behavior by hand.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter12">
+      <div class="section-head"><div class="section-index">CHAPTER 12 / ITERATORS &amp; GENERATORS</div><div><h2>One value at a time.<br>Only when needed.</h2><p>Iterators provide a shared protocol for stepping through sequences. Generators make that protocol easier to implement by letting a function pause at each yielded value and resume later, preserving its local state between steps.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Iterable vs iterator</div><h3>A source and its cursor</h3><p>An iterable can produce an iterator. Its <code>Symbol.iterator</code> method returns an iterator object whose <code>next()</code> method returns a result with <code>value</code> and <code>done</code>. Iterables include arrays, strings, maps, and sets.</p></article>
+        <article class="idea"><div class="tag">02 / Consumption</div><h3>Many features use the protocol</h3><p><code>for/of</code>, spread, and destructuring consume iterables. This lets custom collections plug into familiar syntax without needing to be arrays. Each iterator typically tracks its own progress.</p></article>
+        <article class="idea"><div class="tag">03 / Build an iterator</div><h3>Define <code>next()</code></h3><p>A hand-written iterator controls how values are produced and when it is finished. It can represent a range, stream, or stateful traversal without storing every result in memory first.</p></article>
+        <article class="idea"><div class="tag">04 / Early exit</div><h3>Close iterators cleanly</h3><p>Some iterators provide <code>return()</code> to release resources or finish early. Constructs such as <code>for/of</code> call it when iteration exits prematurely, giving custom iterators a chance to clean up.</p></article>
+        <article class="idea"><div class="tag">05 / Generators</div><h3>Pause with <code>yield</code></h3><p>A generator function, written with <code>function*</code>, returns a generator object that is both iterable and an iterator. Each <code>yield</code> pauses execution; the next request resumes from that point with local state intact.</p></article>
+        <article class="idea"><div class="tag">06 / Delegation</div><h3>Compose with <code>yield*</code></h3><p><code>yield*</code> delegates iteration to another iterable or generator. It is useful for flattening nested sequences or composing generator-based routines while leaving the iteration protocol to the delegated source.</p></article>
+        <article class="idea wide"><div class="tag">07 / Generator control</div><h3>Generators can receive input and control signals.</h3><p>The caller can pass a value to a suspended <code>yield</code> expression with <code>next(value)</code>; it can also finish a generator with <code>return()</code> or inject an exception with <code>throw()</code>. These advanced controls make generators useful as cooperative state machines, though ordinary iteration is the common case.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive generator</div><h3>Advance the sequence on demand.</h3><p>Each press requests one result from a generator. Watch its yielded value and its <code>done</code> flag; reset to create a fresh generator with new state.</p>
+        <div class="lab-buttons" role="group" aria-label="Generator controls"><button class="button" id="nextYield">Request next()</button><button class="button" id="resetGenerator">Reset generator</button></div>
+        <pre class="lab-output" id="generatorOutput" aria-live="polite">Generator ready. Request the first value.</pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / sequence.js</span></div><pre><code><span class="kw">function*</span> <span class="fn">ticketNumbers</span>(start, count) {
+  <span class="kw">for</span> (<span class="kw">let</span> offset = 0; offset &lt; count; offset++) {
+    <span class="kw">yield</span> start + offset;
+  }
+}
+
+<span class="kw">const</span> tickets = <span class="fn">ticketNumbers</span>(40, 3);
+<span class="kw">for</span> (<span class="kw">const</span> ticket <span class="kw">of</span> tickets) {
+  console.log(ticket); <span class="comment">// 40, then 41, then 42</span>
+}</code></pre><div class="code-foot">Original example: the generator computes each next value only when the consumer asks for it.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter13">
+      <div class="section-head"><div class="section-index">CHAPTER 13 / ASYNC JAVASCRIPT</div><div><h2>Wait for work.<br>Keep the program moving.</h2><p>JavaScript’s host environments frequently perform work that finishes later—timers, user events, and network requests. This chapter explains the patterns used to coordinate that work without blocking the main flow: callbacks, Promises, <code>async</code>/<code>await</code>, and asynchronous iteration.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / The async model</div><h3>Host work completes later</h3><p>The core language evaluates synchronous code, while browsers and Node provide asynchronous APIs. Completion is reported later through events, callbacks, or Promises, allowing the program to handle other work while waiting.</p></article>
+        <article class="idea"><div class="tag">02 / Callbacks &amp; events</div><h3>Register what happens next</h3><p>A callback is a function supplied to run when an operation completes or an event occurs. This is foundational, but deeply nested callbacks can obscure sequencing and make error handling harder to follow.</p></article>
+        <article class="idea"><div class="tag">03 / Promise states</div><h3>Represent eventual results</h3><p>A Promise is initially pending, then settles once as fulfilled with a value or rejected with a reason. <code>then()</code> registers reactions; <code>catch()</code> handles rejection and <code>finally()</code> runs cleanup regardless of outcome.</p></article>
+        <article class="idea"><div class="tag">04 / Composition</div><h3>Chain work and errors</h3><p>Each <code>then()</code> returns a new Promise. Returning a value continues the chain; returning another Promise adopts its eventual state; throwing turns the next result into a rejection. A single downstream <code>catch()</code> can handle failures from earlier steps.</p></article>
+        <article class="idea"><div class="tag">05 / Concurrency</div><h3>Parallel when independent</h3><p>Start independent operations before waiting for them. <code>Promise.all()</code> fulfills when all inputs fulfill and rejects if one rejects; <code>Promise.allSettled()</code> reports every outcome. Await sequentially only when later work depends on earlier results.</p></article>
+        <article class="idea"><div class="tag">06 / Async functions</div><h3>Use <code>await</code> for readable flow</h3><p>An <code>async</code> function always returns a Promise. <code>await</code> unwraps a fulfilled value or throws a rejection, so ordinary <code>try</code>/<code>catch</code> can express error handling. It pauses that async function—not the whole JavaScript thread.</p></article>
+        <article class="idea"><div class="tag">07 / Async iteration</div><h3>Consume values that arrive over time</h3><p>Async iterables expose an asynchronous iterator protocol. <code>for await...of</code> requests each next item and waits for it, useful for streams or paginated sources. Async generators can produce such values incrementally.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Think about ownership, failure, and ordering.</h3><p>Know whether operations are independent or sequential, ensure every failure has a handling path, and avoid assuming a timer or network response arrives immediately. Async patterns organize waiting; they do not make CPU-heavy synchronous work nonblocking.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive Promise timeline</div><h3>Waiting doesn’t block this page.</h3><p>Start a simulated asynchronous task. The handler continues immediately; a Promise settles later. Try a rejection to see the error path and cleanup.</p>
+        <div class="lab-buttons" role="group" aria-label="Promise demo controls"><button class="button" id="startPromise">Start successful task</button><button class="button" id="failPromise">Simulate rejection</button></div>
+        <pre class="lab-output" id="promiseOutput" aria-live="polite">Choose an outcome to start the asynchronous demo.</pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / async-work.js</span></div><pre><code><span class="kw">async function</span> <span class="fn">loadOverview</span>() {
+  <span class="kw">try</span> {
+    <span class="kw">const</span> [profile, notices] = <span class="kw">await</span> Promise.all([
+      loadProfile(), loadNotices()
+    ]);
+    <span class="kw">return</span> { profile, notices };
+  } <span class="kw">catch</span> (error) {
+    console.error(<span class="str">"Overview could not be loaded"</span>, error);
+    <span class="kw">throw</span> error;
+  }
+}</code></pre><div class="code-foot">Original example: independent Promise-returning tasks are started together, awaited as a group, and handled with try/catch.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter14">
+      <div class="section-head"><div class="section-index">CHAPTER 14 / METAPROGRAMMING</div><div><h2>Programs that<br>shape programs.</h2><p>Metaprogramming means controlling how JavaScript objects behave at a deeper level: defining property rules, customizing language hooks with Symbols, intercepting operations with Proxy, and mirroring operations through Reflect. These tools are most valuable for library authors—and powerful enough to use sparingly.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Property attributes</div><h3>Properties have rules, not just values</h3><p>Every property has attributes such as <code>writable</code>, <code>enumerable</code>, and <code>configurable</code>, or accessor attributes <code>get</code>/<code>set</code>. <code>Object.getOwnPropertyDescriptor()</code> inspects them; <code>Object.defineProperty()</code> defines them precisely.</p></article>
+        <article class="idea"><div class="tag">02 / Extensibility</div><h3>Lock objects down in stages</h3><p><code>Object.preventExtensions()</code> blocks new properties, <code>Object.seal()</code> also blocks reconfiguration, and <code>Object.freeze()</code> additionally makes data properties read-only. Freezing is shallow: nested objects need their own protection.</p></article>
+        <article class="idea"><div class="tag">03 / The prototype attribute</div><h3>Inheritance is itself configurable</h3><p>An object’s internal prototype can be read with <code>Object.getPrototypeOf()</code> and, cautiously, changed with <code>Object.setPrototypeOf()</code>. Prefer <code>Object.create()</code> when constructing an object with a chosen prototype from the start.</p></article>
+        <article class="idea"><div class="tag">04 / Well-known Symbols</div><h3>Hooks into language behavior</h3><p>Symbols such as <code>Symbol.iterator</code>, <code>Symbol.toPrimitive</code>, <code>Symbol.hasInstance</code>, and <code>Symbol.toStringTag</code> let objects customize iteration, conversion, <code>instanceof</code>, and default string descriptions. They are protocol hooks, not ordinary string keys.</p></article>
+        <article class="idea"><div class="tag">05 / Template tags</div><h3>Give template literals custom meaning</h3><p>A tag function receives the literal’s string parts and interpolated values, so it can build SQL fragments, HTML-safe strings, localized text, or other domain-specific results rather than a plain string.</p></article>
+        <article class="idea"><div class="tag">06 / Reflect</div><h3>Operations as functions</h3><p><code>Reflect</code> exposes object operations—such as <code>get</code>, <code>set</code>, <code>has</code>, and <code>defineProperty</code>—as functions that report success with return values. It pairs naturally with Proxy handlers, where forwarding to the target is common.</p></article>
+        <article class="idea"><div class="tag">07 / Proxy</div><h3>Intercept fundamental operations</h3><p>A <code>Proxy</code> wraps a target with a handler of traps for operations such as property reads, writes, and enumeration. It can validate, log, provide defaults, or create virtual objects—but traps must respect proxy invariants tied to the target’s non-configurable properties.</p></article>
+        <article class="idea wide"><div class="tag">A practical rule</div><h3>Use the least magical mechanism that solves the problem.</h3><p>Ordinary methods and accessors are easier to read than proxies and redefined descriptors. Reach for metaprogramming when building reusable infrastructure, enforcing invariants, or adapting an object to a protocol—and document the surprising behavior clearly.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive metaprogramming lab</div><h3>See behavior being customized.</h3><p>Choose a mechanism to run a small, self-contained demonstration. Watch how JavaScript operations can be described, intercepted, or redirected.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose a metaprogramming example"><button class="button" data-meta="descriptor">Property descriptor</button><button class="button" data-meta="proxy">Guarding Proxy</button><button class="button" data-meta="reflect">Reflect forwarding</button><button class="button" data-meta="tag">Template tag</button></div>
+        <pre class="lab-output" id="metaOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / guarded-profile.js</span></div><pre><code><span class="kw">const</span> profile = { name: <span class="str">"Mira"</span>, visits: 4 };
+
+<span class="kw">const</span> guardedProfile = <span class="kw">new</span> Proxy(profile, {
+  set(target, property, value, receiver) {
+    <span class="kw">if</span> (property === <span class="str">"visits"</span> &amp;&amp; (!Number.isInteger(value) || value &lt; 0)) {
+      <span class="kw">throw new</span> TypeError(<span class="str">"visits must be a non-negative integer"</span>);
+    }
+    <span class="kw">return</span> Reflect.set(target, property, value, receiver);
+  }
+});
+
+guardedProfile.visits = 5; <span class="comment">// accepted</span>
+console.log(profile.visits);</code></pre><div class="code-foot">Original example: a Proxy trap validates writes and forwards valid operations with Reflect.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter15">
+      <div class="section-head"><div class="section-index">CHAPTER 15 / JAVASCRIPT IN WEB BROWSERS</div><div><h2>The browser is<br>the runtime.</h2><p>This long chapter moves from the core language to the web platform: how scripts load, how events flow, and how JavaScript reads and changes documents, styles, graphics, network data, storage, and history. The DOM is the bridge between JavaScript values and the page a person sees.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Scripts in pages</div><h3>Loading shapes behavior</h3><p>Scripts can be inline or external, classic or module, blocking or deferred. Module scripts are deferred by default and have their own scope; classic scripts share the global <code>window</code> namespace, so name collisions and execution order matter.</p></article>
+        <article class="idea"><div class="tag">02 / Events</div><h3>The page is event-driven</h3><p>Register handlers with <code>addEventListener()</code>. Events travel through capture, target, and bubble phases; handlers can stop propagation or prevent the browser’s default action. Custom events let components communicate in the same style.</p></article>
+        <article class="idea"><div class="tag">03 / Scripting documents</div><h3>Select, inspect, change</h3><p><code>querySelector()</code> and <code>querySelectorAll()</code> find elements with CSS selectors. From there you can traverse relatives, read and set attributes, change text or HTML content, and create, insert, move, or delete nodes.</p></article>
+        <article class="idea"><div class="tag">04 / Scripting CSS</div><h3>Prefer classes over inline styles</h3><p>Toggling classes with <code>classList</code> keeps presentation in stylesheets; inline styles suit one-off dynamic values. <code>getComputedStyle()</code> reports the final applied style, and geometry APIs measure positions and sizes in document or viewport coordinates.</p></article>
+        <article class="idea"><div class="tag">05 / Web Components</div><h3>Reusable custom elements</h3><p>Custom elements, <code>&lt;template&gt;</code>, and Shadow DOM let you build encapsulated components with their own markup and styles. They formalize patterns that component frameworks also use, directly in the platform.</p></article>
+        <article class="idea"><div class="tag">06 / Graphics &amp; media</div><h3>SVG, canvas, and audio</h3><p>SVG is scriptable as DOM; <code>&lt;canvas&gt;</code> offers immediate-mode 2D drawing with paths, transforms, clipping, and pixel access. Audio ranges from simple playback to the WebAudio graph for synthesized and processed sound.</p></article>
+        <article class="idea"><div class="tag">07 / Navigation &amp; networking</div><h3>Move and fetch without reloads</h3><p>The History API (<code>pushState()</code>) updates the URL and back-button behavior for app-like navigation. <code>fetch()</code> returns Promises for HTTP requests; Server-Sent Events and WebSockets provide server push and two-way messaging.</p></article>
+        <article class="idea"><div class="tag">08 / Storage &amp; workers</div><h3>Persist data; move work off-thread</h3><p><code>localStorage</code>/<code>sessionStorage</code> store small string key/value pairs, cookies serve HTTP state, and IndexedDB stores larger structured data. Web Workers run scripts in parallel threads that communicate by message passing, keeping heavy computation off the UI thread.</p></article>
+        <article class="idea wide"><div class="tag">The security model</div><h3>Pages are powerful because they are constrained.</h3><p>The same-origin policy and related rules limit what a script can read from other origins, which is what makes running untrusted code on every page visit acceptable. Keep it in mind whenever you load cross-origin data, embed frames, or handle untrusted HTML—sanitize content you insert into the document.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive DOM playground</div><h3>Script the document, live.</h3><p>These buttons run the same operations the chapter describes—creating nodes, selecting them, and toggling classes—inside the small stage below.</p>
+        <div id="domStage" style="display:grid;gap:8px;margin:14px 0;padding:14px;border:1px solid #263244;border-radius:10px;background:#0b1220"><p class="dom-note" style="margin:0;padding:8px 10px;border-radius:8px;background:#16233c">A note already in the document.</p></div>
+        <div class="lab-buttons" role="group" aria-label="DOM playground controls"><button class="button" id="domAdd">Add a note</button><button class="button" id="domHighlight">Toggle highlight</button><button class="button" id="domRemove">Remove last note</button><button class="button" id="domCount">Count notes</button></div>
+        <pre class="lab-output" id="domOutput" aria-live="polite">The stage above is part of this page’s document. Try the controls.</pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / notes.js</span></div><pre><code><span class="kw">const</span> list = document.querySelector(<span class="str">"#notes"</span>);
+
+document.querySelector(<span class="str">"#add-note"</span>)
+  .addEventListener(<span class="str">"click"</span>, () =&gt; {
+    <span class="kw">const</span> item = document.createElement(<span class="str">"li"</span>);
+    item.textContent = <span class="str">"A note added without reloading the page."</span>;
+    item.classList.add(<span class="str">"note"</span>);
+    list.append(item);
+  });</code></pre><div class="code-foot">Original example: an event handler creates an element, sets its text safely with textContent, styles it via a class, and inserts it into the document.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter16">
+      <div class="section-head"><div class="section-index">CHAPTER 16 / SERVER-SIDE JAVASCRIPT WITH NODE</div><div><h2>Same language.<br>A different host.</h2><p>Node runs JavaScript outside the browser, with bindings to the operating system. The core language is familiar, but the platform APIs are new: processes, files, buffers, streams, networking, child processes, and worker threads—organized around an asynchronous, non-blocking style.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / Node basics</div><h3>Programs, not pages</h3><p>A Node program starts from a script file, reads command-line arguments from <code>process.argv</code> and environment variables from <code>process.env</code>, writes to the console or streams, and exits when no work remains. npm manages the packages such programs depend on.</p></article>
+        <article class="idea"><div class="tag">02 / Async by default</div><h3>Don’t block the event loop</h3><p>Node APIs favor callbacks, Promises, and events over blocking calls, so one process can juggle many connections. Synchronous variants exist (often ending in <code>Sync</code>) and are handy in scripts, but they stall everything while they run—avoid them in servers.</p></article>
+        <article class="idea"><div class="tag">03 / Buffers</div><h3>Raw bytes on the server side</h3><p><code>Buffer</code> is Node’s class for binary data—closely related to <code>Uint8Array</code>—used when reading files and sockets. Convert explicitly between buffers and strings with an encoding such as UTF-8 so bytes are never interpreted by accident.</p></article>
+        <article class="idea"><div class="tag">04 / Events</div><h3>EventEmitter everywhere</h3><p>Many Node objects extend <code>EventEmitter</code>: register listeners with <code>on()</code>, trigger them with <code>emit()</code>, and treat an unhandled <code>'error'</code> event as an exception. This pattern underlies servers, streams, and processes.</p></article>
+        <article class="idea"><div class="tag">05 / Streams</div><h3>Process data in chunks</h3><p>Readable, writable, duplex, and transform streams move data piece by piece instead of all at once. <code>pipe()</code> connects them; respecting backpressure—pausing when the destination is full—keeps memory bounded on large transfers.</p></article>
+        <article class="idea"><div class="tag">06 / Files &amp; processes</div><h3>Working with the operating system</h3><p>The <code>fs</code> and <code>path</code> modules read, write, and inspect files and directories, in callback, Promise, and synchronous forms. Child processes run external commands, and the <code>process</code> and <code>os</code> modules expose platform details.</p></article>
+        <article class="idea"><div class="tag">07 / Networking</div><h3>Clients and servers</h3><p>Node’s <code>http</code> module builds servers and clients from request/response streams—the basis most frameworks extend. Lower-level <code>net</code> sockets support non-HTTP protocols when you need raw TCP.</p></article>
+        <article class="idea"><div class="tag">08 / Worker threads</div><h3>Real parallelism, by message</h3><p>Worker threads run JavaScript in parallel and communicate with <code>postMessage()</code>, MessagePorts, and transferred or shared typed arrays. Unlike browser workers, Node workers can share memory with <code>SharedArrayBuffer</code>—and share its synchronization hazards.</p></article>
+        <article class="idea wide"><div class="tag">The mental shift</div><h3>One thread, many simultaneous operations.</h3><p>Node’s efficiency comes from never waiting idly: start asynchronous operations, register what happens on completion, and keep handlers short. Long CPU-bound work blocks every connection, which is what child processes and worker threads are for.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive Node simulator</div><h3>Server concepts, simulated in the browser.</h3><p>This page can’t run Node, but it can model its ideas. Choose a concept to see the shape of the API and the order in which things happen.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose a Node concept"><button class="button" data-node="emitter">EventEmitter</button><button class="button" data-node="stream">Stream chunks</button><button class="button" data-node="buffer">Buffer bytes</button><button class="button" data-node="process">Process info</button></div>
+        <pre class="lab-output" id="nodeOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / server.mjs</span></div><pre><code><span class="kw">import</span> { createServer } <span class="kw">from</span> <span class="str">"node:http"</span>;
+
+<span class="kw">const</span> server = createServer((request, response) =&gt; {
+  response.writeHead(200, { <span class="str">"Content-Type"</span>: <span class="str">"text/plain"</span> });
+  response.end(<span class="str">"Hello from Node\n"</span>);
+});
+
+server.listen(8080, () =&gt; {
+  console.log(<span class="str">"Listening on http://localhost:8080"</span>);
+});</code></pre><div class="code-foot">Original example: a minimal HTTP server. Each request is an event; the handler writes a response without blocking other connections.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="chapter17">
+      <div class="section-head"><div class="section-index">CHAPTER 17 / TOOLS &amp; EXTENSIONS</div><div><h2>The ecosystem<br>around the language.</h2><p>The final chapter looks beyond the language itself to the tools and extensions that surround professional JavaScript development. They help catch mistakes, standardize style, test behavior, manage dependencies, prepare code for browsers, and add optional type safety.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">01 / ESLint</div><h3>Lint for bugs and consistency</h3><p>ESLint analyzes code without running it and reports suspicious or undesirable patterns—unused variables, accidental globals, risky equality, outdated declarations, and configurable style or correctness rules. Treat lint output as preventative maintenance; fix or consciously configure each warning.</p></article>
+        <article class="idea"><div class="tag">02 / Prettier</div><h3>Formatting without arguments</h3><p>Prettier reformats code into a consistent style automatically. Its value is not one perfect layout but eliminating manual formatting decisions and noisy style diffs so reviews can focus on behavior.</p></article>
+        <article class="idea"><div class="tag">03 / Jest</div><h3>Automated tests close to the code</h3><p>Jest provides a test runner, assertions, mocks, and coverage-oriented tooling. Tests describe expected behavior in executable form, making regressions visible when code changes. Test important behavior and edge cases, not implementation trivia.</p></article>
+        <article class="idea"><div class="tag">04 / npm</div><h3>Packages and reproducible installs</h3><p>npm installs libraries, records direct dependencies in <code>package.json</code>, and uses a lockfile to reproduce an installation. Distinguish runtime dependencies from development tools and audit what a package brings into your project.</p></article>
+        <article class="idea"><div class="tag">05 / Bundlers</div><h3>Many modules, deployable assets</h3><p>Webpack, Rollup, Parcel, and similar bundlers follow module dependencies and produce optimized files for delivery. They may also handle assets, code splitting, minification, and development servers. Bundling is a build concern, distinct from the module syntax itself.</p></article>
+        <article class="idea"><div class="tag">06 / Babel</div><h3>Transpile newer syntax</h3><p>Babel converts modern JavaScript—and some extensions—into code supported by target environments. Syntax transforms differ from polyfills: transforming syntax does not automatically add missing runtime APIs such as a new built-in method.</p></article>
+        <article class="idea"><div class="tag">07 / JSX</div><h3>Markup-shaped expressions</h3><p>JSX, popularized by React, lets markup-like syntax appear in JavaScript expressions; a compiler transforms it into function calls that construct UI descriptions. It is an extension, not standard JavaScript, so it requires a build step.</p></article>
+        <article class="idea"><div class="tag">08 / Flow &amp; type checking</div><h3>Annotations catch mismatches early</h3><p>Flow—and the related, widely used TypeScript approach—adds type annotations so a checker can catch wrong argument types, missing properties, unsafe unions, and similar mistakes before runtime. Types also document APIs, but they do not replace runtime validation of untrusted input.</p></article>
+        <article class="idea wide"><div class="tag">Adopting tools wisely</div><h3>Add tooling when it removes friction or risk.</h3><p>A useful baseline is a formatter, a linter, tests for critical behavior, and a pinned dependency lockfile. Add bundling, transpilation, or types when project needs justify the extra build complexity. Tools serve maintainability; they should not become an end in themselves.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive tool explorer</div><h3>Choose a stage of the workflow.</h3><p>Select a tool to see what it consumes, what it produces, and one practical caution. This is a guided summary, not a live build pipeline.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose a JavaScript tool"><button class="button" data-tool="eslint">ESLint</button><button class="button" data-tool="prettier">Prettier</button><button class="button" data-tool="jest">Jest</button><button class="button" data-tool="npm">npm</button><button class="button" data-tool="bundler">Bundler</button><button class="button" data-tool="babel">Babel</button><button class="button" data-tool="jsx">JSX</button><button class="button" data-tool="flow">Type checking</button></div>
+        <pre class="lab-output" id="toolOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original example / greet.test.js</span></div><pre><code><span class="kw">import</span> { greet } <span class="kw">from</span> <span class="str">"./greet.js"</span>;
+
+test(<span class="str">"greets a person by name"</span>, () =&gt; {
+  expect(greet(<span class="str">"Mira"</span>)).toBe(<span class="str">"Hello, Mira!"</span>);
+});
+
+test(<span class="str">"falls back to a friendly default"</span>, () =&gt; {
+  expect(greet()).toBe(<span class="str">"Hello, friend!"</span>);
+});</code></pre><div class="code-foot">Original example: Jest tests state expected behavior, including a normal case and a fallback case.</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="bonus-modern-js">
+      <div class="section-head"><div class="section-index">BONUS / AFTER THE 7TH EDITION</div><div><h2>JavaScript kept<br>evolving.</h2><p>This is <strong>not a chapter from the book</strong>. It is a short continuation covering important ECMAScript additions standardized after the 7th edition was published, so the guide does not stop in 2020. Support varies by browser and Node version, so treat each feature as something to check before relying on it.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">ES2021 / Everyday conveniences</div><h3>Clearer assignments and replacements</h3><p><code>String.prototype.replaceAll()</code> replaces every match without a global regular expression. Logical assignment operators <code>||=</code>, <code>&amp;&amp;=</code>, and <code>??=</code> assign only when the current value calls for it. <code>Promise.any()</code> succeeds with the first fulfilled promise and reports an <code>AggregateError</code> if all reject.</p></article>
+        <article class="idea"><div class="tag">ES2022 / Classes &amp; modules mature</div><h3>Fields, privacy, and top-level await</h3><p>Classes gained public and private fields, private methods, static fields, and static initialization blocks. Modules can use top-level <code>await</code>. Arrays, strings, and typed arrays gained <code>.at()</code> for negative indexing; <code>Object.hasOwn()</code> provides a safer own-property test; errors can record a <code>cause</code>.</p></article>
+        <article class="idea"><div class="tag">ES2023 / Non-mutating arrays</div><h3>Transformed copies, originals intact</h3><p><code>findLast()</code> and <code>findLastIndex()</code> search from the end. More importantly, <code>toSorted()</code>, <code>toReversed()</code>, <code>toSpliced()</code>, and <code>with()</code> return changed copies instead of mutating the original array—a better fit for immutable state and predictable UI updates.</p></article>
+        <article class="idea"><div class="tag">ES2024 / Grouping &amp; deferred promises</div><h3>Useful data-shaping helpers</h3><p><code>Object.groupBy()</code> and <code>Map.groupBy()</code> collect items under keys returned by a callback. <code>Promise.withResolvers()</code> exposes a promise together with its <code>resolve</code> and <code>reject</code> functions, simplifying cases that previously required an awkward external-variable pattern.</p></article>
+        <article class="idea"><div class="tag">ES2025 / Iterators &amp; sets</div><h3>Lazy pipelines and set algebra</h3><p>Iterator helpers such as <code>map()</code>, <code>filter()</code>, <code>take()</code>, and <code>toArray()</code> process values lazily. Sets gained <code>union()</code>, <code>intersection()</code>, <code>difference()</code>, and related operations. The edition also added <code>Promise.try()</code>, <code>RegExp.escape()</code>, and import attributes for module metadata.</p></article>
+        <article class="idea"><div class="tag">Adoption rule</div><h3>New syntax is not the same as support</h3><p>Babel or TypeScript can often transform newer syntax, but new built-in methods may need a sufficiently new runtime or a polyfill. Check the target browsers and Node version, use feature detection where failure is acceptable, and test the exact features you ship.</p></article>
+        <article class="idea wide"><div class="tag">The through-line since 2020</div><h3>JavaScript is becoming safer around mutation, asynchrony, and data transformation.</h3><p>Recent editions favor returning new values instead of mutating shared data, make asynchronous coordination more ergonomic, and bring common collection operations into the standard library. The fundamentals from Chapters 1–17 still explain the language underneath these additions.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive post-2020 sampler</div><h3>Try a feature from each edition.</h3><p>Select an ECMAScript edition. The demo runs in your browser and reports a friendly message if that feature is not supported there yet.</p>
+        <div class="lab-buttons" role="group" aria-label="Choose an ECMAScript edition"><button class="button" data-modern="es2021">ES2021</button><button class="button" data-modern="es2022">ES2022</button><button class="button" data-modern="es2023">ES2023</button><button class="button" data-modern="es2024">ES2024</button><button class="button" data-modern="es2025">ES2025</button></div>
+        <pre class="lab-output" id="modernOutput" aria-live="polite"></pre>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>original bonus example / reading-list.mjs</span></div><pre><code><span class="kw">class</span> ReadingList {
+  #books = [];
+
+  add(book) {
+    <span class="kw">this</span>.#books.push(book);
+    <span class="kw">return this</span>;
+  }
+
+  get latest() {
+    <span class="kw">return this</span>.#books.at(-1);
+  }
+
+  titlesByLength() {
+    <span class="kw">return this</span>.#books.toSorted((a, b) =&gt; a.length - b.length);
+  }
+}
+
+<span class="kw">const</span> list = <span class="kw">new</span> ReadingList()
+  .add(<span class="str">"Modules"</span>)
+  .add(<span class="str">"Asynchronous JavaScript"</span>);
+
+console.log(list.latest);</code></pre><div class="code-foot">Original bonus example: private class fields, negative indexing with .at(), and non-mutating sorting with .toSorted().</div></div>
+    </section>
+
+    <section class="wrap chapter-two" id="conclusion">
+      <div class="section-head"><div class="section-index">AFTER CHAPTER 17 / THE ROAD AHEAD</div><div><h2>The book ends.<br>The practice begins.</h2><p><em>JavaScript: The Definitive Guide</em>, 7th edition, has 17 chapters; there is no Chapter 18. This concluding section gathers the seventeen summaries into one map of the language, then turns them into a practical next-step plan: review the foundations, build small projects on each platform, and adopt professional tooling as the work grows.</p></div></div>
+      <div class="idea-grid">
+        <article class="idea"><div class="tag">Chapters 1–5 / Foundations</div><h3>Read and control the language</h3><p>Introduction, lexical structure, types and values, expressions and operators, and statements. The goal is fluency: predict what an expression evaluates to, how control flows, and where coercion or scope can surprise you.</p></article>
+        <article class="idea"><div class="tag">Chapters 6–9 / Data &amp; behavior</div><h3>Model things with objects</h3><p>Objects, arrays, functions, and classes. Together they explain how JavaScript stores state, organizes behavior, shares code through prototypes and closures, and builds reusable abstractions.</p></article>
+        <article class="idea"><div class="tag">Chapters 10–14 / Scale &amp; depth</div><h3>Structure larger programs</h3><p>Modules, the standard library, iterators and generators, asynchronous JavaScript, and metaprogramming. These chapters move from writing code to structuring systems: boundaries, lazy sequences, non-blocking work, and controlled customization.</p></article>
+        <article class="idea"><div class="tag">Chapters 15–16 / Platforms</div><h3>Know your host environment</h3><p>Web browsers and Node supply the APIs around the language: DOM and events, networking and storage on the web; files, streams, processes, and servers in Node. Portability comes from knowing which parts are language and which are host.</p></article>
+        <article class="idea"><div class="tag">Chapter 17 / Practice</div><h3>Work like a professional</h3><p>Linting, formatting, testing, package management, bundling, transpilation, JSX, and type checking. Tooling does not replace understanding—it protects it as projects, teams, and dependency graphs grow.</p></article>
+        <article class="idea wide"><div class="tag">How to use this guide now</div><h3>Turn reading into retention.</h3><p>Revisit one chapter at a time, run its interactive demo, then write a tiny program that uses the idea without copying the example. The progress tracker below can help you decide what to review next; it is stored only in your browser on this page.</p></article>
+      </div>
+      <div class="value-lab">
+        <div class="eyebrow">Interactive whole-book tracker</div><h3>Mark chapters as reviewed.</h3><p>Tick off the chapters you have studied. The bar fills as you go, and the hint names the next chapter to revisit. Nothing is uploaded.</p>
+        <div id="chapterChecklist" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:16px 0;font-size:12px"></div>
+        <div style="height:10px;border-radius:99px;background:#26362c;overflow:hidden"><div id="progressFill" style="height:100%;width:0%;background:#b7ef73;transition:width .3s ease"></div></div>
+        <pre class="lab-output" id="progressOutput" aria-live="polite" style="margin-top:12px">0 of 17 chapters reviewed.</pre>
+        <div class="lab-buttons"><button class="button" id="resetProgress">Reset tracker</button></div>
+      </div>
+      <div class="code-card" style="margin-top:18px"><div class="code-head"><span class="dots"><i></i><i></i><i></i></span><span>capstone sketch / study-log.mjs</span></div><pre><code><span class="kw">class</span> StudyLog {
+  #entries = <span class="kw">new</span> Map();
+
+  add(topic, note) {
+    <span class="kw">this</span>.#entries.set(topic, note);
+    <span class="kw">return this</span>;
+  }
+
+  *topics() {
+    <span class="kw">yield*</span> <span class="kw">this</span>.#entries.keys();
+  }
+}
+
+<span class="kw">const</span> log = <span class="kw">new</span> StudyLog()
+  .add(<span class="str">"modules"</span>, <span class="str">"Prefer explicit imports and exports."</span>)
+  .add(<span class="str">"async"</span>, <span class="str">"Handle every rejection path."</span>);
+
+console.log([...log.topics()]);</code></pre><div class="code-foot">Original capstone sketch: classes, private fields, Map, chaining, and a generator working together in a few lines.</div></div>
+      <div class="idea-grid" style="margin-top:18px">
+        <article class="idea"><div class="tag">Next project 01</div><h3>Browser project</h3><p>Build a small interactive page using DOM selection, events, <code>fetch()</code>, and local storage. Add ESLint and Prettier first; write a few Jest tests for any pure helper functions.</p></article>
+        <article class="idea"><div class="tag">Next project 02</div><h3>Node project</h3><p>Write a command-line tool that reads a file with <code>fs/promises</code>, processes it as a stream or in chunks, and prints a report. Publish the entry point as an npm script.</p></article>
+        <article class="idea"><div class="tag">Next project 03</div><h3>Go deeper</h3><p>Follow the book’s own closing suggestions: performance, security, WebAssembly, service workers and progressive web apps, and the wider web platform APIs—choosing depth based on the problems you want to solve.</p></article>
+      </div>
+    </section>
+
+    <section class="takeaway"><div class="wrap takeaway-inner"><div class="section-index">THE TAKEAWAY</div><div><h2>Start broad. Go deep next.</h2><p>Chapter one is a guided orientation rather than a reference checklist. Its strongest advice is practical: try the language, make predictions, and keep moving when a detail gets in the way. The following chapters return to each feature with the precision needed for fluency.</p><div class="source">Study notes and original interactive material · Based on concepts introduced in Chapter 1 of the 7th edition.</div></div></div></section>
+  </main>
+  <footer class="wrap footer"><span>Independent study notes · No book pages or figures reproduced</span><a href="#top">Back to top ↑</a></footer>
+  <script>
+    (() => {
+      const input = document.querySelector('#sampleText');
+      const chart = document.querySelector('#chart');
+      const note = document.querySelector('#countNote');
+      const meta = document.querySelector('#resultMeta');
+      function analyze() {
+        const text = input.value.toUpperCase().replace(/\s/g, '');
+        const counts = new Map();
+        for (const character of text) counts.set(character, (counts.get(character) || 0) + 1);
+        const total = [...counts.values()].reduce((sum, n) => sum + n, 0);
+        const rows = [...counts.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 10);
+        note.textContent = `${total.toLocaleString()} non-whitespace characters`;
+        meta.textContent = `${counts.size} unique`;
+        chart.replaceChildren();
+        if (!total) {
+          const empty = document.createElement('p'); empty.className = 'empty'; empty.textContent = 'Add some text above to see its character profile.'; chart.append(empty); return;
+        }
+        for (const [character, count] of rows) {
+          const row = document.createElement('div'); row.className = 'bar-row';
+          const label = document.createElement('span'); label.textContent = character;
+          const track = document.createElement('div'); track.className = 'bar-track'; track.setAttribute('aria-label', `${character}: ${count} occurrences`);
+          const bar = document.createElement('div'); bar.className = 'bar'; bar.style.width = `${count / rows[0][1] * 100}%`; track.append(bar);
+          const percent = document.createElement('span'); percent.textContent = `${(count / total * 100).toFixed(1)}%`;
+          row.append(label, track, percent); chart.append(row);
+        }
+      }
+      document.querySelector('#analyze').addEventListener('click', analyze);
+      const identifierInput = document.querySelector('#identifierInput');
+      const identifierResult = document.querySelector('#identifierResult');
+      const reserved = new Set(('await break case catch class const continue debugger default delete do else enum export extends false finally for function if implements import in instanceof interface let new null package private protected public return static super switch this throw true try typeof var void while with yield').split(' '));
+      function checkIdentifier() {
+        const name = identifierInput.value.trim();
+        const identifierPattern = /^[$_\p{ID_Start}][$\u200C\u200D_\p{ID_Continue}]*$/u;
+        identifierResult.className = 'identifier-output';
+        if (!name) {
+          identifierResult.textContent = 'Enter a name to check.';
+          return;
+        }
+        if (!identifierPattern.test(name)) {
+          identifierResult.textContent = 'Not a valid simple identifier: check the first character and remove spaces or punctuation.';
+          identifierResult.classList.add('bad');
+        } else if (reserved.has(name)) {
+          identifierResult.textContent = `“${name}” is a reserved word, so it cannot be used as an ordinary binding.`;
+          identifierResult.classList.add('bad');
+        } else {
+          identifierResult.textContent = `“${name}” passes this simple identifier check.`;
+          identifierResult.classList.add('good');
+        }
+      }
+      document.querySelector('#checkIdentifier').addEventListener('click', checkIdentifier);
+      identifierInput.addEventListener('keydown', event => { if (event.key === 'Enter') checkIdentifier(); });
+      checkIdentifier();
+      const valueOutput = document.querySelector('#valueOutput');
+      const examples = {
+        number: () => {
+          const sum = 0.1 + 0.2;
+          return `0.1 + 0.2 → ${sum}\nStrictly equal to 0.3? ${sum === 0.3}\nBinary floating point can’t represent every decimal fraction exactly.`;
+        },
+        coercion: () => `Number("12") → ${Number('12')}\nString(12) → ${String(12)}\nBoolean([]) → ${Boolean([])}\nConversions can be implicit; explicit conversions make intent clearer.`,
+        reference: () => {
+          const first = { status: 'draft' };
+          const second = first;
+          second.status = 'ready';
+          return `const first = { status: "draft" };\nconst second = first;\nsecond.status = "ready";\nfirst.status → "${first.status}"\nBoth bindings point to the same mutable object.`;
+        },
+        binding: () => {
+          const record = { title: 'Notes', pages: 12 };
+          const { title, pages } = record;
+          return `const { title, pages } = { title: "Notes", pages: 12 };\ntitle → "${title}"\npages → ${pages}\nDestructuring binds selected property values to local names.`;
+        }
+      };
+      document.querySelectorAll('[data-case]').forEach(button => {
+        button.addEventListener('click', () => { valueOutput.textContent = examples[button.dataset.case](); });
+      });
+      valueOutput.textContent = examples.number();
+      const expressionOutput = document.querySelector('#expressionOutput');
+      const expressionExamples = {
+        precedence: () => `2 + 3 * 4 → ${2 + 3 * 4}\n(2 + 3) * 4 → ${(2 + 3) * 4}\nMultiplication binds more tightly; parentheses override the default grouping.`,
+        plus: () => `7 + 2 → ${7 + 2}\n"7" + 2 → ${'7' + 2}\nThe plus operator adds numbers or concatenates when string conversion applies.`,
+        logical: () => `0 || "fallback" → ${0 || 'fallback'}\n0 ?? "fallback" → ${0 ?? 'fallback'}\n|| selects on falsiness; ?? selects only when the left side is null or undefined.`,
+        equality: () => `5 === "5" → ${5 === '5'}\n5 == "5" → ${5 == '5'}\nStrict equality avoids coercion; loose equality converts operands.`,
+        optional: () => {
+          const account = { name: 'Mira' };
+          return `account.settings?.theme → ${String(account.settings?.theme)}\naccount.name?.toUpperCase() → ${account.name?.toUpperCase()}\nOptional chaining returns undefined when the value before ?. is nullish.`;
+        }
+      };
+      document.querySelectorAll('[data-expression]').forEach(button => {
+        button.addEventListener('click', () => { expressionOutput.textContent = expressionExamples[button.dataset.expression](); });
+      });
+      expressionOutput.textContent = expressionExamples.precedence();
+      const flowValues = document.querySelector('#flowValues');
+      const flowLimit = document.querySelector('#flowLimit');
+      const flowOutput = document.querySelector('#flowOutput');
+      function runFlow() {
+        const raw = flowValues.value.split(',').map(part => part.trim()).filter(Boolean);
+        const values = raw.map(Number);
+        const limit = Number(flowLimit.value);
+        if (!values.length || values.some(value => !Number.isFinite(value)) || !Number.isFinite(limit)) {
+          flowOutput.textContent = 'Please enter one or more finite numbers and a finite threshold.';
+          return;
+        }
+        const accepted = [];
+        const trace = [];
+        let total = 0;
+        for (const value of values) {
+          if (value % 2 !== 0) {
+            trace.push(`${value}: odd → continue`);
+            continue;
+          }
+          if (value > limit) {
+            trace.push(`${value}: exceeds ${limit} → break (loop ends)`);
+            break;
+          }
+          accepted.push(value);
+          total += value;
+          trace.push(`${value}: accepted; running total = ${total}`);
+        }
+        trace.push(`\nAccepted: ${accepted.length ? accepted.join(', ') : 'none'} | Total: ${total}`);
+        flowOutput.textContent = trace.join('\n');
+      }
+      document.querySelector('#runFlow').addEventListener('click', runFlow);
+      runFlow();
+      const objectOutput = document.querySelector('#objectOutput');
+      const objectExamples = {
+        lookup: () => {
+          const template = { category: 'reference' };
+          const record = Object.create(template);
+          record.title = 'Field notes';
+          return `record.category → "${record.category}" (found through prototype)\nObject.prototype.hasOwnProperty.call(record, "category") → ${Object.prototype.hasOwnProperty.call(record, 'category')}\n"category" in record → ${'category' in record}\nObject.keys(record) → [${Object.keys(record).join(', ')}]`;
+        },
+        spread: () => {
+          const template = { category: 'reference' };
+          const record = Object.create(template);
+          record.title = 'Field notes';
+          const copy = { ...record };
+          return `copy → { ${Object.keys(copy).map(key => `${key}: "${copy[key]}"`).join(', ')} }\ncopy.category → ${String(copy.category)}\nSpread copied own enumerable properties, not the inherited category.`;
+        },
+        enumeration: () => {
+          const prototype = { inherited: 'from prototype' };
+          const record = Object.create(prototype);
+          record.own = 'on the object';
+          const forInKeys = [];
+          for (const key in record) forInKeys.push(key);
+          return `Object.keys(record) → [${Object.keys(record).join(', ')}]\nfor...in keys → [${forInKeys.join(', ')}]\nObject.keys lists own enumerable string keys; for...in also visits inherited enumerable keys.`;
+        },
+        json: () => {
+          const record = { title: 'Field notes', optional: undefined, inspect() { return true; } };
+          return `JSON.stringify(record) →\n${JSON.stringify(record)}\nUndefined-valued and function-valued own properties are omitted by JSON serialization.`;
+        }
+      };
+      document.querySelectorAll('[data-object]').forEach(button => {
+        button.addEventListener('click', () => { objectOutput.textContent = objectExamples[button.dataset.object](); });
+      });
+      objectOutput.textContent = objectExamples.lookup();
+      const arrayValues = document.querySelector('#arrayValues');
+      const arrayOutput = document.querySelector('#arrayOutput');
+      function runArrayExample(action) {
+        const raw = arrayValues.value.split(',').map(part => part.trim()).filter(Boolean);
+        const values = raw.map(Number);
+        if (!values.length || values.some(value => !Number.isFinite(value))) {
+          arrayOutput.textContent = 'Please enter one or more finite numbers, separated by commas.';
+          return;
+        }
+        if (action === 'transform') {
+          const doubled = values.map(value => value * 2);
+          const evens = values.filter(value => value % 2 === 0);
+          const sum = values.reduce((total, value) => total + value, 0);
+          arrayOutput.textContent = `source: ${JSON.stringify(values)}\nmap(x => x * 2): ${JSON.stringify(doubled)}\nfilter(even): ${JSON.stringify(evens)}\nreduce(sum): ${sum}\nmap/filter leave the original array unchanged.`;
+        } else if (action === 'splice') {
+          const copy = values.slice();
+          const removed = copy.splice(Math.min(1, copy.length - 1), 2);
+          arrayOutput.textContent = `source: ${JSON.stringify(values)}\nremoved by splice(): ${JSON.stringify(removed)}\nmutated copy: ${JSON.stringify(copy)}\nsource after editing the copy: ${JSON.stringify(values)}`;
+        } else if (action === 'sort') {
+          const defaultOrder = values.slice().sort();
+          const numericOrder = values.slice().sort((a, b) => a - b);
+          arrayOutput.textContent = `input: ${JSON.stringify(values)}\ndefault sort (string order): ${JSON.stringify(defaultOrder)}\nnumeric comparator: ${JSON.stringify(numericOrder)}\nsort() mutates its receiver, so each result uses a copy.`;
+        } else if (action === 'flatten') {
+          const split = Math.ceil(values.length / 2);
+          const nested = [values.slice(0, split), [values.slice(split)]];
+          arrayOutput.textContent = `nested: ${JSON.stringify(nested)}\nflat(): ${JSON.stringify(nested.flat(2))}\nflat() returns a new array; depth controls how many nesting levels are removed.`;
+        }
+      }
+      document.querySelectorAll('[data-array]').forEach(button => {
+        button.addEventListener('click', () => runArrayExample(button.dataset.array));
+      });
+      runArrayExample('transform');
+      const closureOutput = document.querySelector('#closureOutput');
+      function makeCounter() {
+        let count = 0;
+        return function counter() { return ++count; };
+      }
+      let counter = makeCounter();
+      document.querySelector('#incrementClosure').addEventListener('click', () => {
+        closureOutput.textContent = `counter() → ${counter()}\nThe returned function retains access to its enclosing count.`;
+      });
+      document.querySelector('#resetClosure').addEventListener('click', () => {
+        counter = makeCounter();
+        closureOutput.textContent = 'A fresh closure was created. Counter starts at 0.';
+      });
+      class RectangleLab {
+        constructor(width, height) { this.width = width; this.height = height; }
+        get area() { return this.width * this.height; }
+        scale(factor) { return new RectangleLab(this.width * factor, this.height * factor); }
+      }
+      class SquareLab extends RectangleLab {
+        constructor(side) { super(side, side); }
+      }
+      function runClassDemo() {
+        const width = Number(document.querySelector('#rectWidth').value);
+        const height = Number(document.querySelector('#rectHeight').value);
+        const output = document.querySelector('#classOutput');
+        if (!Number.isFinite(width) || !Number.isFinite(height) || width < 0 || height < 0) {
+          output.textContent = 'Enter finite, non-negative dimensions.';
+          return;
+        }
+        const rectangle = new RectangleLab(width, height);
+        const square = new SquareLab(width);
+        const otherRectangle = new RectangleLab(1, 1);
+        output.textContent = `rectangle.area → ${rectangle.area}\nsquare.area → ${square.area}\nsquare instanceof RectangleLab → ${square instanceof RectangleLab}\nrectangle.scale === otherRectangle.scale → ${rectangle.scale === otherRectangle.scale}\nThe instances keep their own dimensions and share the scale method.`;
+      }
+      document.querySelector('#runClassDemo').addEventListener('click', runClassDemo);
+      runClassDemo();
+      const moduleOutput = document.querySelector('#moduleOutput');
+      const moduleExamples = {
+        esm: `// geometry.js\nexport const double = value => value * 2;\nexport default function clamp(value, min, max) {\n  return Math.min(max, Math.max(min, value));\n}\n\n// app.js\nimport clampValue, { double as twice } from "./geometry.js";\nconsole.log(twice(clampValue(7, 0, 5)));`,
+        commonjs: `// geometry.cjs\nfunction double(value) { return value * 2; }\nfunction clamp(value, min, max) {\n  return Math.min(max, Math.max(min, value));\n}\nmodule.exports = { double, clamp };\n\n// app.cjs\nconst { double: twice, clamp: clampValue } = require("./geometry.cjs");\nconsole.log(twice(clampValue(7, 0, 5)));`
+      };
+      document.querySelectorAll('[data-module]').forEach(button => {
+        button.addEventListener('click', () => { moduleOutput.textContent = moduleExamples[button.dataset.module]; });
+      });
+      moduleOutput.textContent = moduleExamples.esm;
+      const libraryOutput = document.querySelector('#libraryOutput');
+      const libraryExamples = {
+        collections: () => {
+          const unique = [...new Set(['maple', 'oak', 'maple'])];
+          const counts = new Map([['maple', 2], ['oak', 1]]);
+          return `new Set(["maple", "oak", "maple"]) → ${JSON.stringify(unique)}\nnew Map(...).get("maple") → ${counts.get('maple')}\nSet keeps unique values; Map associates arbitrary keys with values.`;
+        },
+        regex: () => {
+          const text = 'Order AB123 is ready; item ZX908 ships tomorrow.';
+          const codes = text.match(/\b[A-Z]{2}\d{3}\b/g) || [];
+          return `text.match(/\\b[A-Z]{2}\\d{3}\\b/g) →\n${JSON.stringify(codes)}\nThe pattern finds two uppercase letters followed by three digits.`;
+        },
+        json: () => {
+          const payload = { name: 'Mira', active: true, note: undefined };
+          const encoded = JSON.stringify(payload);
+          return `JSON.stringify({ name, active, note: undefined }) →\n${encoded}\nJSON omits object properties whose values are undefined.`;
+        },
+        intl: () => {
+          const formatted = new Intl.NumberFormat('nl-NL', { style: 'currency', currency: 'EUR' }).format(1234.5);
+          return `new Intl.NumberFormat("nl-NL", { style: "currency", currency: "EUR" })\n  .format(1234.5) → ${formatted}\nLocale-aware APIs handle grouping and decimal conventions.`;
+        },
+        url: () => {
+          const url = new URL('/search?q=red%20maple&page=2', 'https://example.test');
+          return `const url = new URL("/search?q=red%20maple&page=2", "https://example.test");\nurl.pathname → ${url.pathname}\nurl.searchParams.get("q") → ${url.searchParams.get('q')}\nurl.searchParams.get("page") → ${url.searchParams.get('page')}`;
+        },
+        typed: () => {
+          const bytes = Uint8Array.from([65, 66, 67]);
+          return `Uint8Array.from([65, 66, 67]) → [${[...bytes].join(', ')}]\nBytes rendered as ASCII → ${String.fromCharCode(...bytes)}\nA typed array is a numeric view over binary data.`;
+        }
+      };
+      document.querySelectorAll('[data-library]').forEach(button => {
+        button.addEventListener('click', () => { libraryOutput.textContent = libraryExamples[button.dataset.library](); });
+      });
+      libraryOutput.textContent = libraryExamples.collections();
+      const generatorOutput = document.querySelector('#generatorOutput');
+      function* ticketSequence() {
+        for (let ticket = 40; ticket < 43; ticket++) yield ticket;
+      }
+      let ticketIterator = ticketSequence();
+      document.querySelector('#nextYield').addEventListener('click', () => {
+        const result = ticketIterator.next();
+        generatorOutput.textContent = `ticketSequence().next() → ${JSON.stringify(result)}\n${result.done ? 'Sequence exhausted. Requesting again stays done.' : 'The generator is paused at its yield and can resume on the next request.'}`;
+      });
+      document.querySelector('#resetGenerator').addEventListener('click', () => {
+        ticketIterator = ticketSequence();
+        generatorOutput.textContent = 'Fresh generator created. Request the first value.';
+      });
+      const promiseOutput = document.querySelector('#promiseOutput');
+      const promiseButtons = [document.querySelector('#startPromise'), document.querySelector('#failPromise')];
+      function runPromiseDemo(shouldReject) {
+        promiseButtons.forEach(button => { button.disabled = true; });
+        promiseOutput.textContent = '1. Start task: pending…';
+        const task = new Promise((resolve, reject) => {
+          setTimeout(() => shouldReject ? reject(new Error('The simulated request failed.')) : resolve('New information is ready.'), 700);
+        });
+        promiseOutput.textContent += '\n2. The handler continues immediately; the page can respond to input.';
+        task.then(value => {
+          promiseOutput.textContent += `\n3. Fulfilled: ${value}`;
+          return value.toUpperCase();
+        }).then(uppercase => {
+          promiseOutput.textContent += `\n4. Next step received: ${uppercase}`;
+        }).catch(error => {
+          promiseOutput.textContent += `\n3. Caught rejection: ${error.message}`;
+        }).finally(() => {
+          promiseOutput.textContent += '\n5. finally(): cleanup runs either way.';
+          promiseButtons.forEach(button => { button.disabled = false; });
+        });
+      }
+      document.querySelector('#startPromise').addEventListener('click', () => runPromiseDemo(false));
+      document.querySelector('#failPromise').addEventListener('click', () => runPromiseDemo(true));
+      const metaOutput = document.querySelector('#metaOutput');
+      const metaExamples = {
+        descriptor: () => {
+          const settings = {};
+          Object.defineProperty(settings, 'version', { value: 3, writable: false, enumerable: true, configurable: false });
+          const d = Object.getOwnPropertyDescriptor(settings, 'version');
+          return 'Object.defineProperty(settings, "version", { value: 3, writable: false, enumerable: true, configurable: false })\nDescriptor → ' + JSON.stringify(d) + '\nThe property is visible when enumerated, but its value cannot be reassigned or redefined.';
+        },
+        proxy: () => {
+          const target = { name: 'Mira', visits: 4 };
+          const guarded = new Proxy(target, {
+            set(t, property, value, receiver) {
+              if (property === 'visits' && (!Number.isInteger(value) || value < 0)) throw new TypeError('visits must be a non-negative integer');
+              return Reflect.set(t, property, value, receiver);
+            }
+          });
+          guarded.visits = 5;
+          let rejected = '';
+          try { guarded.visits = -2; } catch (error) { rejected = error.message; }
+          return 'guarded.visits = 5  → accepted; target.visits is now ' + target.visits + '\nguarded.visits = -2 → TypeError: ' + rejected + '\nThe set trap validated the write before forwarding it.';
+        },
+        reflect: () => {
+          const record = { topic: 'reflection', level: 2 };
+          const before = Reflect.get(record, 'level');
+          const ok = Reflect.set(record, 'level', before + 1);
+          return 'Reflect.get(record, "level") → ' + before + '\nReflect.set(record, "level", 3) → ' + ok + '\nrecord.level is now ' + record.level + '. Reflect reports operations as return values.';
+        },
+        tag: () => {
+          function label(strings, name, count) {
+            return strings[0] + name.toUpperCase() + strings[1] + count + strings[2];
+          }
+          const result = label`Welcome, ${'Mira'} — you have ${3} new notes.`;
+          return 'tag`Welcome, ${"Mira"} — you have ${3} new notes.`\n→ ' + result + '\nThe tag function received the string parts plus each interpolated value.';
+        }
+      };
+      document.querySelectorAll('[data-meta]').forEach(button => {
+        button.addEventListener('click', () => { metaOutput.textContent = metaExamples[button.dataset.meta](); });
+      });
+      metaOutput.textContent = metaExamples.descriptor();
+      const domStage = document.querySelector('#domStage');
+      const domOutput = document.querySelector('#domOutput');
+      let domNoteCount = 1;
+      function reportDom(action) {
+        const notes = domStage.querySelectorAll('.dom-note');
+        domOutput.textContent = action + '\ndocument.querySelectorAll(".dom-note") inside the stage → ' + notes.length + ' note(s)';
+      }
+      document.querySelector('#domAdd').addEventListener('click', () => {
+        domNoteCount++;
+        const note = document.createElement('p');
+        note.className = 'dom-note';
+        note.style.cssText = 'margin:0;padding:8px 10px;border-radius:8px;background:#16233c';
+        note.textContent = 'Note #' + domNoteCount + ', created with document.createElement() and appended.';
+        domStage.append(note);
+        reportDom('Created a <p> element, set its textContent, and appended it to the stage.');
+      });
+      document.querySelector('#domHighlight').addEventListener('click', () => {
+        domStage.querySelectorAll('.dom-note').forEach(note => note.classList.toggle('is-highlighted'));
+        reportDom('Toggled the "is-highlighted" class on every note via classList.toggle().');
+      });
+      document.querySelector('#domRemove').addEventListener('click', () => {
+        const notes = domStage.querySelectorAll('.dom-note');
+        if (notes.length === 0) { domOutput.textContent = 'There are no notes left to remove.'; return; }
+        notes[notes.length - 1].remove();
+        reportDom('Removed the last note element from the document.');
+      });
+      document.querySelector('#domCount').addEventListener('click', () => reportDom('Counted the current note elements.'));
+      const nodeOutput = document.querySelector('#nodeOutput');
+      const nodeExamples = {
+        emitter: () => {
+          const listeners = {};
+          const emitter = {
+            on(name, fn) { (listeners[name] ||= []).push(fn); return this; },
+            emit(name, value) { (listeners[name] || []).forEach(fn => fn(value)); }
+          };
+          const lines = [];
+          emitter.on('request', path => lines.push('listener received request for ' + path));
+          emitter.emit('request', '/about');
+          emitter.emit('request', '/notes');
+          return "emitter.on('request', handler)\nemitter.emit('request', '/about')\nemitter.emit('request', '/notes')\n→ " + lines.join('\n→ ') + '\nNode servers and streams dispatch work exactly this way.';
+        },
+        stream: () => {
+          const chunks = ['chunk 1: "Hello, "', 'chunk 2: "streamed "', 'chunk 3: "world."'];
+          const received = [];
+          for (const chunk of chunks) received.push(chunk);
+          return 'A readable stream delivers data piece by piece:\n' + chunks.join('\n') + '\nJoined by the consumer → "Hello, streamed world."\nNothing required the whole input to be in memory at once.';
+        },
+        buffer: () => {
+          const bytes = new TextEncoder().encode('Node');
+          return 'Buffer.from("Node", "utf8") holds raw bytes:\n[' + [...bytes].join(', ') + ']  (N, o, d, e as UTF-8 codes)\nDecoded back → "' + new TextDecoder().decode(bytes) + '"\nBuffers are how files and sockets represent data before it becomes a string.';
+        },
+        process: () => 'A Node script inspects its own process:\nprocess.argv   → ["node", "app.mjs", ...your arguments]\nprocess.env    → environment variables such as PORT or NODE_ENV\nprocess.cwd()  → the directory the program was launched from\nThis browser page has no process object; it is simulated here from the chapter description.'
+      };
+      document.querySelectorAll('[data-node]').forEach(button => {
+        button.addEventListener('click', () => { nodeOutput.textContent = nodeExamples[button.dataset.node](); });
+      });
+      nodeOutput.textContent = nodeExamples.emitter();
+      const toolOutput = document.querySelector('#toolOutput');
+      const toolExamples = {
+        eslint: 'ESLint\nInput: source files plus a rule configuration.\nOutput: findings such as unused variables or accidental loose equality.\nWatch for: disabling rules broadly can hide useful feedback.',
+        prettier: 'Prettier\nInput: syntactically valid source code.\nOutput: the same program in a consistent layout.\nWatch for: formatting is not bug detection; pair it with linting.',
+        jest: 'Jest\nInput: test files that call functions and state expectations.\nAssertion example: expect(greet("Mira")).toBe("Hello, Mira!");\nOutput: passing or failing test suites.\nWatch for: tests prove the cases you chose, not every possible input.',
+        npm: 'npm\nInput: package names and version ranges.\nOutput: installed packages plus package.json and a lockfile.\nWatch for: every dependency adds maintenance and supply-chain surface.',
+        bundler: 'Bundler (webpack, Rollup, Parcel, and others)\nInput: an entry module and its dependency graph.\nOutput: deployable bundle files, sometimes split into chunks.\nWatch for: importing non-JavaScript assets depends on bundler-specific features.',
+        babel: 'Babel\nInput: JavaScript using newer syntax or a supported extension.\nOutput: equivalent JavaScript for chosen target environments.\nWatch for: syntax transforms do not automatically supply missing runtime APIs.',
+        jsx: 'JSX\nInput: markup-shaped expressions inside JavaScript.\nConceptual transform: &lt;h1&gt;Hello&lt;/h1&gt; becomes a function call that describes UI.\nOutput: ordinary JavaScript after compilation.\nWatch for: JSX needs a compiler and is not native browser syntax.',
+        flow: 'Flow / static type checking\nInput: JavaScript with type annotations.\nExample intent: a function declares that it accepts a string and returns a string.\nOutput: errors when code passes incompatible values.\nWatch for: compile-time types do not validate untrusted runtime data.'
+      };
+      // Convert the two intentional JSX entity markers back to readable angle text in the pre element.
+      toolExamples.jsx = toolExamples.jsx.replaceAll('&lt;', '<').replaceAll('&gt;', '>');
+      document.querySelectorAll('[data-tool]').forEach(button => {
+        button.addEventListener('click', () => { toolOutput.textContent = toolExamples[button.dataset.tool]; });
+      });
+      toolOutput.textContent = toolExamples.eslint;
+      const modernOutput = document.querySelector('#modernOutput');
+      function modernResult(title, lines) { return title + '\n' + lines.join('\n'); }
+      const modernExamples = {
+        es2021: () => {
+          const settings = { theme: undefined, retries: 0 };
+          settings.theme ??= 'dark';
+          settings.retries ||= 3;
+          const phrase = 'red maple, red oak'.replaceAll('red', 'young');
+          return modernResult('ES2021 — logical assignment and replaceAll()', [
+            'settings.theme ??= "dark"  → ' + settings.theme,
+            'settings.retries ||= 3      → ' + settings.retries + ' (0 is falsy, so it is replaced)',
+            '"red maple, red oak".replaceAll("red", "young") → "' + phrase + '"'
+          ]);
+        },
+        es2022: () => {
+          const chapters = ['values', 'objects', 'modules'];
+          const record = { title: 'Modules' };
+          return modernResult('ES2022 — .at() and Object.hasOwn()', [
+            'chapters.at(-1) → ' + chapters.at(-1),
+            'Object.hasOwn(record, "title") → ' + Object.hasOwn(record, 'title'),
+            'Private class fields use #name and are inaccessible outside the class.'
+          ]);
+        },
+        es2023: () => {
+          const scores = [4, 9, 6];
+          const sorted = scores.toSorted((a, b) => a - b);
+          return modernResult('ES2023 — non-mutating array methods', [
+            'scores = [' + scores.join(', ') + ']',
+            'scores.toSorted((a, b) => a - b) → [' + sorted.join(', ') + ']',
+            'scores afterwards → [' + scores.join(', ') + '] (unchanged)',
+            'scores.findLast(n => n > 5) → ' + scores.findLast(n => n > 5)
+          ]);
+        },
+        es2024: () => {
+          if (typeof Object.groupBy !== 'function' || typeof Promise.withResolvers !== 'function') return 'ES2024 demo: Object.groupBy() or Promise.withResolvers() is not supported in this browser yet.';
+          const grouped = Object.groupBy(['maple', 'oak', 'mint'], word => word.length);
+          const { promise, resolve } = Promise.withResolvers();
+          resolve('resolved when the code decides');
+          return promise.then(value => modernResult('ES2024 — grouping and Promise.withResolvers()', [
+            'Object.groupBy(["maple", "oak", "mint"], word => word.length)',
+            '→ keys ' + Object.keys(grouped).join(', ') + '; group 5 → ' + grouped[5].join(', '),
+            'Promise.withResolvers() → ' + value
+          ]));
+        },
+        es2025: () => {
+          const ready = new Set(['maple', 'oak']);
+          const requested = new Set(['oak', 'mint']);
+          if (typeof requested.union !== 'function' || typeof Iterator === 'undefined') return 'ES2025 demo: Set methods or iterator helpers are not supported in this browser yet. In supporting runtimes, union combines sets and iterator helpers transform values lazily.';
+          const combined = [...requested.union(ready)];
+          const lengths = Iterator.from(combined).map(word => word.length).toArray();
+          return modernResult('ES2025 — Set operations and iterator helpers', [
+            'new Set(["oak", "mint"]).union(new Set(["maple", "oak"])) → [' + combined.join(', ') + ']',
+            'Iterator.from(combined).map(word => word.length).toArray() → [' + lengths.join(', ') + ']',
+            'The iterator pipeline stays lazy until a terminal operation asks for values.'
+          ]);
+        }
+      };
+      document.querySelectorAll('[data-modern]').forEach(button => {
+        button.addEventListener('click', async () => {
+          modernOutput.textContent = await modernExamples[button.dataset.modern]();
+        });
+      });
+      modernOutput.textContent = modernExamples.es2023();
+      const chapterTitles = ['Introduction', 'Lexical Structure', 'Types, Values & Variables', 'Expressions & Operators', 'Statements', 'Objects', 'Arrays', 'Functions', 'Classes', 'Modules', 'Standard Library', 'Iterators & Generators', 'Asynchronous JavaScript', 'Metaprogramming', 'JavaScript in Web Browsers', 'Server-Side Node', 'Tools & Extensions'];
+      const checklist = document.querySelector('#chapterChecklist');
+      const progressFill = document.querySelector('#progressFill');
+      const progressOutput = document.querySelector('#progressOutput');
+      chapterTitles.forEach((title, index) => {
+        const label = document.createElement('label');
+        label.style.cssText = 'display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border:1px solid #3a4a40;border-radius:6px;background:#101a16;cursor:pointer';
+        const box = document.createElement('input');
+        box.type = 'checkbox'; box.dataset.chapterBox = String(index + 1); box.style.marginTop = '2px';
+        const text = document.createElement('span');
+        text.textContent = 'Ch. ' + (index + 1) + ' — ' + title;
+        label.append(box, text); checklist.append(label);
+      });
+      function updateProgress() {
+        const boxes = [...checklist.querySelectorAll('input[type="checkbox"]')];
+        const done = boxes.filter(box => box.checked).length;
+        progressFill.style.width = Math.round(done / boxes.length * 100) + '%';
+        const next = boxes.findIndex(box => !box.checked);
+        progressOutput.textContent = done + ' of ' + boxes.length + ' chapters reviewed.' + (next === -1 ? '\nAll 17 chapters marked reviewed. Revisit the interactive demos any time.' : '\nNext to review: Chapter ' + (next + 1) + ' — ' + chapterTitles[next] + '.');
+      }
+      checklist.addEventListener('change', updateProgress);
+      document.querySelector('#resetProgress').addEventListener('click', () => {
+        checklist.querySelectorAll('input[type="checkbox"]').forEach(box => { box.checked = false; });
+        updateProgress();
+      });
+      updateProgress();
+      analyze();
+    })();
+  </script>
+</body>
+</html>
