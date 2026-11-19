@@ -5,7 +5,7 @@ Study notes from the JavaScript books in this repository.
 ## Chapter summaries
 
 - **[index.html](index.html)** — Chapter summaries of *Secrets of the JavaScript Ninja, Third Edition*
-  (MEAP V10), in one self-contained HTML page with a five-tab chapter switcher:
+  (MEAP V10), in one self-contained HTML page with a six-tab chapter switcher:
   - **Chapter 1 — JavaScript is everywhere** (printed pp. 1–16)
   - **Chapter 2 — Using modern JavaScript tools** (printed pp. 17–43): TypeScript, ESLint, Prettier,
     Husky — listings 2.1–2.15
@@ -18,14 +18,17 @@ Study notes from the JavaScript books in this repository.
   - **Chapter 5 — First-class functions for the novice** (printed pp. 77–114): the six ways to
     define functions, IIFEs, arrow functions, callbacks, sets/metadata/memoization, rest and
     default parameters, and TypeScript for functions — figures 5.1–5.6 and listings 5.1–5.18
+  - **Chapter 6 — Functions for the journeyman** (printed pp. 115–134): the `this` parameter, the
+    four invocation styles, constructors and `new.target`, `call`/`apply`, unbound methods,
+    `bind` and lexical `this` — figures 6.1–6.2 and listings 6.1–6.5
 
   The book’s figure and note icons are embedded as data URIs, and every code listing is reproduced
   with its `#A`–`#E` callouts. No external requests, so the file works offline or opened from disk.
 
 ### Assets
 
-The extracted images also live in `assets/chapter1/`, `assets/chapter4/` and
-`assets/chapter5/` as standalone files:
+The extracted images also live in `assets/chapter1/`, `assets/chapter4/`, `assets/chapter5/`
+and `assets/chapter6/` as standalone files:
 
 | File | Used for |
 | --- | --- |
@@ -36,13 +39,15 @@ The extracted images also live in `assets/chapter1/`, `assets/chapter4/` and
 | `chapter4/figure-4-*.png` | The same figures at the PDF’s native resolution |
 | `chapter5/figure-5-*.webp` | Figures 5.1–5.6 (WebP, 900 px wide) |
 | `chapter5/figure-5-*.png` | The same figures at the PDF’s native resolution |
+| `chapter6/figure-6-*.webp` | Figures 6.1–6.2 (WebP, 900 px wide) |
+| `chapter6/figure-6-*.png` | The same figures at the PDF’s native resolution |
 
 `index.html` does not depend on those files — it embeds them inline (figure PNGs as WebP data
 URIs to keep the page small), so it works when opened directly from disk, offline, or on its own.
 
 ### Source books
 
-- Secrets of the JavaScript Ninja, Third Edition (MEAP V10) — chapters 1–5 summarised
+- Secrets of the JavaScript Ninja, Third Edition (MEAP V10) — chapters 1–6 summarised
 - Eloquent JavaScript, 4th Edition
 - JavaScript: The Definitive Guide, 7th Edition
 - You Don’t Know JS Yet: Get Started

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapters 1–5 | Secrets of the JavaScript Ninja, 3rd Edition</title>
-<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–5: “JavaScript is everywhere”, “Using modern JavaScript tools”, “Working with Node.js and npm”, “Building web applications” and “First-class functions for the novice”, with the book’s figures, icons and code listings embedded.">
+<title>Chapters 1–6 | Secrets of the JavaScript Ninja, 3rd Edition</title>
+<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–6, from “JavaScript is everywhere” to “Functions for the journeyman”, with the book’s figures, icons and code listings embedded.">
 <style>
   :root{
     --ink:#14161a;
@@ -337,7 +337,7 @@
   <div class="wrap">
     <p class="kicker">Secrets of the JavaScript Ninja · Third Edition · MEAP V10</p>
     <h1>Chapter summaries
-      <span class="thin">Chapters 1–5 — “JavaScript is everywhere” · “Using modern JavaScript tools” · “Working with Node.js and npm” · “Building web applications” · “First-class functions for the novice”, with the book’s figures, icons and every code listing reproduced.</span>
+      <span class="thin">Chapters 1–6 — from “JavaScript is everywhere” through “First-class functions for the novice” to “Functions for the journeyman: understanding function invocation”, with the book’s figures, icons and every code listing reproduced.</span>
     </h1>
     <p class="byline">
       <strong>Trevor Burnham</strong>, with Bear Bibeault, Josip Maras &amp; John Resig ·
@@ -368,6 +368,11 @@
       <li role="presentation">
         <button type="button" role="tab" id="tab-5" aria-controls="chapter-5" aria-selected="false" data-target="chapter-5">
           <span class="n">Ch 5</span> First-class functions
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-6" aria-controls="chapter-6" aria-selected="false" data-target="chapter-6">
+          <span class="n">Ch 6</span> Function invocation
         </button>
       </li>
     </ul>
@@ -489,6 +494,24 @@
         <li class="sub"><a href="#c5-tsdoc">5.5.4 Documenting with TSDoc</a></li>
         <li><a href="#c5-summary"><span class="mono">5.6</span> Summary</a></li>
         <li><a href="#c5-source">Source</a></li>
+      </ol>
+    </nav>
+
+    <nav class="toc" id="toc-6" aria-label="Chapter 6 contents" hidden>
+      <h2>Chapter 6 · on this page</h2>
+      <ol>
+        <li><a href="#c6-intro">This chapter covers</a></li>
+        <li><a href="#c6-this"><span class="mono">6.1</span> The this parameter</a></li>
+        <li><a href="#c6-invoking"><span class="mono">6.2</span> Invoking functions</a></li>
+        <li class="sub"><a href="#c6-standalone">6.2.1 As a standalone function</a></li>
+        <li class="sub"><a href="#c6-method">6.2.2 As a method</a></li>
+        <li class="sub"><a href="#c6-constructor">6.2.3 As a constructor</a></li>
+        <li class="sub"><a href="#c6-call-apply">6.2.4 With apply and call</a></li>
+        <li><a href="#c6-fixing"><span class="mono">6.3</span> Fixing function contexts</a></li>
+        <li class="sub"><a href="#c6-bind">6.3.1 Using bind</a></li>
+        <li class="sub"><a href="#c6-arrows">6.3.2 Using arrow functions</a></li>
+        <li><a href="#c6-summary"><span class="mono">6.4</span> Summary</a></li>
+        <li><a href="#c6-source">Source</a></li>
       </ol>
     </nav>
 
@@ -5066,7 +5089,817 @@ console.<span class="tok-fn">assert</span>(<span class="tok-fn">compare</span>(<
         </p>
       </section>
 
-      <p class="chapter-next"><button type="button" class="back" data-goto="chapter-4"><span class="n">Back</span> ← Chapter 4 — Building web applications</button></p>
+      <p class="chapter-next">
+        <button type="button" class="back" data-goto="chapter-4"><span class="n">Back</span> ← Chapter 4 — Building web applications</button>
+        <span class="spacer"></span>
+        <button type="button" data-goto="chapter-6"><span class="n">Next</span> Chapter 6 — Function invocation →</button>
+      </p>
+
+      </div>
+
+      <div class="chapter" id="chapter-6" data-chapter="6" hidden>
+
+      <section class="chapter-head" id="c6-intro">
+        <p class="kicker">Chapter 6</p>
+        <h2 class="chapter-title">Functions for the journeyman: understanding function invocation</h2>
+        <div class="card">
+          <h4>This chapter covers</h4>
+          <ul>
+            <li>An implicit function parameter: <code>this</code></li>
+            <li>Ways of invoking functions</li>
+            <li>Constructors</li>
+          </ul>
+        </div>
+        <p>
+          In the previous chapter you saw that JavaScript has significant functionally oriented
+          characteristics: we explored the difference between function call <em>arguments</em> and function
+          <em>parameters</em>, and how values are transferred from one to the other.
+        </p>
+        <p>
+          This chapter introduces the oft-misunderstood <code>this</code> keyword, which can be thought of as an
+          <strong>implicit function parameter</strong>. Rather than having a fixed value for a given function,
+          <code>this</code> varies based on how the function is called. We’ll look at different ways of calling
+          functions — including <code>call</code> and <code>apply</code> — and how they affect <code>this</code>; at how
+          <code>new</code> invokes a function as a constructor; at how functions can be bound to a particular value of
+          <code>this</code>; and at how arrow functions sidestep <code>this</code> entirely.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Do you know?</h4>
+          <ul>
+            <li>Why is the <code>this</code> parameter known as the function context?</li>
+            <li>What’s the difference between a function and a method?</li>
+            <li>What would happen if a constructor function explicitly returned an object?</li>
+          </ul>
+        </div>
+
+        <div class="card sidebar">
+          <h4>The arguments parameter</h4>
+          <p>
+            Previous editions covered another implicit function argument: <code>arguments</code>, an array-like
+            object containing all arguments passed to the function. Before ES2015 it was essential, being the only
+            way to handle an arbitrary number of arguments. After ES2015 introduced rest parameters (chapter 5),
+            its use fell out of fashion, so this book doesn’t use it.
+          </p>
+          <p>
+            If you’re curious, read up on it at
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments">MDN</a>.
+          </p>
+        </div>
+      </section>
+
+      <section id="c6-this">
+        <h2><span class="num">6.1</span> The this parameter: introducing the function context</h2>
+        <p>
+          When a function is invoked, in addition to the parameters representing the explicit arguments in the call,
+          an implicit parameter named <code>this</code> is passed to the function. It refers to an object associated
+          with the invocation, which is why it’s often termed the <strong>function context</strong>.
+        </p>
+        <p>
+          Developers coming from object-oriented languages such as Java might think they understand the notion: there
+          <code>this</code> usually points to an instance of the class in which the method is defined — a common use
+          case in modern JavaScript too:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 6.1 — Using this in class methods</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">class</span> <span class="tok-fn">Ninja</span> {
+  #skillLevel = <span class="tok-num">0</span>;                <span class="tok-com">// #A</span>
+
+  <span class="tok-fn">train</span>() {                        <span class="tok-com">// #B</span>
+    <span class="tok-kw">this</span>.#skillLevel++;            <span class="tok-com">// #B</span>
+  }                                <span class="tok-com">// #B</span>
+
+  <span class="tok-kw">get</span> <span class="tok-fn">skillLevel</span>() {              <span class="tok-com">// #C</span>
+    <span class="tok-kw">return</span> <span class="tok-kw">this</span>.#skillLevel;       <span class="tok-com">// #C</span>
+  }                                <span class="tok-com">// #C</span>
+}
+
+<span class="tok-kw">const</span> ninja = <span class="tok-kw">new</span> <span class="tok-fn">Ninja</span>();
+console.<span class="tok-fn">assert</span>(ninja.skillLevel === <span class="tok-num">0</span>,
+  <span class="tok-str">"New ninja has skill level 0"</span>);
+
+ninja.<span class="tok-fn">train</span>();
+console.<span class="tok-fn">assert</span>(ninja.skillLevel === <span class="tok-num">1</span>,
+  <span class="tok-str">"Skill level improves with training"</span>);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The <code>#</code> prefix denotes a private property</div>
+            <div><b>#B</b> A public method</div>
+            <div><b>#C</b> A public getter (the <code>get</code> syntax defines a method invoked when accessing a property; getters and setters are covered in chapter 9)</div>
+          </div>
+        </div>
+
+        <p>
+          Here <code>this</code> works straightforwardly, as in other languages, letting class methods reference the
+          instance they’re called on. <strong>But beware:</strong> invoking a function as a method is only <em>one</em> way
+          a function can be invoked. What <code>this</code> points to isn’t — as in Java or C# — defined only by how
+          and where the function is defined; it can also be influenced by <em>how the function is invoked</em>.
+        </p>
+        <p>
+          A key difference from traditional object-oriented languages is that functions — including class methods —
+          can be freely assigned to variables. This is a common case where intuitions about <code>this</code> break
+          down, leading to runtime errors:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>An unbound method</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> ninja = <span class="tok-kw">new</span> <span class="tok-fn">Ninja</span>();
+<span class="tok-kw">const</span> trainNinja = ninja.train;
+<span class="tok-fn">trainNinja</span>(); <span class="tok-com">// Error!</span></code></pre>
+        </div>
+
+        <p>
+          When this code runs, the <code>train</code> method executes but throws an error because <code>this</code>
+          is <code>undefined</code>. (That assumes your code runs in strict mode — which it should if you use
+          TypeScript with reasonable configuration. Without strict mode you’ll see a different, more confusing
+          error; strict mode’s effect on <code>this</code> is discussed later in the chapter.)
+        </p>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              The typescript-eslint rule
+              <a href="https://typescript-eslint.io/rules/unbound-method/">unbound-method</a> detects exactly this
+              issue — it would flag assigning the method to a variable as a potential problem.</p>
+          </div>
+        </div>
+
+        <p>
+          Since the dawn of JavaScript, countless developers have hit this and wondered: “All I did was assign a
+          function to a variable. Why on Earth did that change its behaviour?” It’s important to understand that the
+          reassignment isn’t the problem in itself. Consider this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Reassigning onto an object works fine</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> ninja = <span class="tok-kw">new</span> <span class="tok-fn">Ninja</span>();
+<span class="tok-kw">const</span> trainCopy = ninja.train;
+ninja.trainCopy = trainCopy;
+ninja.<span class="tok-fn">trainCopy</span>(); <span class="tok-com">// Works!</span></code></pre>
+        </div>
+
+        <p>
+          TypeScript will complain if you add a method to a class instance this way, because the method isn’t part of
+          the instance’s type. But it’s valid JavaScript, and the reassigned <code>train</code> function is perfectly
+          functional. The difference is <strong>how it’s invoked</strong>.
+        </p>
+      </section>
+
+      <section id="c6-invoking">
+        <h2><span class="num">6.2</span> Invoking functions</h2>
+        <p>The way a function is invoked determines how the <code>this</code> parameter — the function context — is established. There are four ways, each with its own nuances:</p>
+        <ul>
+          <li><strong>As a standalone function</strong> — <code>skulk()</code></li>
+          <li><strong>As a method</strong> — <code>ninja.skulk()</code>, which ties the invocation to an object</li>
+          <li><strong>As a constructor</strong> — <code>new Ninja()</code>, in which a new object is brought into being</li>
+          <li><strong>Via the apply or call methods</strong> — <code>skulk.call(ninja)</code> or <code>skulk.apply(ninja)</code></li>
+        </ul>
+
+        <div class="listing">
+          <div class="bar"><span>All four invocation styles</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">skulk</span>(name) {}
+<span class="tok-kw">function</span> <span class="tok-fn">Ninja</span>(name) {}
+
+<span class="tok-fn">skulk</span>(<span class="tok-str">"Hattori"</span>);                  <span class="tok-com">// #A</span>
+(<span class="tok-kw">function</span> (who) {                <span class="tok-com">// #A</span>
+  <span class="tok-kw">return</span> who;                  <span class="tok-com">// #A</span>
+})(<span class="tok-str">"Hattori"</span>);                   <span class="tok-com">// #A</span>
+
+<span class="tok-kw">const</span> ninja = {
+  <span class="tok-fn">skulk</span>: <span class="tok-kw">function</span> () {},
+};
+ninja.<span class="tok-fn">skulk</span>(<span class="tok-str">"Hattori"</span>);             <span class="tok-com">// #B</span>
+
+ninja = <span class="tok-kw">new</span> <span class="tok-fn">Ninja</span>(<span class="tok-str">"Hattori"</span>);          <span class="tok-com">// #C</span>
+
+skulk.<span class="tok-fn">call</span>(ninja, <span class="tok-str">"Hattori"</span>);         <span class="tok-com">// #D</span>
+skulk.<span class="tok-fn">apply</span>(ninja, [<span class="tok-str">"Hattori"</span>]);        <span class="tok-com">// #E</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Invoked as a function</div>
+            <div><b>#B</b> Invoked as a method of <code>ninja</code></div>
+            <div><b>#C</b> Invoked as a constructor</div>
+            <div><b>#D</b> Invoked via the <code>call</code> method</div>
+            <div><b>#E</b> Invoked via the <code>apply</code> method</div>
+          </div>
+        </div>
+
+        <p>
+          Note that getters and setters are always called as a method. The only way to invoke them separately from
+          the object they’re attached to is to extract them with something like
+          <code>Object.getOwnPropertyDescriptor</code>, covered in chapter 9.
+        </p>
+
+        <h3 id="c6-standalone"><span class="num">6.2.1</span> Invocation as a standalone function</h3>
+        <p>
+          When a function isn’t invoked as a method, as a constructor, or via <code>apply</code>/<code>call</code>, we
+          say it’s invoked as a <strong>standalone function</strong>. This happens when we use <code>()</code> — with or
+          without arguments — after an expression that references the function on its own. (If the function is a
+          property of an object, the call is a method invocation.)
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Standalone invocations</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">ninja</span>(){};             <span class="tok-com">// #A</span>
+<span class="tok-fn">ninja</span>();                        <span class="tok-com">// #A</span>
+
+<span class="tok-kw">const</span> samurai = <span class="tok-kw">function</span>(){};   <span class="tok-com">// #B</span>
+<span class="tok-fn">samurai</span>();                      <span class="tok-com">// #B</span>
+
+(<span class="tok-kw">function</span>(){})()                  <span class="tok-com">// #C</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Function declaration invoked as a function</div>
+            <div><b>#B</b> Function expression invoked as a function</div>
+            <div><b>#C</b> Immediately invoked function expression</div>
+          </div>
+        </div>
+
+        <p>
+          Typically, the value of <code>this</code> for a non-arrow function invoked standalone is
+          <code>undefined</code>. (Arrow functions behave completely differently, as we’ll see.) There are a few
+          exceptions:
+        </p>
+        <ol>
+          <li>If the function has been bound to a context with <code>bind</code>, <code>this</code> matches that context regardless of how it’s invoked.</li>
+          <li>If strict mode isn’t enabled, <code>this</code> is the global object instead of <code>undefined</code>.</li>
+        </ol>
+        <p>
+          A word on strict mode. It arrived in ECMAScript 5 (2009) to correct aspects of the language that had come
+          to be regarded as mistakes; the behaviour of <code>this</code> in standalone functions is a prime example.
+          Originally, code referencing <code>this.someProperty</code> in a standalone function would silently
+          misbehave (the global <code>someProperty</code> is <code>undefined</code>) instead of failing clearly and
+          immediately (accessing a property of <code>undefined</code> throws).
+        </p>
+        <p>
+          Fortunately strict mode has become the norm. You can ensure it by adding <code>"use strict"</code> at the top
+          of a module, but you probably don’t have to: TypeScript emits the directive by default, as do popular
+          transpilers like Babel, and ECMAScript modules run in strict mode even without it (ESM is covered in
+          chapter 13). Thanks to strict mode, the behaviour of <code>this</code> in standalone calls is
+          straightforward: <strong><code>undefined</code> unless explicitly set with <code>bind</code></strong>.
+        </p>
+
+        <h3 id="c6-method"><span class="num">6.2.2</span> Invocation as a method</h3>
+        <p>
+          When a non-arrow function is assigned to a property of an object and invoked by referencing the function
+          through that property, the function is invoked as a <strong>method</strong> of that object:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Method invocation</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> ninja = {};
+ninja.skulk = <span class="tok-kw">function</span>(){};
+ninja.<span class="tok-fn">skulk</span>();</code></pre>
+        </div>
+
+        <p>
+          When we invoke a function as a method of an object, that object becomes the function context and is
+          available inside the function via <code>this</code>. The next listing illustrates the differences and
+          similarities between invocation as a function and as a method.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 6.2 — The differences between function and method invocations</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-str">"use strict"</span>;                        <span class="tok-com">// #A</span>
+
+<span class="tok-kw">function</span> <span class="tok-fn">whatsMyContext</span>() {            <span class="tok-com">// #B</span>
+  <span class="tok-kw">return</span> <span class="tok-kw">this</span>;                       <span class="tok-com">// #B</span>
+}                                    <span class="tok-com">// #B</span>
+
+console.<span class="tok-fn">assert</span>(<span class="tok-fn">whatsMyContext</span>() === <span class="tok-kw">undefined</span>, <span class="tok-str">"Context is undefined"</span>);
+
+<span class="tok-kw">const</span> ninja1 = {                     <span class="tok-com">// #C</span>
+  getMyThis: whatsMyContext,         <span class="tok-com">// #C</span>
+};                                   <span class="tok-com">// #C</span>
+
+console.<span class="tok-fn">assert</span>(ninja1.<span class="tok-fn">getMyThis</span>() === ninja1, <span class="tok-str">"Working with 1st ninja"</span>);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Enables strict mode for this module</div>
+            <div><b>#B</b> Returns the function context, which we can examine from outside</div>
+            <div><b>#C</b> Creates an object with <code>whatsMyContext</code> set as a method called <code>getMyThis</code></div>
+          </div>
+        </div>
+
+        <p>
+          The power of <code>this</code> in JavaScript is its flexibility: a function that references
+          <code>this</code> can be attached to any object and then invoked as a method of that object. But there are
+          traps worth watching out for:
+        </p>
+        <ul>
+          <li>
+            Only functions defined with the function declaration and function expression syntax receive their
+            attached object as <code>this</code> when invoked as methods. Arrow functions and bound functions follow
+            their own rules, discussed later.
+          </li>
+          <li>
+            Only functions called with <strong>dot notation</strong>, like <code>ninja1.getMyThis()</code>, receive their
+            attached object as <code>this</code>. Called with bracket notation, like <code>ninja1["getMyThis"]()</code>,
+            a function behaves as if it were called standalone.
+          </li>
+        </ul>
+
+        <h3 id="c6-constructor"><span class="num">6.2.3</span> Invocation as a constructor</h3>
+        <p>In modern JavaScript development you’ll typically see constructors defined as part of a class:</p>
+
+        <div class="listing">
+          <div class="bar"><span>A class constructor</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">class</span> <span class="tok-fn">Ninja</span> {
+  <span class="tok-fn">constructor</span>(initialSkillLevel = <span class="tok-num">0</span>) {
+    <span class="tok-kw">this</span>.#skillLevel = initialSkillLevel;
+  }
+  <span class="tok-com">// other properties...</span>
+}</code></pre>
+        </div>
+
+        <p>
+          However constructors have been around since before the <code>class</code> keyword existed. In fact, any
+          function created with the function declaration or expression syntax (but not arrow or bound functions) can
+          be used as a constructor; the difference is in how the function is invoked. To invoke a function as a
+          constructor we precede the invocation with the keyword <code>new</code>. Recall
+          <code>whatsMyContext</code> from the previous section:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Invoking an ordinary function with new</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">whatsMyContext</span>() {
+  <span class="tok-kw">return</span> <span class="tok-kw">this</span>;
+}
+
+<span class="tok-kw">const</span> whatsMyContextInstance = <span class="tok-kw">new</span> <span class="tok-fn">whatsMyContext</span>();
+console.<span class="tok-fn">assert</span>(whatsMyContextInstance <span class="tok-kw">instanceof</span> <span class="tok-fn">newWhatsMyContext</span>);</code></pre>
+        </div>
+
+        <p>
+          Even though we <em>can</em> invoke it as a constructor, <code>whatsMyContext</code> isn’t a particularly useful
+          constructor. To see why, consider what makes constructors special.
+        </p>
+
+        <div class="card sidebar">
+          <h4>The superpowers of constructors</h4>
+          <p>Invoking a function as a constructor is a powerful feature, explored in the following listing.</p>
+        </div>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 6.3 — Using an ordinary function as a constructor</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">Ninja</span>() {                    <span class="tok-com">// #A</span>
+  <span class="tok-kw">this</span>.skulk = <span class="tok-kw">function</span> () {       <span class="tok-com">// #A</span>
+    <span class="tok-kw">return</span> <span class="tok-kw">this</span>;                    <span class="tok-com">// #A</span>
+  };                                 <span class="tok-com">// #A</span>
+}                                    <span class="tok-com">// #A</span>
+
+<span class="tok-kw">const</span> ninja1 = <span class="tok-kw">new</span> <span class="tok-fn">Ninja</span>();          <span class="tok-com">// #B</span>
+<span class="tok-kw">const</span> ninja2 = <span class="tok-kw">new</span> <span class="tok-fn">Ninja</span>();          <span class="tok-com">// #B</span>
+
+console.<span class="tok-fn">assert</span>(ninja1.<span class="tok-fn">skulk</span>() === ninja1,
+  <span class="tok-str">"The 1st ninja is skulking"</span>);        <span class="tok-com">// #C</span>
+console.<span class="tok-fn">assert</span>(ninja2.<span class="tok-fn">skulk</span>() === ninja2,
+  <span class="tok-str">"The 2nd ninja is skulking"</span>);        <span class="tok-com">// #C</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> A constructor that creates a <code>skulk</code> property on whatever object is the function context. It’s conventional to capitalise constructor names.</div>
+            <div><b>#B</b> Creates two objects by invoking the constructor with <code>new</code>; the new objects are referenced by <code>ninja1</code> and <code>ninja2</code></div>
+            <div><b>#C</b> Tests the <code>skulk</code> method of the constructed objects — each should return its own constructed object</div>
+          </div>
+        </div>
+
+        <p>
+          We create a function named <code>Ninja</code> to construct, well, ninjas. Invoked with <code>new</code>, an
+          empty object instance is created and passed to the function as its function context,
+          <code>this</code>. The constructor creates a <code>skulk</code> property on that object, assigned a function,
+          making it a method of the newly created object.
+        </p>
+        <p>In general, invoking a constructor triggers a couple of special actions, as figure 6.1 shows:</p>
+        <ol>
+          <li>A new empty object is created.</li>
+          <li>That object is passed to the constructor as the <code>this</code> parameter, becoming the constructor’s function context.</li>
+          <li>The newly constructed object is returned as the <code>new</code> operator’s value — unless another non-primitive value is explicitly returned.</li>
+        </ol>
+
+        <figure>
+          <img src="data:image/webp;base64,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" alt="Diagram of the four steps: new creates an empty object, that object is set as the function context this, properties such as skulk are added to it, and the newly constructed object is returned as the value of new.">
+          <figcaption>
+            <strong>Figure 6.1</strong> When calling a function with <code>new</code>, a new empty object is created
+            and set as the context of the constructor function, the <code>this</code> parameter.
+          </figcaption>
+        </figure>
+
+        <p>
+          That’s it: calling a function with <code>new</code> returns the <code>this</code> object — as long as the
+          function doesn’t explicitly return a different object.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Using explicit returns in a constructor function</h4>
+          <p>JavaScript behaves counterintuitively when a function invoked with <code>new</code> uses <code>return</code>:</p>
+          <ul>
+            <li>If the value after <code>return</code> is an <strong>object</strong> (anything other than a primitive), that value is returned from the constructor instead of <code>this</code>.</li>
+            <li>If the value after <code>return</code> is a <strong>primitive</strong>, the would-be return value is ignored and <code>this</code> is returned instead.</li>
+          </ul>
+          <p>
+            As a rule, avoid explicit returns in constructors. If you must use one, define a “construct signature” to
+            tell the type checker what you actually want the function to return when invoked with <code>new</code> —
+            see the
+            <a href="https://www.typescriptlang.org/docs/handbook/2/functions.html#construct-signatures">TypeScript
+            handbook</a>.
+          </p>
+        </div>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              ESLint’s recommended ruleset includes several rules related to constructors, including a lifesaver
+              called <code>no-new-native-nonconstructor</code> that prevents you from using <code>new</code> with
+              built-in functions like <code>Symbol</code> that aren’t intended to be called as constructors, despite
+              their capitalisation.</p>
+          </div>
+        </div>
+
+        <div class="card sidebar">
+          <h4>Checking if a function was called as a constructor</h4>
+          <p>
+            The fact that any function can be called as a constructor (but most shouldn’t!) is one of the language’s
+            quirks, thankfully smoothed over by improved tooling — particularly TypeScript and ESLint. It used to be
+            common for libraries to let functions be invoked with or without <code>new</code>; remnants of that
+            flexible attitude survive in built-ins:
+          </p>
+          <div class="listing" style="margin:12px 0;">
+            <pre><code><span class="tok-kw">const</span> obj1 = <span class="tok-kw">new</span> <span class="tok-fn">Object</span>();
+<span class="tok-kw">const</span> obj2 = <span class="tok-fn">Object</span>(); <span class="tok-com">// equivalent to new Object()</span></code></pre>
+          </div>
+          <p>
+            Originally the best check was <code>this instanceof func</code>, but that wasn’t completely reliable since
+            there are other ways for the caller to make <code>this</code> an instance of <code>func</code>. ES2015
+            introduced <code>new.target</code>, which works as a fool-proof check:
+          </p>
+          <div class="listing" style="margin:12px 0;">
+            <pre><code><span class="tok-kw">function</span> <span class="tok-fn">maybeConstructor</span>() {
+  <span class="tok-kw">if</span> (<span class="tok-kw">new</span>.target !== <span class="tok-kw">undefined</span>) {
+    console.<span class="tok-fn">log</span>(<span class="tok-str">"I was called with new"</span>);
+  } <span class="tok-kw">else</span> {
+    console.<span class="tok-fn">log</span>(<span class="tok-str">"I was called without new"</span>);
+  }
+}</code></pre>
+          </div>
+          <p>
+            Typically you should define constructors as part of a class: among other advantages, that makes the
+            question “Am I a constructor?” moot (classes are covered in chapter 9). Outside classes, generally avoid
+            <code>new</code>, and stick to capitalising class names — not normal function names — to keep the two
+            clearly differentiated.
+          </p>
+        </div>
+
+        <h3 id="c6-call-apply"><span class="num">6.2.4</span> Invocation with the apply and call methods</h3>
+        <p>
+          So far you’ve seen different types of invocation implicitly change <code>this</code>: for methods the
+          owning object, for top-level functions <code>undefined</code> (in strict mode), for constructors a newly
+          created instance. But what if we want to set the function context <strong>explicitly</strong>? Two methods
+          that exist for every function do exactly that: <code>apply</code> and <code>call</code>.
+        </p>
+        <p>
+          Yes — methods <em>of functions</em>. As first-class objects (created, by the way, by the built-in
+          <code>Function</code> constructor), functions can have properties just like any other object type, including
+          methods.
+        </p>
+        <p>
+          To invoke a function through <code>apply</code>, pass two parameters: the object to use as the function
+          context, and an <strong>array</strong> of values to use as invocation arguments. <code>call</code> works
+          similarly, except the arguments are passed directly in the argument list rather than as an array.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 6.4 — Using the apply and call methods to supply the function context</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">juggle</span>(...numbers: <span class="tok-kw">number</span>[]) {   <span class="tok-com">// #A</span>
+  <span class="tok-kw">let</span> result = <span class="tok-num">0</span>;                            <span class="tok-com">// #A</span>
+  <span class="tok-kw">for</span> (<span class="tok-kw">const</span> number <span class="tok-kw">of</span> numbers) {           <span class="tok-com">// #A</span>
+    result += number;                          <span class="tok-com">// #A</span>
+  }                                            <span class="tok-com">// #A</span>
+  <span class="tok-kw">this</span>.result = result;                        <span class="tok-com">// #A</span>
+}                                              <span class="tok-com">// #A</span>
+
+<span class="tok-kw">const</span> ninja1 = { result: <span class="tok-num">0</span> };
+<span class="tok-kw">const</span> ninja2 = { result: <span class="tok-num">0</span> };
+
+juggle.<span class="tok-fn">apply</span>(ninja1, [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>, <span class="tok-num">4</span>]);       <span class="tok-com">// #B</span>
+juggle.<span class="tok-fn">call</span>(ninja2, <span class="tok-num">5</span>, <span class="tok-num">6</span>, <span class="tok-num">7</span>, <span class="tok-num">8</span>);          <span class="tok-com">// #C</span>
+
+console.<span class="tok-fn">assert</span>(ninja1.result === <span class="tok-num">10</span>, <span class="tok-str">"juggled via apply"</span>);
+console.<span class="tok-fn">assert</span>(ninja2.result === <span class="tok-num">26</span>, <span class="tok-str">"juggled via call"</span>);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The function attaches the sum of its arguments to whatever object is the function context</div>
+            <div><b>#B</b> Uses the <code>apply</code> method, passing <code>ninja1</code> and an array of arguments</div>
+            <div><b>#C</b> Uses the <code>call</code> method, passing <code>ninja2</code> and a list of arguments</div>
+          </div>
+        </div>
+
+        <p>
+          Here we set up a function named <code>juggle</code> and used it as if it were a method of <code>ninja1</code>
+          and <code>ninja2</code>, without actually attaching it to those objects. That’s the power of
+          <code>apply</code> and <code>call</code>! The only difference between them is how arguments are supplied —
+          an array for <code>apply</code>, a list after the function context for <code>call</code>. See figure 6.2.
+        </p>
+
+        <figure>
+          <img src="data:image/webp;base64,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" alt="Annotated code comparing juggle.apply(ninja1, [1,2,3,4]) and juggle.call(ninja2, 5,6,7,8): the first argument is the function context, then apply takes one array of arguments while call takes a sequence of arguments.">
+          <figcaption>
+            <strong>Figure 6.2</strong> As the first argument, both the <code>call</code> and <code>apply</code> methods
+            take the object that will be used as the function context. The difference is in the following arguments:
+            <code>apply</code> takes only one additional argument, an array of argument values; <code>call</code> takes
+            any number of arguments, used as function arguments.
+          </figcaption>
+        </figure>
+
+        <p>
+          In the early days of JavaScript, the ability to pass an array of arguments to a function with
+          <code>apply</code> was invaluable — you’d often see it where <code>this</code> was irrelevant:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>apply in its classic role</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> numbers = [<span class="tok-num">3</span>, <span class="tok-num">7</span>, <span class="tok-num">2</span>];
+Math.<span class="tok-fn">max</span>.<span class="tok-fn">apply</span>(<span class="tok-kw">null</span>, numbers); <span class="tok-com">// 7</span></code></pre>
+        </div>
+
+        <p>Today the spread operator (chapter 5) gives a more straightforward syntax for using an array as an argument list:</p>
+
+        <div class="listing">
+          <div class="bar"><span>The modern equivalent</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> numbers = [<span class="tok-num">3</span>, <span class="tok-num">7</span>, <span class="tok-num">2</span>];
+Math.<span class="tok-fn">max</span>(...numbers); <span class="tok-com">// 7</span></code></pre>
+        </div>
+
+        <p>
+          Modern features like the spread operator and <code>bind</code> have made <code>call</code> and
+          <code>apply</code> much less common. But if you ever want to “borrow” a method from one object for another,
+          they’re the solution.
+        </p>
+      </section>
+
+      <section id="c6-fixing">
+        <h2><span class="num">6.3</span> Fixing the problem of function contexts</h2>
+        <p>
+          The value of <code>this</code> changes depending on how a function is invoked — which can be a big problem
+          when <em>someone else</em> is invoking your function. A common mistake is passing a method as a callback
+          argument and expecting it to be invoked as a method. To demonstrate, let’s modify the DOM event list
+          example from chapter 3.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 6.5 — Passing an unbound method to an event handler</span><span class="lang">HTML</span></div>
+          <pre><code><span class="tok-tag">&lt;!doctype html&gt;</span>
+<span class="tok-tag">&lt;html</span> <span class="tok-attr">lang</span>=<span class="tok-str">"en"</span><span class="tok-tag">&gt;</span>
+<span class="tok-tag">&lt;head&gt;</span>
+  <span class="tok-tag">&lt;title&gt;</span>Web App Lifecycle<span class="tok-tag">&lt;/title&gt;</span>
+  <span class="tok-tag">&lt;style&gt;</span>
+    #event-list li {
+      font: 1.25rem system-ui;
+      padding: 0.25rem 0;
+    }
+  <span class="tok-tag">&lt;/style&gt;</span>
+<span class="tok-tag">&lt;/head&gt;</span>
+<span class="tok-tag">&lt;body&gt;</span>
+  <span class="tok-tag">&lt;button</span> <span class="tok-attr">id</span>=<span class="tok-str">"button"</span><span class="tok-tag">&gt;</span>Click Me!<span class="tok-tag">&lt;/button&gt;</span>
+  <span class="tok-tag">&lt;ul</span> <span class="tok-attr">id</span>=<span class="tok-str">"event-list"</span><span class="tok-tag">&gt;&lt;/ul&gt;</span>
+  <span class="tok-tag">&lt;script&gt;</span>
+    <span class="tok-kw">const</span> eventList = document.<span class="tok-fn">querySelector</span>(<span class="tok-str">"#event-list"</span>);
+
+    <span class="tok-kw">const</span> appendToEventList = (message) =&gt; {
+      <span class="tok-kw">const</span> messageElement = document.<span class="tok-fn">createElement</span>(<span class="tok-str">"li"</span>);
+      messageElement.textContent = message;
+      eventList.<span class="tok-fn">appendChild</span>(messageElement);
+    };
+
+    <span class="tok-kw">const</span> buttonObject = {
+      clickCount: <span class="tok-num">0</span>,
+      <span class="tok-fn">clickHandler</span>: <span class="tok-kw">function</span> () {
+        <span class="tok-kw">this</span>.clickCount++;
+        <span class="tok-fn">appendToEventList</span>(<span class="tok-str">`Click count: ${this.clickCount}`</span>);
+      },
+    };
+
+    <span class="tok-kw">const</span> buttonElement = document.<span class="tok-fn">getElementById</span>(<span class="tok-str">"button"</span>);
+    buttonElement.<span class="tok-fn">addEventListener</span>(
+      <span class="tok-str">"click"</span>,
+      buttonObject.clickHandler   <span class="tok-com">// unbound method</span>
+    );
+  <span class="tok-tag">&lt;/script&gt;</span>
+<span class="tok-tag">&lt;/body&gt;</span>
+<span class="tok-tag">&lt;/html&gt;</span></code></pre>
+        </div>
+
+        <p>
+          If you click the button you’ll see that <code>this.clickCount</code> isn’t a number, because
+          <code>this</code> isn’t <code>buttonObject</code>:
+        </p>
+
+        <div class="browser-frame">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">file:///…/index.html</span></div>
+          <ul class="demo-list">
+            <li>Click count: NaN</li>
+            <li>Click count: NaN</li>
+            <li>Click count: NaN</li>
+          </ul>
+        </div>
+
+        <p>
+          When you pass <code>buttonObject.clickHandler</code> to a function, that function merely receives
+          <code>clickHandler</code>. It has no way of knowing what object it was attached to. We call this an
+          <strong>unbound method</strong>.
+        </p>
+        <p>Fortunately modern JavaScript has two elegant tools for the problem: function binding and arrow functions.</p>
+
+        <h3 id="c6-bind"><span class="num">6.3.1</span> Using the bind method</h3>
+        <p>
+          You’ve already met <code>call</code> and <code>apply</code>; every function also offers
+          <strong><code>bind</code></strong>. Rather than invoking the function, <code>bind</code> creates a
+          <em>new</em> function with the same body, but whose context is always bound to a certain object regardless of
+          how we invoke it. To demonstrate, let’s modify listing 6.5:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Binding the handler</span><span class="lang">JavaScript</span></div>
+          <pre><code>buttonElement.<span class="tok-fn">addEventListener</span>(
+  <span class="tok-str">"click"</span>,
+  buttonObject.clickHandler.<span class="tok-fn">bind</span>(buttonObject), <span class="tok-com">// #A</span>
+);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Creates a copy of <code>clickHandler</code> that’s bound to <code>buttonObject</code></div>
+          </div>
+        </div>
+
+        <p>Because we pass the handler a copy of <code>clickHandler</code> bound to <code>buttonObject</code>, clicking the button now produces the output we want:</p>
+
+        <div class="browser-frame">
+          <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url">file:///…/index.html</span></div>
+          <ul class="demo-list">
+            <li>Click count: 1</li>
+            <li>Click count: 2</li>
+            <li>Click count: 3</li>
+          </ul>
+        </div>
+
+        <p>
+          In a bound function, <code>this</code> is always the object it was bound to, regardless of how the bound
+          function is invoked. Otherwise the bound function behaves like the original, since the body is the same.
+        </p>
+        <p>
+          It’s worth emphasising that <code>bind</code> creates a <strong>new function every time it’s called</strong>,
+          without modifying the function it was called on. It’s a common mistake to expect it to “bind” the existing
+          function in place.
+        </p>
+        <p>
+          Binding became so useful that for a while it was common for class constructors to replace every method with
+          a bound copy. Fortunately ES2022 introduced a convenient syntax for defining bound methods on classes:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>A bound class field</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">class</span> <span class="tok-fn">Button</span> {
+  #clickCount = <span class="tok-num">0</span>;
+  clickHandler = () =&gt; {
+    <span class="tok-kw">this</span>.#clickCount++;
+    <span class="tok-fn">appendToEventList</span>(<span class="tok-str">`Click count: ${this.clickCount}`</span>);
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          Notice the use of <code>=</code> instead of <code>:</code> after the function name — strange, isn’t it?
+          Functions defined this way are <strong>class fields</strong>, covered in depth in chapter 9. Class fields are
+          technically a special kind of arrow function, so next we look at arrow functions generally and how they
+          interact with <code>this</code> completely differently from other functions.
+        </p>
+
+        <h3 id="c6-arrows"><span class="num">6.3.2</span> Using arrow functions to get around function contexts</h3>
+        <p>
+          Chapter 5 showed how to define arrow functions, but not the problem they were designed to solve: that
+          problem is <strong>callbacks</strong>. The ability to pass functions around freely is one of JavaScript’s most
+          powerful features, but there were two points of friction — the verbose <code>function() {}</code> syntax, and
+          the often counterintuitive behaviour of <code>this</code>. Arrow functions delivered both a more succinct
+          syntax and a straightforward solution: <strong>lexical context</strong>. The value of <code>this</code> inside
+          an arrow function is simply whatever the value of <code>this</code> is outside it, regardless of how the
+          function is invoked.
+        </p>
+        <p>
+          To understand lexical context, go back to the constructor example in listing 6.3. Before arrow functions,
+          developers often used this pattern in constructors to avoid <code>this</code> entirely:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The pre-arrow workaround</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">Ninja</span>() {
+  <span class="tok-kw">const</span> _this = <span class="tok-kw">this</span>;
+  <span class="tok-kw">this</span>.skulk = <span class="tok-kw">function</span> () {
+    <span class="tok-kw">return</span> _this;
+  };
+}</code></pre>
+        </div>
+
+        <p>
+          With that change, calling <code>skulk</code> from an instance of <code>Ninja</code> always returns that
+          instance, regardless of how it’s invoked — because it isn’t using its own <code>this</code>, it’s using
+          <code>this</code> from the surrounding function context. And that’s exactly what arrow functions do:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Lexical this</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span> <span class="tok-fn">Ninja</span>() {
+  <span class="tok-kw">this</span>.skulk = () =&gt; {
+    <span class="tok-kw">return</span> <span class="tok-kw">this</span>;
+  };
+}</code></pre>
+        </div>
+
+        <p>
+          Because <code>skulk</code> is an arrow function, <code>this</code> comes from its lexical context — the
+          instance of <code>Ninja</code> it was attached to. And that behaviour is guaranteed: even the techniques for
+          directly controlling <code>this</code> have no effect.
+        </p>
+        <ul>
+          <li>Calling an arrow function with <code>call</code> or <code>apply</code> invokes it but doesn’t affect <code>this</code>.</li>
+          <li>Copying an arrow function with <code>bind</code> creates a copy with the same <code>this</code> as the original.</li>
+        </ul>
+        <p>
+          This is quite powerful, and as a bonus it means TypeScript can reliably predict the type of <code>this</code>
+          in arrow functions — which can save you a lot of trouble.
+        </p>
+        <p>
+          Just remember that ordinary objects <strong>don’t</strong> create a lexical context; only functions (and, as of
+          ES2022, classes) do. Looking at listing 6.5 again, it might be tempting to do this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Don’t do this</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> buttonObject = {
+  clickCount: <span class="tok-num">0</span>,
+  <span class="tok-fn">clickHandler</span>: () =&gt; { <span class="tok-com">// don’t do this!</span>
+    <span class="tok-kw">this</span>.clickCount++;
+    <span class="tok-fn">appendToEventList</span>(<span class="tok-str">`Click count: ${this.clickCount}`</span>);
+  },
+};</code></pre>
+        </div>
+
+        <p>
+          The value of <code>this</code> when defining <code>clickHandler</code> there is whatever it is in the
+          surrounding function. Unlike with class fields, there’s no way to directly define a bound method on a normal
+          JavaScript object.
+        </p>
+        <p>Instead, the common way to use arrow functions here is to wrap the entire method invocation in one:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Wrapping the call</span><span class="lang">JavaScript</span></div>
+          <pre><code>buttonElement.<span class="tok-fn">addEventListener</span>(
+  <span class="tok-str">"click"</span>,
+  () =&gt; { buttonObject.<span class="tok-fn">clickHandler</span>(); }, <span class="tok-com">// #A</span>
+);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> An arrow function used as the event handler</div>
+          </div>
+        </div>
+
+        <p>
+          This solution doesn’t take advantage of the arrow function’s special handling of <code>this</code> — a plain
+          function expression would work just as well as the wrapper — but the succinctness makes it very common. Just
+          be careful to pass through any arguments you want; when in doubt, use rest parameters:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Passing arguments through</span><span class="lang">JavaScript</span></div>
+          <pre><code>(...args) =&gt; { buttonObject.<span class="tok-fn">clickHandler</span>(...args); }</code></pre>
+        </div>
+
+        <p>
+          And with that we’ve finished exploring function context. The next chapter deals with one of the most
+          important concepts in JavaScript: closures.
+        </p>
+      </section>
+
+      <section id="c6-summary">
+        <h2><span class="num">6.4</span> Summary</h2>
+        <div class="takeaway">
+          <ol>
+            <li>The <code>this</code> keyword is an <strong>implicit function parameter</strong> representing the context in which a function was invoked. How it’s determined can depend both on how a function is defined and on how it’s invoked.</li>
+            <li><strong>Arrow functions</strong> always have the same <code>this</code> as their surrounding context, regardless of how they’re invoked.</li>
+            <li><strong>Class fields</strong> are a special type of arrow function that is permanently bound to a class instance.</li>
+            <li>A function can be invoked in <strong>four ways</strong>: standalone (<code>skulk()</code>), as a method (<code>ninja.skulk()</code>), as a constructor (<code>new Ninja()</code>), or via <code>apply</code>/<code>call</code> (<code>skulk.call(ninja)</code>, <code>skulk.apply(ninja)</code>).</li>
+            <li>The way a function is invoked influences <code>this</code>: standalone gives <code>undefined</code> (in strict mode); a method gives the object it was invoked on; a constructor gives the newly constructed object; <code>call</code>/<code>apply</code> give the first argument supplied.</li>
+            <li><strong><code>bind</code></strong> creates a new function always bound to its argument — unless the function is an arrow function, in which case the new function is identical to the original in every way.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="c6-source">
+        <h2>Source</h2>
+        <p>
+          Chapter 6, “Functions for the journeyman: understanding function invocation”, of
+          <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10) — Manning Publications. Printed pages
+          115–134 of the PDF edition in this repository.
+        </p>
+        <p>
+          Both figures (6.1, 6.2) and all five listings (6.1–6.5) are included above, with the book’s
+          <code>#A</code>–<code>#C</code> callouts kept as annotation keys beneath each snippet.
+        </p>
+      </section>
+
+      <p class="chapter-next"><button type="button" class="back" data-goto="chapter-5"><span class="n">Back</span> ← Chapter 5 — First-class functions</button></p>
 
       </div>
 
@@ -5085,7 +5918,7 @@ console.<span class="tok-fn">assert</span>(<span class="tok-fn">compare</span>(<
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-nav button[data-target]'));
   var chapters = Array.prototype.slice.call(document.querySelectorAll('div.chapter'));
-  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5'};
+  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6'};
 
   function show(id) {
     chapters.forEach(function (c) {
