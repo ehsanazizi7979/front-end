@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapters 1–7 | Secrets of the JavaScript Ninja, 3rd Edition</title>
-<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–7, from “JavaScript is everywhere” to “Functions for the master: closures and scopes”, with the book’s figures, icons and code listings embedded.">
+<title>Chapters 1–8 | Secrets of the JavaScript Ninja, 3rd Edition</title>
+<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–8, from “JavaScript is everywhere” to “Functions for the future: promises and generators”, with the book’s figures, icons and code listings embedded.">
 <style>
   :root{
     --ink:#14161a;
@@ -337,7 +337,7 @@
   <div class="wrap">
     <p class="kicker">Secrets of the JavaScript Ninja · Third Edition · MEAP V10</p>
     <h1>Chapter summaries
-      <span class="thin">Chapters 1–7 — from “JavaScript is everywhere” through “First-class functions for the novice” and “Functions for the journeyman” to “Functions for the master: closures and scopes”, with the book’s figures, icons and every code listing reproduced.</span>
+      <span class="thin">Chapters 1–8 — from “JavaScript is everywhere” through functions for the novice, the journeyman and the master, to “Functions for the future: promises and generators”, with the book’s figures, icons and every code listing reproduced.</span>
     </h1>
     <p class="byline">
       <strong>Trevor Burnham</strong>, with Bear Bibeault, Josip Maras &amp; John Resig ·
@@ -378,6 +378,11 @@
       <li role="presentation">
         <button type="button" role="tab" id="tab-7" aria-controls="chapter-7" aria-selected="false" data-target="chapter-7">
           <span class="n">Ch 7</span> Closures and scopes
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-8" aria-controls="chapter-8" aria-selected="false" data-target="chapter-8">
+          <span class="n">Ch 8</span> Promises &amp; generators
         </button>
       </li>
     </ul>
@@ -537,6 +542,28 @@
         <li><a href="#c7-leaks"><span class="mono">7.5</span> Preventing memory leaks</a></li>
         <li><a href="#c7-summary"><span class="mono">7.6</span> Summary</a></li>
         <li><a href="#c7-source">Source</a></li>
+      </ol>
+    </nav>
+
+    <nav class="toc" id="toc-8" aria-label="Chapter 8 contents" hidden>
+      <h2>Chapter 8 · on this page</h2>
+      <ol>
+        <li><a href="#c8-intro">This chapter covers</a></li>
+        <li><a href="#c8-promises"><span class="mono">8.1</span> The power of promises</a></li>
+        <li class="sub"><a href="#c8-resolving">8.1.1 Resolving &amp; settling</a></li>
+        <li class="sub"><a href="#c8-chaining">8.1.2 Chaining with then()</a></li>
+        <li class="sub"><a href="#c8-multiple">8.1.3 Multiple promises</a></li>
+        <li class="sub"><a href="#c8-timing">8.1.4 Microtasks &amp; macrotasks</a></li>
+        <li><a href="#c8-await"><span class="mono">8.2</span> Flattening callbacks with await</a></li>
+        <li class="sub"><a href="#c8-callback-hell">8.2.1 Nested callbacks</a></li>
+        <li class="sub"><a href="#c8-how-await-works">8.2.2 How await works</a></li>
+        <li class="sub"><a href="#c8-async">8.2.3 Automating promises</a></li>
+        <li><a href="#c8-generators"><span class="mono">8.3</span> Interruptible loops</a></li>
+        <li class="sub"><a href="#c8-iterables">8.3.1 Iterables &amp; iterators</a></li>
+        <li class="sub"><a href="#c8-generator-functions">8.3.2 Generator functions</a></li>
+        <li class="sub"><a href="#c8-async-iterables">8.3.3 Async iterables</a></li>
+        <li><a href="#c8-summary"><span class="mono">8.4</span> Summary</a></li>
+        <li><a href="#c8-source">Source</a></li>
       </ol>
     </nav>
 
@@ -2327,7 +2354,7 @@ git update-index --again                      <span class="tok-com">#C</span></c
           Chapter summaries of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10, chapters 1–10 of
           15, 2026) by Trevor Burnham, Bear Bibeault, Josip Maras and John Resig — Manning Publications.
           Chapter 1, “JavaScript is everywhere”, is printed pages 1–16 of the PDF edition in this repository;
-          chapter 2, “Using modern JavaScript tools”, is pages 17–43. Chapter 7, “Functions for the master: closures and scopes”, is pages 135–153.
+          chapter 2, “Using modern JavaScript tools”, is pages 17–43. Chapter 8, “Functions for the future: promises and generators”, is pages 154–183.
         </p>
         <p>
           Figure 1.1 and the book’s two margin icons (the ESLint wand and the performance stopwatch) are extracted
@@ -6849,13 +6876,1315 @@ console.<span class="tok-fn">log</span>(<span class="tok-str">`It's me, ${ninjaN
 
       </div>
 
+      <div class="chapter" id="chapter-8" data-chapter="8" hidden>
+
+      <section class="chapter-head" id="c8-intro">
+        <p class="kicker">Chapter 8</p>
+        <h2 class="chapter-title">Functions for the future: promises and generators</h2>
+        <div class="card">
+          <h4>This chapter covers</h4>
+          <ul>
+            <li>Handling asynchronous tasks with promises</li>
+            <li>Using the <code>async</code>/<code>await</code> syntax instead of callbacks</li>
+            <li>Continuing function execution with generators</li>
+          </ul>
+        </div>
+        <p>
+          In the previous three chapters, we focused on functions, specifically on how to define functions and how to
+          use them to great effect. In some cases, we’ve passed a function as a callback to be invoked when some event
+          occurs in the future. Callbacks have always been a part of JavaScript and remain a common pattern. However,
+          they aren’t the only way to deal with future events. One of the most important features in modern JavaScript
+          is the <strong>promise</strong>, an object representation of an event.
+        </p>
+        <p>
+          As we’ll soon see, promises and the associated <code>async</code> and <code>await</code> keywords have become
+          the preferred way of dealing with events in a wide variety of situations. We’ll also look at
+          <strong>generators</strong>, a lesser-used JavaScript feature that can provide a convenient alternative to
+          loops, both synchronous and asynchronous.
+        </p>
+      </section>
+
+      <section id="c8-promises">
+        <h2><span class="num">8.1</span> The power of promises</h2>
+        <p>
+          A <strong>promise</strong> is an object that represents the outcome of an operation. Since their
+          introduction in ES2015, promises have become a ubiquitous part of the JavaScript language, beloved by
+          developers for their convenience and flexibility.
+        </p>
+        <p>
+          Promises are often touted as an alternative to callbacks, and we’ll soon see why. But in its purest form, a
+          promise is just a way of moving a callback. Let’s start with a simple example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.1 — A promise for a timer</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> timerPromise = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve) =&gt; {   <span class="tok-com">// #A</span>
+  <span class="tok-fn">setTimeout</span>(resolve, <span class="tok-num">1_000</span>);                          <span class="tok-com">// #B</span>
+});
+
+timerPromise.<span class="tok-fn">then</span>(() =&gt; {                            <span class="tok-com">// #C</span>
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"One second has elapsed"</span>);
+});</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The promise constructor provides a callback function to resolve the promise</div>
+            <div><b>#B</b> The timeout will invoke the <code>resolve</code> function after 1,000 milliseconds</div>
+            <div><b>#C</b> The promise’s <code>.then</code> method takes a callback that’s invoked when <code>resolve</code> is called</div>
+          </div>
+        </div>
+
+        <p>
+          Here we could have done without the promise and simply passed the callback with the <code>console.log</code>
+          directly to <code>setTimeout</code>. But by encapsulating the event result in a promise, we’ve opened up a
+          number of intriguing possibilities:
+        </p>
+        <ul>
+          <li>The promise can be passed around freely, allowing any code with access to the object to attach its own handler for the event.</li>
+          <li>There’s no limit to the number of times <code>then</code> can be called on the same promise; any number of callbacks can be queued up.</li>
+          <li>We can write utility functions that take advantage of these properties to perform higher-level operations, such as performing an action after multiple promises have been resolved.</li>
+        </ul>
+        <p>
+          And it gets better! ES2017 introduced two keywords, <code>async</code> and <code>await</code>, that provide
+          a sleek syntax for common promise patterns. With the <code>await</code> keyword, listing 8.1 can be
+          simplified to this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The same timer, with await</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> timerPromise = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve) =&gt; {
+  <span class="tok-fn">setTimeout</span>(resolve, <span class="tok-num">1_000</span>);
+});
+<span class="tok-kw">await</span> timerPromise;
+console.<span class="tok-fn">log</span>(<span class="tok-str">"One second has elapsed"</span>);</code></pre>
+        </div>
+
+        <p>
+          At first glance, that code defies our claim that JavaScript is a single-threaded language. But make no
+          mistake: there’s only one thread here! We’ll see how the <code>await</code> keyword pulls off this feat in
+          section 8.2.
+        </p>
+        <p>But before you can understand <code>await</code>, you’ll need to understand promises. Let’s examine the functionality of promises in more detail.</p>
+
+        <h3 id="c8-resolving"><span class="num">8.1.1</span> Resolving and settling promises</h3>
+        <p>
+          A promise is always in one of three states: <strong>pending</strong>, <strong>fulfilled</strong>, or
+          <strong>rejected</strong>. The fulfilled state typically represents a successful event, while the rejected
+          state is typically used for errors. When a promise is either fulfilled or rejected, we say that it’s
+          <strong>settled</strong>. In addition to its state, a promise also takes an associated value when it’s
+          settled.
+        </p>
+        <p>Importantly, a promise’s state can only change once. Once it’s settled, its state and value are set permanently (figure 8.1).</p>
+
+        <figure>
+          <img src="data:image/webp;base64,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" alt="Figure 8.1 — a pending promise with an unknown value resolving into a fulfilled promise holding data, or rejecting into a rejected promise holding a reason.">
+          <figcaption><b>Figure 8.1</b> The possible states of a promise: pending, fulfilled, rejected. The value associated with the rejected state is often called a <em>reason</em>.</figcaption>
+        </figure>
+
+        <p>To make this more concrete, let’s look at the complete promise constructor:</p>
+
+        <div class="listing">
+          <div class="bar"><span>The promise constructor</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> promise = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) =&gt; {
+  <span class="tok-com">// code that calls resolve or reject eventually...</span>
+});</code></pre>
+        </div>
+
+        <p>
+          The constructor returns a promise that starts in the pending state and takes a callback known as the
+          <strong>executor</strong>, which runs immediately when the promise is created. The executor gives you control
+          over the promise’s fate through its two parameters: <code>resolve</code> and <code>reject</code>.
+        </p>
+        <p>
+          Importantly, the promise object itself doesn’t provide any methods for changing its state — that can only be
+          done from within the executor. (The promise’s state can’t be read directly from the promise object either,
+          though some developer tools are able to display it by reading it from internal APIs.) There are three ways to
+          change the promise’s state:
+        </p>
+        <ol>
+          <li>By calling <code>resolve</code></li>
+          <li>By calling <code>reject</code></li>
+          <li>By throwing an error from the executor</li>
+        </ol>
+
+        <p>
+          Those last two mechanisms behave straightforwardly: calling <code>reject(reason)</code> will make the promise
+          rejected with the given reason, and throwing <code>reason</code> from the executor body will have the same
+          effect. By convention, <code>reason</code> is typically an instance of <code>Error</code>, though this isn’t
+          enforced. That’s consistent with the behavior of <code>throw</code>: JavaScript allows any value to be
+          thrown, but it’s considered best practice to only throw <code>Error</code> instances.
+        </p>
+        <p>
+          The <code>resolve</code> function is a bit more complicated. If you call <code>resolve(value)</code> with a
+          “normal” value, the promise will be fulfilled with that value. That’s what happened in our timer example: the
+          line <code>setTimeout(resolve, 1_000)</code> resulted in <code>resolve</code> being called with no arguments,
+          fulfilling the promise with the value <code>undefined</code>. But if you call <code>resolve(value)</code> with
+          an object that has a <code>then</code> method, a category known as a <strong>thenable</strong>, then the
+          promise will “subscribe” to that <code>then</code> method and make its output its own.
+        </p>
+        <p>
+          Since promises have a <code>then</code> method, every promise is a thenable. Which means that calling
+          <code>resolve(otherPromise)</code> will make the promise that <code>resolve</code> function belongs to mimic
+          <code>otherPromise</code>, matching its state and value. Let’s look at an example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.2 — Resolving promises with other promises</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> fulfilledPromise = <span class="tok-fn">Promise.resolve</span>(<span class="tok-str">"fulfilled"</span>);      <span class="tok-com">// #A</span>
+<span class="tok-kw">const</span> rejectedPromise = <span class="tok-fn">Promise.reject</span>(<span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">"rejected"</span>)); <span class="tok-com">// #A</span>
+
+<span class="tok-kw">const</span> promise1 = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve) =&gt; <span class="tok-fn">resolve</span>(fulfilledPromise));
+<span class="tok-kw">const</span> promise2 = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve) =&gt; <span class="tok-fn">resolve</span>(rejectedPromise));
+
+promise1.<span class="tok-fn">then</span>((value) =&gt; {                                 <span class="tok-com">// #B</span>
+  console.<span class="tok-fn">log</span>(<span class="tok-str">`promise1 was fulfilled with value "${value}"`</span>);   <span class="tok-com">// #B</span>
+});                                                       <span class="tok-com">// #B</span>
+
+promise2.<span class="tok-fn">then</span>(undefined, (reason) =&gt; {                    <span class="tok-com">// #C</span>
+  console.<span class="tok-fn">log</span>(<span class="tok-str">`promise2 was rejected with reason "${reason}"`</span>);   <span class="tok-com">// #C</span>
+});                                                       <span class="tok-com">// #C</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> <code>Promise.resolve</code> and <code>Promise.reject</code> are convenience methods for creating a promise that’s immediately resolved or rejected with the given value</div>
+            <div><b>#B</b> The first callback to <code>promise.then</code> only fires if the promise is fulfilled</div>
+            <div><b>#C</b> The second callback to <code>promise.then</code> only fires if the promise is rejected</div>
+          </div>
+        </div>
+
+        <p>
+          This example shows that calling <code>resolve</code> doesn’t necessarily fulfill a promise. In fact, it
+          doesn’t even necessarily settle it. Consider this example where we call <code>resolve</code> with an object
+          whose <code>then</code> method never invokes any callbacks passed to it:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Permanently pending</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-com">// Creates a promise that’s permanently pending.</span>
+<span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve) =&gt;
+  <span class="tok-fn">resolve</span>({
+    <span class="tok-fn">then</span>: () =&gt; {},
+  }),
+);</code></pre>
+        </div>
+
+        <p>
+          This bears repeating, as it’s a common source of confusion: once a promise is either fulfilled or rejected,
+          neither its state nor its associated value will ever change. That promise is settled. But a promise that’s
+          been <em>resolved</em> with a thenable can remain <em>unsettled</em>.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Resolved vs. settled</h4>
+          <p>
+            The ECMAScript spec uses the term <strong>resolved</strong> to mean that the promise’s
+            <code>resolve</code> or <code>reject</code> function has been called. As we’ve seen, knowing that a
+            promise is resolved doesn’t tell us anything about its state, since a promise that’s resolved with
+            another promise will mimic the other promise’s state. However, being resolved means that any further
+            calls to <code>resolve</code> or <code>reject</code> will be ignored.
+          </p>
+          <p>
+            We’ll be using the term <strong>settled</strong> throughout this book to refer to a promise that’s in
+            either the fulfilled or rejected state. But colloquially, you’ll often hear people use the term
+            <em>resolved</em> when they really mean settled or fulfilled.
+          </p>
+        </div>
+
+        <p>
+          In most cases, you can think of <code>resolve(thenable)</code> as shorthand for
+          <code>thenable.then(resolve, reject)</code>. However, there’s one important distinction: if
+          <code>resolve</code> and <code>reject</code> are callable from elsewhere, <code>resolve(thenable)</code> will
+          cause those calls to silently fail, because a promise can only be resolved once.
+        </p>
+        <p>
+          By the way, just because <code>resolve</code> and <code>reject</code> are passed to the executor doesn’t mean
+          they need to be called from the executor. Since the dawn of promises, developers have been using hacks like
+          this to allow a promise to be resolved from a different part of their application:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Reaching outside the executor</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">let</span> resolvePromise;
+<span class="tok-kw">let</span> rejectPromise;
+<span class="tok-kw">const</span> promise = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) =&gt; {
+  resolvePromise = resolve;
+  rejectPromise = reject;
+});</code></pre>
+        </div>
+
+        <p>
+          Happily, ES2024 introduced a convenient new static method for this scenario called
+          <code>Promise.withResolvers()</code>. It does exactly what it says on the tin, returning a new promise along
+          with the <code>resolve</code> and <code>reject</code> functions for that promise:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Promise.withResolvers</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> { promise, resolve, reject } = <span class="tok-fn">Promise.withResolvers</span>();</code></pre>
+        </div>
+
+        <p>
+          That technique provides a simple bridge between promises and callback-based APIs: you can create a promise
+          that represents a call to that API by passing the promise’s <code>resolve</code> function as a callback.
+        </p>
+        <p>
+          Now you know everything there is to know about promise resolution! Next we’ll take a look at an area where
+          the promise resolution algorithm really has a chance to shine: chaining.
+        </p>
+
+        <h3 id="c8-chaining"><span class="num">8.1.2</span> Chaining promises with then()</h3>
+        <p>
+          We’ve seen how the <code>then</code> method allows you to pass <code>onFulfilled</code> and
+          <code>onRejected</code> callbacks to a promise. But <code>then</code> has one more trick up its sleeve: it
+          returns another promise. The promise returned by <code>then</code> is a new promise that starts in the
+          pending state, then gets resolved according to the behavior of the <code>onFulfilled</code> or
+          <code>onRejected</code> callback:
+        </p>
+        <ul>
+          <li>If the callback returns a value, the new promise is resolved with that value. This resolution follows the same rules we saw for the <code>resolve</code> function in the previous section.</li>
+          <li>If the callback throws an error (or anything else), the new promise is rejected with the thrown reason.</li>
+        </ul>
+        <p>
+          The promise resolution behavior means that returning a promise from a <code>then</code> callback effectively
+          transforms the promise returned by <code>then</code> into a copy of the promise returned from the callback.
+          This ability to return promises turns out to be enormously powerful, because we can use it to represent a
+          chain of operations. Here’s a practical example using <code>fetch</code>:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.3 — Using promise chaining to handle a fetch result</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-fn">fetch</span>(<span class="tok-str">"https://jsonplaceholder.typicode.com/posts/1"</span>)   <span class="tok-com">// #A</span>
+  .<span class="tok-fn">then</span>((response) =&gt; {                                 <span class="tok-com">// #B</span>
+    <span class="tok-kw">if</span> (!response.ok) {                                <span class="tok-com">// #C</span>
+      <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`Status code ${response.status}`</span>); <span class="tok-com">// #D</span>
+    }
+    <span class="tok-kw">return</span> response.<span class="tok-fn">json</span>();                             <span class="tok-com">// #E</span>
+  })
+  .<span class="tok-fn">then</span>((json) =&gt; {                                     <span class="tok-com">// #F</span>
+    console.<span class="tok-fn">log</span>(json);                                  <span class="tok-com">// #F</span>
+  })                                                    <span class="tok-com">// #F</span>
+  .<span class="tok-fn">catch</span>((reason) =&gt; {                                  <span class="tok-com">// #G</span>
+    console.<span class="tok-fn">error</span>(<span class="tok-str">`Request failed: ${reason}`</span>);          <span class="tok-com">// #G</span>
+  })                                                    <span class="tok-com">// #G</span>
+  .<span class="tok-fn">finally</span>(() =&gt; {                                       <span class="tok-com">// #H</span>
+    console.<span class="tok-fn">log</span>(<span class="tok-str">"Request finished"</span>);                     <span class="tok-com">// #H</span>
+  });                                                   <span class="tok-com">// #H</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Starts a GET request for the given URL and returns a promise</div>
+            <div><b>#B</b> The promise is fulfilled when the head of the response has been parsed</div>
+            <div><b>#C</b> The <code>ok</code> property is true if the response’s status code is 2xx, false otherwise</div>
+            <div><b>#D</b> Throwing an error causes the promise returned by <code>then</code> to be rejected</div>
+            <div><b>#E</b> Returns a promise representing the result of parsing the response body as JSON</div>
+            <div><b>#F</b> The promise is fulfilled when the response body has been parsed as JSON</div>
+            <div><b>#G</b> <code>promise.catch(onRejected)</code> is shorthand for <code>promise.then(undefined, onRejected)</code></div>
+            <div><b>#H</b> <code>promise.finally</code> runs whenever the promise is settled</div>
+          </div>
+        </div>
+
+        <p>
+          When promises were first introduced, code like this was a revelation. It avoids the awkward syntax of nested
+          callbacks (more on that in section 8.2), and perhaps more importantly, it greatly streamlines error
+          handling. That single <code>catch</code> handler deals with potential errors from three different places:
+        </p>
+        <ol>
+          <li>The <code>fetch()</code> itself (for example, if the user lost their network connection)</li>
+          <li>The error we throw if <code>response.ok</code> is false (for example, if we get a response with a 500 status code)</li>
+          <li>The <code>response.json()</code> operation (for example, if the response body isn’t valid JSON)</li>
+        </ol>
+        <p>
+          The name of the method is no coincidence: the promise <code>catch</code> method is intended as the async
+          equivalent of the <code>catch</code> in a <code>try</code>/<code>catch</code> block, receiving all errors in
+          a chain of operations. We’ll see a more explicit connection between the <code>catch</code> method and
+          <code>try</code>/<code>catch</code> with the <code>await</code> keyword in section 8.2.
+        </p>
+        <p>
+          ES2018 extended the analogy between promises and <code>try</code>/<code>catch</code> further with the
+          <code>finally</code> method, which takes a handler that runs when the promise is settled, regardless of
+          whether it was fulfilled or rejected. Like <code>catch</code>, the <code>finally</code> method is a
+          convenient shorthand for behavior that could be implemented with <code>then</code>.
+        </p>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              One of the biggest frustrations developers have with promises is that, by default, errors are silently
+              ignored. Handling only the fulfilled case and not the rejected case is an easy mistake to make!
+              Fortunately, typescript-eslint offers a rule for this called
+              <a href="https://typescript-eslint.io/rules/no-floating-promises">no-floating-promises</a>, which
+              enforces that promise rejections are either explicitly handled or explicitly ignored.</p>
+          </div>
+        </div>
+
+        <p>
+          It’s important to understand that each handler in a promise chain returns a new promise derived from the
+          previous one. The <code>then</code>, <code>catch</code>, and <code>finally</code> methods can’t modify the
+          state of the promise they’re attached to; only its <code>resolve</code> and <code>reject</code> functions can
+          do that.
+        </p>
+        <p>
+          We’ve covered all of the basics of promises: how to consume them, how to resolve them, and how to chain them.
+          Now let’s take a look at how promises simplify dealing with concurrent operations.
+        </p>
+
+        <h3 id="c8-multiple"><span class="num">8.1.3</span> Dealing with multiple promises</h3>
+        <p>
+          We’ve seen how promise chaining can simplify the logic around serial async operations. But what about
+          concurrent operations? For example, let’s say that we need to fetch data from multiple sources before we can
+          render a UI. To be efficient, we should send these fetch requests concurrently, rather than waiting for each
+          one to be completed before we send the next one.
+        </p>
+        <p>
+          Happily, the <code>Promise</code> object offers a static method called <code>Promise.all</code> for exactly
+          this scenario. <code>Promise.all</code> takes an array of promises and returns a promise that represents
+          their combined outcome:
+        </p>
+        <ul>
+          <li>If all of the promises in the array are fulfilled, the returned promise resolves with an array of all of their fulfilled values. The order of those values matches the order of the original promises.</li>
+          <li>If any one of the promises in the array is rejected, the returned promise is immediately rejected with the rejection reason.</li>
+        </ul>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.4 — Using Promise.all to combine multiple promises</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> allPostsPromise = <span class="tok-fn">Promise.all</span>(            <span class="tok-com">// #A</span>
+  [                                                <span class="tok-com">// #B</span>
+    <span class="tok-fn">fetch</span>(<span class="tok-str">"https://jsonplaceholder.typicode.com/posts/1"</span>), <span class="tok-com">// #B</span>
+    <span class="tok-fn">fetch</span>(<span class="tok-str">"https://jsonplaceholder.typicode.com/posts/2"</span>), <span class="tok-com">// #B</span>
+    <span class="tok-fn">fetch</span>(<span class="tok-str">"https://jsonplaceholder.typicode.com/posts/3"</span>), <span class="tok-com">// #B</span>
+  ].<span class="tok-fn">map</span>((fetchPromise) =&gt;                     <span class="tok-com">// #C</span>
+    fetchPromise.<span class="tok-fn">then</span>((response) =&gt; {          <span class="tok-com">// #C</span>
+      <span class="tok-kw">if</span> (!response.ok) {                      <span class="tok-com">// #C</span>
+        <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`Status code ${response.status}`</span>); <span class="tok-com">// #C</span>
+      }                                        <span class="tok-com">// #C</span>
+      <span class="tok-kw">return</span> response.<span class="tok-fn">json</span>();                   <span class="tok-com">// #C</span>
+    }),                                        <span class="tok-com">// #C</span>
+  ),                                             <span class="tok-com">// #C</span>
+);
+
+allPostsPromise
+  .<span class="tok-fn">then</span>((posts) =&gt; {                               <span class="tok-com">// #D</span>
+    posts.<span class="tok-fn">forEach</span>((post) =&gt; {                   <span class="tok-com">// #D</span>
+      console.<span class="tok-fn">log</span>(post);                          <span class="tok-com">// #D</span>
+    });                                          <span class="tok-com">// #D</span>
+  })                                             <span class="tok-com">// #D</span>
+  .<span class="tok-fn">catch</span>((reason) =&gt; {                             <span class="tok-com">// #E</span>
+    console.<span class="tok-fn">error</span>(<span class="tok-str">`Request failed: ${reason}`</span>);       <span class="tok-com">// #E</span>
+  });                                            <span class="tok-com">// #E</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Returns a single promise representing the result of every promise in an array</div>
+            <div><b>#B</b> Starts three fetch requests and stores the returned promises in an array</div>
+            <div><b>#C</b> Transforms each fetch promise to either fulfill with parsed JSON or be rejected</div>
+            <div><b>#D</b> Handles the case where all of the transformed fetch promises were fulfilled</div>
+            <div><b>#E</b> Handles the case where any of the transformed fetch promises were rejected</div>
+          </div>
+        </div>
+
+        <p>
+          True to its name, <code>Promise.all</code> is for all-or-nothing scenarios where any single failure makes the
+          other events moot. In practice, this is the most common way of handling concurrent promises. However, if you
+          need more flexibility, ES2020 added a method called <code>Promise.allSettled</code>. The
+          <code>allSettled</code> method returns a promise that’s fulfilled after all of the given promises are settled,
+          with an array containing their settled states and values. Of course, there’s nothing stopping you from
+          combining the two: you could use <code>Promise.all</code> to show a generic error to the user as soon as one
+          operation fails, then use <code>Promise.allSettled</code> to update that error message with details on every
+          operation that failed.
+        </p>
+        <p>
+          There are two more built-in multi-promise operations that are worth mentioning: <code>Promise.any</code> and
+          <code>Promise.race</code>. Like the other static methods we’ve mentioned, these methods take an array of
+          promises and return a single promise:
+        </p>
+        <ul>
+          <li><code>Promise.any</code> returns a promise that resolves with the first promise to be fulfilled. If all of the promises are rejected, the returned promise is rejected with an array of rejection reasons.</li>
+          <li><code>Promise.race</code> returns a promise that resolves with whichever promise settles first, whether it’s fulfilled or rejected.</li>
+        </ul>
+        <p>
+          <code>Promise.any</code> is newer and lesser-used, but useful in cases where there are multiple ways to
+          complete a task. For example, you might want to simultaneously send fetch requests to a database and a cache.
+          If the cache request succeeds, great! If the cache request fails, that’s no problem as long as the database
+          request doesn’t fail too.
+        </p>
+        <p><code>Promise.race</code> is commonly used to add a time limit to another promise. You can think of it as creating a race against the timer:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.5 — Using Promise.race to enforce a timeout</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> fetchController = <span class="tok-kw">new</span> <span class="tok-fn">AbortController</span>();              <span class="tok-com">// #A</span>
+<span class="tok-kw">const</span> fetchPromise = <span class="tok-fn">fetch</span>(<span class="tok-str">"https://httpbin.org/delay/2"</span>, {  <span class="tok-com">// #B</span>
+  signal: fetchController.signal,                            <span class="tok-com">// #B</span>
+}).<span class="tok-fn">then</span>((response) =&gt; {                                    <span class="tok-com">// #B</span>
+  <span class="tok-kw">if</span> (!response.ok) {                                      <span class="tok-com">// #B</span>
+    <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`Status code ${response.status}`</span>);     <span class="tok-com">// #B</span>
+  }                                                        <span class="tok-com">// #B</span>
+  <span class="tok-kw">return</span> response.<span class="tok-fn">json</span>();                                 <span class="tok-com">// #B</span>
+});                                                        <span class="tok-com">// #B</span>
+
+<span class="tok-kw">const</span> timeoutPromise = <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((_, reject) =&gt;         <span class="tok-com">// #C</span>
+  <span class="tok-fn">setTimeout</span>(() =&gt; {                                     <span class="tok-com">// #C</span>
+    fetchController.<span class="tok-fn">abort</span>();                             <span class="tok-com">// #C</span>
+    <span class="tok-fn">reject</span>(<span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">"Request timeout"</span>));
+  }, <span class="tok-num">1_000</span>),                                             <span class="tok-com">// #C</span>
+);                                                         <span class="tok-com">// #C</span>
+
+<span class="tok-fn">Promise.race</span>([fetchPromise, timeoutPromise])                <span class="tok-com">// #D</span>
+  .<span class="tok-fn">then</span>((result) =&gt; {
+    console.<span class="tok-fn">log</span>(result);
+  })
+  .<span class="tok-fn">catch</span>((reason) =&gt; {
+    console.<span class="tok-fn">error</span>(<span class="tok-str">`Request failed: ${reason}`</span>);
+  });</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Creates a controller that allows us to abort a fetch before it finishes</div>
+            <div><b>#B</b> Sends a request to an HTTP test endpoint that will respond after a 2-second delay</div>
+            <div><b>#C</b> Creates a promise that will be rejected after a 1-second delay</div>
+            <div><b>#D</b> Creates a promise that races the two given promises</div>
+          </div>
+        </div>
+
+        <p>
+          In addition to <code>Promise.race</code>, this example introduces <code>AbortController</code>, an API
+          introduced in ES2018 for canceling async operations. We wire up the controller to the fetch request by
+          passing its <code>signal</code> property as an option, then call the controller’s <code>abort()</code> method
+          to cancel the request. <code>AbortController</code> is an underused feature: without it, the fetch would
+          continue in the background long after the timeout, consuming precious resources that we might need for other
+          network requests.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Limiting concurrency with promise utilities</h4>
+          <p>
+            You may have noticed a significant limitation in all of the <code>Promise</code> methods for handling
+            multiple promises: since they only return a single promise, they’re only suitable for dealing with a final
+            (or, in the case of <code>Promise.race</code>, a first) concurrency event. They won’t help with scenarios
+            that involve managing concurrency with constrained resources. For example, you might want to spawn Web
+            Workers to perform a large number of tasks, but trying to spawn a Worker for every task at once would be
+            impractical — you might run out of memory!
+          </p>
+          <p>
+            Happily, the prolific Sindre Sorhus has created a popular library for limiting concurrency called
+            <a href="https://github.com/sindresorhus/p-limit">p-limit</a>. You can use it with any task function that
+            returns a promise. p-limit is part of an entire family of lightweight promise utility libraries that also
+            includes p-throttle and p-debounce.
+          </p>
+        </div>
+
+        <p>Let’s wrap up our discussion of promises by getting a precise answer to the question of when the promise handler fires.</p>
+
+        <h3 id="c8-timing"><span class="num">8.1.4</span> Promise timing: of microtasks and macrotasks</h3>
+        <p>
+          We mentioned the event loop back in chapter 4. To recap: JavaScript is a single-threaded language, which
+          means that events never interrupt code execution. Instead, they’re queued. When the JavaScript engine reaches
+          the end of the code it’s running, it handles the next queued event (if there is one). This repeated process of
+          running code and checking for queued events is known as the <strong>event loop</strong>.
+        </p>
+        <p>
+          That’s fine as a high-level description, but it’s short on specifics. Exactly what order do queued events fire
+          in? Before we answer that question, let’s look at a concrete example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.6 — Queueing callbacks with setTimeout and then</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-fn">setTimeout</span>(() =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"setTimeout callback"</span>);
+}, <span class="tok-num">0</span>);
+
+<span class="tok-fn">Promise.resolve</span>(<span class="tok-kw">true</span>).<span class="tok-fn">then</span>(() =&gt; {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"then callback"</span>);
+});
+
+console.<span class="tok-fn">log</span>(<span class="tok-str">"end of script"</span>);</code></pre>
+        </div>
+
+        <p>(This example was inspired by Jake Archibald’s classic 2015 blog post, <a href="https://jakearchibald.com/2015/tasks-microtasks-queues-and-schedules/">“Tasks, microtasks, queues and schedules”</a>. While some of the material in that post has fallen out of date, it’s highly recommended if you’re interested in seeing more interactive examples of the concepts in this section.)</p>
+        <p>If you run this script in any JavaScript environment, you’ll reliably get this output:</p>
+
+        <div class="terminal"><pre>end of script
+then callback
+setTimeout callback</pre></div>
+
+        <p>
+          You might be surprised that the <code>then</code> callback ran after the end of the script, since the promise
+          was already settled when its <code>then</code> method was called. However, promises never call the
+          <code>then</code> callback synchronously. This is a blessing, since it makes the flow of code execution easier
+          to predict: the code after the <code>then</code> call will always run before the callback.
+        </p>
+        <p>
+          That explains why <code>end of script</code> is first, but why is <code>setTimeout callback</code> last?
+          Well, for one, <code>setTimeout(callback, 0)</code> is a bit of a misnomer: according to the HTML Living
+          Standard, <code>setTimeout</code> has a minimum delay of 4 milliseconds. But even if the delay truly were 0
+          milliseconds, the <code>then</code> callback would fire first, because there are actually <strong>two</strong>
+          event queues!
+        </p>
+        <p>
+          Promise callbacks live in what the ECMAScript spec calls the <strong>job queue</strong>, though it’s more
+          popularly known as the <strong>microtask queue</strong>. By contrast, <code>setTimeout</code> callbacks live
+          in what’s commonly referred to as either the <strong>task queue</strong> or, for contrast with the microtask
+          queue, the <strong>macrotask queue</strong>. Events in the microtask queue are strictly prioritized over
+          events in the macrotask queue. With that knowledge, we can describe the event loop more precisely:
+        </p>
+        <ol>
+          <li>The JavaScript engine runs code until it reaches the end.</li>
+          <li>If there’s anything in the microtask queue, it runs the next microtask.</li>
+          <li>If there’s anything in the macrotask queue, it runs the next macrotask.</li>
+        </ol>
+        <p>
+          When <code>then</code> is called on a settled promise, it adds the callback to the microtask queue, which
+          means that it’ll run before any pending timeouts, DOM events, and I/O events — all of which are macrotasks.
+        </p>
+        <p>
+          For many years, savvy JavaScript developers would take advantage of this feature of promises to trigger code
+          that needed to run asynchronously but sooner than the likes of <code>setTimeout</code> would allow. For
+          example, frameworks like React use microtasks to batch updates to the DOM before it’s rendered. (Although
+          rendering isn’t performed by JavaScript, browsers time it as a macrotask.) Fortunately, there’s now a
+          well-supported API that provides a more direct solution: <code>queueMicrotask</code>.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Timing according to the specs</h4>
+          <p>
+            ECMAScript 2015 introduced both promises and the notion of the job queue (aka microtasks), laying down
+            strict rules for JavaScript engines to follow when timing promise callbacks. However, ECMAScript doesn’t
+            define the rules for timing functions like <code>setTimeout</code> or <code>queueMicrotask</code>. Instead,
+            those are defined in the HTML Living Standard. In principle, a JavaScript runtime could give those
+            functions different behaviors or omit them entirely. But in practice, Node.js set a precedent of following
+            the HTML spec for those timing functions, and other non-browser runtimes have followed suit.
+          </p>
+        </div>
+
+        <p>
+          That concludes our tour of promises. As you’ve seen, promises are a powerful API for interacting with
+          asynchronous operations. But it gets better! You’re about to meet <code>await</code>, a keyword that works as
+          a much sleeker alternative to <code>then</code> callbacks.
+        </p>
+      </section>
+
+      <section id="c8-await">
+        <h2><span class="num">8.2</span> Flattening promise callbacks with await</h2>
+        <p>
+          When promises were first introduced, they were an immediate hit with developers. Even before they were added
+          to the ES2015 specification, the then-ubiquitous jQuery library offered its own version of promises.
+          JavaScript codebases were filled to the brim with chains of <code>.then()</code>.
+        </p>
+        <p>
+          Today, promises are more popular than ever, yet you hardly see <code>then</code> used at all. Instead, you see
+          <code>await</code>. The <code>await</code> keyword combines the power of promises with a simple syntax that
+          resembles synchronous code. That combination of power and simplicity has made it a staple of modern
+          JavaScript code.
+        </p>
+        <p>
+          In this section, we’ll describe the problem that <code>await</code> solves. Then we’ll take a peek under the
+          hood and see exactly how it works as a replacement for the promise callback methods we learned about in the
+          previous section. Lastly, we’ll introduce the <code>await</code> keyword’s close cousin, <code>async</code>.
+        </p>
+
+        <h3 id="c8-callback-hell"><span class="num">8.2.1</span> The problem with nested callbacks</h3>
+        <p>
+          In chapter 3, we highlighted the ability to pass a function to another function as a callback as one of
+          JavaScript’s greatest features. The simplicity and versatility of callbacks as an event-handling mechanism was
+          a key reason that Ryan Dahl chose the language for the server runtime that would become Node.js.
+        </p>
+        <p>
+          But callbacks have a drawback: code that uses nested callbacks tends to become unreadable. Early Node.js
+          developers would complain of “callback hell” when dealing with a series of async operations. For example, a
+          web server’s HTTP endpoint might send an authentication request, query a database, then render the data into a
+          template from disk, resulting in a series of callbacks like this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Callback hell</span><span class="lang">JavaScript</span></div>
+          <pre><code>server.<span class="tok-fn">on</span>(<span class="tok-str">"request"</span>, (request, response) =&gt; {
+  <span class="tok-fn">authenticateUser</span>(request, (authResult) =&gt; {
+    <span class="tok-kw">if</span> (!authResult.ok) {
+      response.<span class="tok-fn">send</span>(<span class="tok-num">401</span>, <span class="tok-str">"Not authorized"</span>);
+      <span class="tok-kw">return</span>;
+    }
+    <span class="tok-fn">queryDatabase</span>(request, (dbResult, dbError) =&gt; {
+      <span class="tok-kw">if</span> (dbError) {
+        response.<span class="tok-fn">send</span>(<span class="tok-num">500</span>, <span class="tok-str">"Internal error"</span>);
+        <span class="tok-kw">return</span>;
+      }
+      <span class="tok-fn">renderTemplate</span>(<span class="tok-str">"page.template"</span>, dbResult, (html) =&gt; {
+        response.<span class="tok-fn">send</span>(<span class="tok-num">200</span>, html);
+      });
+    });
+  });
+});</code></pre>
+        </div>
+
+        <p>
+          You could disentangle the callbacks by moving them to separate named functions rather than declaring them
+          inline. But that introduces another form of complexity: in the nested structure, every previous callback’s
+          arguments are available to every subsequent callback. In the de-nested structure, you’d need to find some
+          other way to pass state around. Having to explicitly marshal state from one part of the application’s code to
+          another is one of the problems that callbacks so elegantly solved!
+        </p>
+        <p>
+          Promises came along and offered more flexibility about where callbacks were defined, but the fundamental
+          problem remained: if you wanted the state from previous callbacks to be available, you needed to either nest
+          those callbacks or add boilerplate code to move state around.
+        </p>
+        <p>
+          Then ES2017 introduced the <code>await</code> keyword, and everything changed. With promise-based APIs and
+          <code>await</code>, this series of asynchronous function calls can be expressed just as succinctly as if they
+          were synchronous:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The same endpoint, with await</span><span class="lang">JavaScript</span></div>
+          <pre><code>server.<span class="tok-fn">on</span>(<span class="tok-str">"request"</span>, <span class="tok-kw">async</span> (request, response) =&gt; {
+  <span class="tok-kw">const</span> authResult = <span class="tok-kw">await</span> <span class="tok-fn">authenticateUser</span>(request);
+  <span class="tok-kw">if</span> (!authResult.ok) {
+    response.<span class="tok-fn">send</span>(<span class="tok-num">401</span>, <span class="tok-str">"Not authorized"</span>);
+    <span class="tok-kw">return</span>;
+  }
+  <span class="tok-kw">try</span> {
+    <span class="tok-kw">const</span> dbResult = <span class="tok-kw">await</span> <span class="tok-fn">queryDatabase</span>(request);
+    <span class="tok-kw">const</span> html = <span class="tok-kw">await</span> <span class="tok-fn">renderTemplate</span>(<span class="tok-str">"page.template"</span>);
+    response.<span class="tok-fn">send</span>(<span class="tok-num">200</span>, html);
+  } <span class="tok-kw">catch</span> {
+    response.<span class="tok-fn">send</span>(<span class="tok-num">500</span>, <span class="tok-str">"Internal error"</span>);
+  }
+});</code></pre>
+        </div>
+
+        <p>The result is much more readable, without losing any of the benefits of JavaScript’s event-driven single-threaded model.</p>
+        <p>But how does it work? Let’s take a look at the hidden secrets of <code>await</code>.</p>
+
+        <h3 id="c8-how-await-works"><span class="num">8.2.2</span> How await works</h3>
+        <p>
+          The expression <code>await value</code> implicitly converts the value to a promise according to the same
+          promise resolution algorithm we discussed in section 8.1.1. The promise is equivalent to
+          <code>Promise.resolve(value)</code>. Then it halts code execution until that promise is settled. That means
+          that the JavaScript engine will go to the next step of the event loop, checking for queued events as
+          described in section 8.1.4. This is an important point: <code>await</code> is <strong>non-blocking</strong>,
+          because other events are free to fire while its promise is pending.
+        </p>
+        <p>
+          When the promise is settled, it’ll queue a microtask (just like calling <code>then</code>) that does one of
+          two things:
+        </p>
+        <ol>
+          <li>If the promise was fulfilled, code execution will resume, with the <code>await</code> expression taking on the fulfilled value.</li>
+          <li>If the promise was rejected, the rejection reason will be thrown from the <code>await</code> line.</li>
+        </ol>
+        <p>Here are a few examples of <code>await</code> in action:</p>
+
+        <div class="listing">
+          <div class="bar"><span>await in action</span><span class="lang">JavaScript</span></div>
+          <pre><code>console.<span class="tok-fn">assert</span>((<span class="tok-kw">await</span> <span class="tok-str">"Phantom Blade"</span>) === <span class="tok-str">"Phantom Blade"</span>);
+console.<span class="tok-fn">assert</span>(
+  (<span class="tok-kw">await</span> <span class="tok-fn">Promise.resolve</span>(<span class="tok-str">"Falling Devil"</span>)) ===
+    <span class="tok-str">"Falling Devil"</span>,
+);
+<span class="tok-kw">await</span> <span class="tok-fn">Promise.reject</span>(<span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">"Deadly Mirage"</span>)); <span class="tok-com">// throws</span></code></pre>
+        </div>
+
+        <p>
+          The rejection behavior is especially noteworthy here. Not only does <code>await</code> provide a succinct
+          syntactic alternative to <code>then</code>, it also gives us more robust error handling, since the thrown
+          error includes a complete stack trace — just like we’d get with synchronous code. This ability to throw
+          errors addresses one of the biggest gripes that JavaScript developers had when promises were first
+          introduced.
+        </p>
+        <p>
+          By the way, you may have noticed that we used <code>await</code> in the middle of an expression, pausing code
+          execution at exactly that point. But that’s not all: we can use <code>await</code> in loops and conditions,
+          too. Try doing that with <code>then</code>!
+        </p>
+        <p>
+          Of course, if <code>await</code> could be used anywhere in JavaScript code, it would break the long-held
+          assumption of JavaScript developers that their code can’t be interrupted by events. Fortunately, the
+          ECMAScript spec has a clever solution to this problem. The <code>await</code> keyword is only allowed to be
+          used in either:
+        </p>
+        <ul>
+          <li>The top level of an ECMAScript module (ESM), or</li>
+          <li>A function declared with the <code>async</code> keyword</li>
+        </ul>
+        <p>
+          Thanks to these two rules, you can rest easy knowing that when you call a function, that function can’t use
+          <code>await</code> to interrupt your code’s flow of execution. That’s true even if that function is an async
+          function, for reasons that will become apparent in the next section.
+        </p>
+        <p>
+          ECMAScript modules will be a major topic in chapter 13. Long story short, you can declare a module as ESM by
+          either specifying <code>"type": "module"</code> in the closest <code>package.json</code> or using the
+          <code>.mjs</code> or <code>.mts</code> extension (for JavaScript or TypeScript, respectively) in the module’s
+          filename. All of the example code for this chapter uses <code>.mts</code>, which means that you can play
+          around with <code>await</code> freely — as long as you’re not inside of a function.
+        </p>
+
+        <div class="note">
+          <div>
+            <p><span class="label">Note</span>
+              There’s no ESLint rule for identifying the use of <code>await</code> where it isn’t allowed. There
+              doesn’t need to be, because it triggers a parser error. Running ESLint, TypeScript, or any other tool
+              that parses your code will catch illegal <code>await</code>s.</p>
+          </div>
+        </div>
+
+        <p>Next we’ll discuss the <code>async</code> keyword and find out what makes async functions special.</p>
+
+        <h3 id="c8-async"><span class="num">8.2.3</span> Automating promise creation with async</h3>
+        <p>
+          The magic of the <code>await</code> keyword is its ability to make <em>consuming</em> promises as easy as
+          consuming synchronous values. The <code>async</code> keyword, conversely, makes it easy to <em>produce</em>
+          promises. No need to call <code>new Promise</code> or any of the helper functions we’ve seen; instead, you
+          can just return a value from a function. Let’s look at a simple example:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.7 — Returning a simple value from an async function</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> <span class="tok-fn">makeNinjaName</span> = <span class="tok-kw">async</span> () =&gt; <span class="tok-str">"Ghost of Tsushima"</span>;  <span class="tok-com">// #A</span>
+<span class="tok-kw">const</span> ninjaNamePromise = <span class="tok-fn">makeNinjaName</span>();
+console.<span class="tok-fn">assert</span>(
+  (<span class="tok-kw">await</span> ninjaNamePromise) === <span class="tok-str">"Ghost of Tsushima"</span>,            <span class="tok-com">// #B</span>
+);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines a function that wraps its return value in a promise</div>
+            <div><b>#B</b> Unwraps the promise to get its fulfilled value</div>
+          </div>
+        </div>
+
+        <p>
+          The <code>async</code> keyword is only used when defining a function. It works with both the
+          <code>function</code> keyword and, as in the example above, with arrow functions. Functions defined in this way
+          are simply called <strong>async functions</strong>. Here’s how they work:
+        </p>
+        <ul>
+          <li>Returned values are converted to promises using the same promise resolution algorithm described in section 8.1.1. That means that <code>return value</code> is equivalent to <code>return Promise.resolve(value)</code>, except that <code>value</code> is returned as-is if it’s already a promise.</li>
+          <li>Thrown values are converted to rejected promises. In other words, <code>throw error</code> is effectively equivalent to <code>return Promise.reject(error)</code>.</li>
+        </ul>
+        <p>
+          These behaviors guarantee that a call to an async function will always return a promise. In TypeScript, you
+          can see this clearly by examining the return type of a function. The return type for
+          <code>makeNinjaName</code> in the example above is <code>Promise&lt;string&gt;</code>, a promise whose
+          fulfilled value is a string. (Note that a promise’s rejection reason always has the type
+          <code>unknown</code>, just as the type of a caught error is always <code>unknown</code>. In both cases it’s
+          considered a best practice to use <code>Error</code> objects, but this isn’t enforced by the type checker.)
+        </p>
+        <p>
+          We mentioned in the previous section that <code>await</code> can’t be used inside of a function unless that
+          function is declared with <code>async</code>, since doing so would interrupt the flow of execution. The reason
+          that it’s safe to use <code>await</code> inside an async function is the guaranteed return type. From the
+          async function caller’s perspective, an <code>await</code> doesn’t interrupt <em>their</em> flow of
+          execution; it only affects when and how the promise returned by the async function resolves.
+        </p>
+
+        <div class="note">
+          <img class="icon" src="assets/chapter1/icon-eslint.png" alt="Book icon: a magic wand with sparkles, used to mark ESLint tips.">
+          <div>
+            <p><span class="label">Note</span>
+              There’s a helpful rule in typescript-eslint called
+              <a href="https://typescript-eslint.io/rules/promise-function-async">promise-function-async</a> that
+              enforces that all functions that return a promise be declared with <code>async</code>. The main
+              motivation for the rule is error handling: if the function returns a promise, the caller is likely to
+              expect it to return a rejected promise rather than synchronously throwing an error.</p>
+          </div>
+        </div>
+
+        <p>Let’s tie our <code>async</code> and <code>await</code> discussion together with an illustrative example, this time rewriting listing 8.3 with more succinct, reusable code:</p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.8 — Using an async function to fetch and parse JSON</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> <span class="tok-fn">fetchJson</span> = <span class="tok-kw">async</span> (url: <span class="tok-kw">string</span>) =&gt; {        <span class="tok-com">// #A</span>
+  <span class="tok-kw">const</span> response = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(url);                     <span class="tok-com">// #A</span>
+  <span class="tok-kw">if</span> (!response.ok) {                                     <span class="tok-com">// #A</span>
+    <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`Status code ${response.status}`</span>);      <span class="tok-com">// #A</span>
+  }                                                       <span class="tok-com">// #A</span>
+  <span class="tok-kw">return</span> response.<span class="tok-fn">json</span>();                                  <span class="tok-com">// #A</span>
+};                                                        <span class="tok-com">// #A</span>
+
+<span class="tok-kw">try</span> {
+  console.<span class="tok-fn">log</span>(
+    <span class="tok-kw">await</span> <span class="tok-fn">fetchJson</span>(                                       <span class="tok-com">// #B</span>
+      <span class="tok-str">"https://jsonplaceholder.typicode.com/posts/1"</span>,         <span class="tok-com">// #B</span>
+    ),                                                      <span class="tok-com">// #B</span>
+  );
+} <span class="tok-kw">catch</span> (error) {                                           <span class="tok-com">// #C</span>
+  console.<span class="tok-fn">error</span>(<span class="tok-str">`Request failed: ${error}`</span>);                  <span class="tok-com">// #C</span>
+} <span class="tok-kw">finally</span> {
+  console.<span class="tok-fn">log</span>(<span class="tok-str">"Request finished"</span>);
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines an async function to fetch and parse JSON from the given URL</div>
+            <div><b>#B</b> Calls the async function and logs the fulfilled value</div>
+            <div><b>#C</b> Catches any errors thrown from the async function</div>
+          </div>
+        </div>
+
+        <p>
+          Now you can see why developers have embraced <code>async</code> and <code>await</code>. Thanks to this
+          convenient syntax, JavaScript APIs have gradually shifted away from callbacks and toward returning promises.
+          Node.js, for example, offers both its classic <code>fs</code> module for file I/O and a newer
+          <code>fs/promises</code> variant. It also provides a convenient <code>promisify</code> utility that can
+          convert any function that uses a traditional Node.js-style callback into one that returns a promise — see
+          <a href="https://nodejs.org/api/util.html#utilpromisifyoriginal">util.promisify</a>.
+        </p>
+        <p>
+          But a promise can only represent a one-time event. What if we want to interact with a multi-step process
+          without using a callback? For that, let’s enter the world of generators.
+        </p>
+      </section>
+
+      <section id="c8-generators">
+        <h2><span class="num">8.3</span> Making interruptible loops with generators</h2>
+        <p>
+          Generators were introduced with much fanfare in ES2015, the same ECMAScript version that made promises an
+          official part of the language. Generators and promises were expected to form a dynamic duo that developers
+          would use to make nested callbacks a thing of the past. In a world of generators, async JavaScript code might
+          look like this:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>The generator future that never quite arrived</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">function</span>* <span class="tok-fn">multiFetch</span>(urls: <span class="tok-kw">string</span>[]) {
+  <span class="tok-kw">for</span> (<span class="tok-kw">const</span> url <span class="tok-kw">of</span> urls) {
+    <span class="tok-kw">yield</span> <span class="tok-fn">fetch</span>(url);
+  }
+}</code></pre>
+        </div>
+
+        <p>
+          It didn’t work out that way. Few developers took to the strange-looking syntax of generators. And when ES2017
+          introduced <code>async</code> and <code>await</code>, it took away what had been one of their major use cases.
+          Today, generators are widely regarded as a bit of an oddity, useful for only a few niche scenarios. Still,
+          it’s worth familiarizing yourself with them. Under the right conditions, generators can be a valuable tool to
+          have in your JavaScript Ninja belt!
+        </p>
+        <p>
+          Before we get into generators themselves, we need to lay down some groundwork. Just as <code>async</code> is
+          a convenient syntax for defining a function that returns a promise, generators are a convenient syntax for
+          defining a function that returns an <strong>iterable</strong>. So let’s talk about iterables.
+        </p>
+
+        <h3 id="c8-iterables"><span class="num">8.3.1</span> Iterables and iterators</h3>
+        <p>
+          We’ve mentioned ES2015 quite a few times in this chapter. Quite simply, ES2015 was a huge leap forward for
+          JavaScript, introducing tons of new features. One of those new features was the <code>for…of</code> loop
+          syntax:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>A simple for…of loop</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">for</span> (<span class="tok-kw">const</span> number <span class="tok-kw">of</span> [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>]) {
+  console.<span class="tok-fn">log</span>(number);
+}</code></pre>
+        </div>
+
+        <p>
+          The <code>for…of</code> syntax is convenient for working with arrays, but it’s even more helpful for iterating
+          over other collection types like maps and sets (which were also introduced by ES2015), where a traditional
+          <code>for</code> loop isn’t an option. In fact, you can use <code>for…of</code> with any object that
+          satisfies these conditions:
+        </p>
+        <ol>
+          <li>
+            The object must have the key <code>Symbol.iterator</code>. We haven’t talked about symbols (yet another
+            ES2015 feature!), so here’s what you need to know: symbols are the only non-string type that can be used as
+            object keys. They’re useful for differentiating special object properties. <code>Symbol.iterator</code> is
+            one of a handful of symbols that are made available as static properties of the <code>Symbol</code> class.
+            If you’re curious to learn more about symbols, see
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol">MDN</a>.
+          </li>
+          <li>
+            The value of <code>object[Symbol.iterator]</code> must be a function that returns an object with a
+            <code>next()</code> method. Each time that method is called, it’s expected to return an object called an
+            <strong>iterator result</strong> with properties named <code>value</code> and <code>done</code>.
+          </li>
+        </ol>
+        <p>
+          When those conditions are met, the object is called an <strong>iterable</strong>, and the object returned by
+          <code>object[Symbol.iterator]()</code> is an <strong>iterator</strong>.
+        </p>
+        <p>
+          Let’s make these concepts more concrete by drilling down on the previous example. Instead of using
+          <code>for…of</code>, we’ll use the array’s iterator directly:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.9 — Looping through an array using its iterator</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> numbers = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>];
+<span class="tok-kw">const</span> iterator = numbers[<span class="tok-fn">Symbol.iterator</span>]();   <span class="tok-com">// #A</span>
+<span class="tok-kw">let</span> iteratorResult = iterator.<span class="tok-fn">next</span>();            <span class="tok-com">// #B</span>
+<span class="tok-kw">while</span> (!iteratorResult.done) {                     <span class="tok-com">// #C</span>
+  console.<span class="tok-fn">log</span>(iteratorResult.value);                  <span class="tok-com">// #D</span>
+  iteratorResult = iterator.<span class="tok-fn">next</span>();                <span class="tok-com">// #E</span>
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Uses the <code>Symbol.iterator</code> key to access the array’s iterator object</div>
+            <div><b>#B</b> Gets the first iterator result</div>
+            <div><b>#C</b> Loops until the iterator result is in the <code>done</code> state</div>
+            <div><b>#D</b> Logs the iterator result’s value</div>
+            <div><b>#E</b> Gets the next iterator result</div>
+          </div>
+        </div>
+
+        <p>
+          This is a very convoluted way to iterate through an array, but it demonstrates what’s going on under the hood
+          in a <code>for…of</code> loop. It shows that there’s nothing magical about arrays: you can easily write your
+          own iterable.
+        </p>
+        <p>
+          Before we do that, let’s talk about one other way that JavaScript uses iterables: destructuring. (Another
+          ES2015 feature, by the way.) Consider this code, which assigns three values to three variables:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Iterable destructuring</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">const</span> [a, b, c] = [<span class="tok-str">"a"</span>, <span class="tok-str">"b"</span>, <span class="tok-str">"c"</span>];</code></pre>
+        </div>
+
+        <p>
+          This is commonly referred to as the array destructuring syntax. But it’s actually an <em>iterable</em>
+          destructuring syntax! Under the hood, JavaScript is using the iterator to get each sequential value, allowing
+          this syntax to be used for all kinds of collections. You can even use the spread or rest syntax to collect
+          all of the iterable’s values:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Spread and rest with iterables</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-com">// Call a function with the spread syntax</span>
+<span class="tok-fn">func</span>(...iterable);
+
+<span class="tok-com">// Convert an iterable to an array with the spread syntax</span>
+<span class="tok-kw">const</span> array = [...iterable];
+
+<span class="tok-com">// Convert part of the iterable to an array using the rest syntax</span>
+<span class="tok-kw">const</span> [first, ...others] = iterable;</code></pre>
+        </div>
+
+        <p>
+          If you do try to spread all of the iterable’s values, though, just be careful that the iterable is finite!
+          Here’s an example of an iterable that most certainly isn’t:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.10 — Defining a custom iterable</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">const</span> randomNumbers: <span class="tok-fn">Iterable</span>&lt;<span class="tok-kw">number</span>&gt; = {              <span class="tok-com">// #A</span>
+  [<span class="tok-fn">Symbol.iterator</span>]: () =&gt; ({                             <span class="tok-com">// #B</span>
+    <span class="tok-fn">next</span>: () =&gt; ({ value: Math.<span class="tok-fn">random</span>() }),             <span class="tok-com">// #B</span>
+  }),                                                    <span class="tok-com">// #B</span>
+};
+
+<span class="tok-kw">const</span> [num1, num2] = randomNumbers;                      <span class="tok-com">// #C</span>
+console.<span class="tok-fn">log</span>(num1, num2);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The type annotation lets TypeScript verify that the object is iterable</div>
+            <div><b>#B</b> Returns an iterator that generates random numbers</div>
+            <div><b>#C</b> Calls the iterator twice and assigns each result value to a variable</div>
+          </div>
+        </div>
+
+        <p>
+          As you can see, iterables aren’t limited to finite, static collections. They can be used to lazily generate
+          values as needed. For that matter, who says they need to return values at all? That <code>next()</code>
+          function could do anything, after all.
+        </p>
+        <p>
+          Now you should have a solid footing to understand iterables and why they’re useful. But defining custom
+          iterables the way we did in listing 8.9 is awfully verbose! With that problem in mind, let’s meet generators.
+        </p>
+
+        <h3 id="c8-generator-functions"><span class="num">8.3.2</span> Iterating within a function with generators</h3>
+        <p>
+          A <strong>generator function</strong> is defined using the <code>function</code> keyword followed by
+          <code>*</code>. (Arrow functions can’t be generator functions.) Just like async functions, generator
+          functions guarantee a particular return type. Specifically, a generator function always returns a
+          <strong>generator object</strong>, which is both an iterable and an iterator: calling
+          <code>generator[Symbol.iterator]()</code> returns <code>generator</code> itself.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Generator terminology</h4>
+          <p>
+            According to the ECMAScript spec, a function declared with <code>function*</code> is a <strong>generator
+            function</strong> and the object it returns is a <strong>generator</strong>. Colloquially, though, you’ll
+            often hear the term “generator” used to refer to both. That’s understandable, as the two are inextricably
+            intertwined: there’s no way to create a generator without a generator function, or vice versa. We use the
+            terms generator function and generator object throughout this section to try to clearly differentiate the
+            two entities.
+          </p>
+        </div>
+
+        <p>
+          Here’s where things get interesting: each time the generator’s <code>next()</code> method is called, it
+          advances the generator function until it either returns or uses <code>yield</code>. The <code>yield</code>
+          keyword is a unique feature that’s only valid inside a generator function (figure 8.2). <code>yield</code>
+          pauses the function’s execution, but unlike <code>await</code>, it doesn’t pause the entire JavaScript
+          thread. Instead, execution jumps to where the generator’s <code>next()</code> method was called, just as it
+          would if you used <code>return</code>. Calling the generator’s <code>next()</code> method again resumes code
+          execution at the <code>yield</code>. In other words, the generator function picks up where it left off.
+        </p>
+
+        <figure>
+          <img src="data:image/webp;base64,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" alt="Figure 8.2 — annotated code showing the asterisk after the function keyword defining a generator function, and yield producing individual values.">
+          <figcaption><b>Figure 8.2</b> Add an asterisk (<code>*</code>) after the <code>function</code> keyword to define a generator function. Within generator functions, use <code>yield</code> to produce individual values.</figcaption>
+        </figure>
+
+        <p>The iterator result returned from <code>next()</code> looks like this:</p>
+        <ul>
+          <li>If the function hits a <code>yield</code> expression, the iterator result has the form <code>{ value, done: false }</code>, where <code>value</code> is the value that comes after the <code>yield</code> keyword (or <code>undefined</code> if <code>yield</code> is used by itself).</li>
+          <li>If the function returns, the iterator result has the form <code>{ value, done: true }</code>, where <code>value</code> is the value that comes after the <code>return</code> keyword (or <code>undefined</code> if <code>return</code> is used by itself or the function simply reached its end).</li>
+          <li>If the function throws an error, it gets thrown from the <code>next()</code> call.</li>
+        </ul>
+        <p>
+          There’s a lot to unpack there, so let’s start with a simple example: an adaptation of the random number
+          iterable in listing 8.10 as a generator function.
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.11 — Defining an infinitely iterable generator</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span>* <span class="tok-fn">randomNumbers</span>() {                            <span class="tok-com">// #A</span>
+  <span class="tok-kw">while</span> (<span class="tok-kw">true</span>) {                                      <span class="tok-com">// #B</span>
+    <span class="tok-kw">yield</span> Math.<span class="tok-fn">random</span>();                               <span class="tok-com">// #B</span>
+  }                                                    <span class="tok-com">// #B</span>
+}
+
+<span class="tok-kw">const</span> randomNumberGenerator = <span class="tok-fn">randomNumbers</span>();          <span class="tok-com">// #C</span>
+<span class="tok-kw">const</span> [num1, num2] = randomNumberGenerator;             <span class="tok-com">// #D</span>
+console.<span class="tok-fn">log</span>(num1, num2);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines a generator function</div>
+            <div><b>#B</b> Yields a new random value for every iterator result</div>
+            <div><b>#C</b> Gets a generator object from the generator function</div>
+            <div><b>#D</b> Iterates through the generator twice and collects the two values it yields</div>
+          </div>
+        </div>
+
+        <p>
+          Just like <code>await</code>, <code>yield</code> pauses the function’s code execution while preserving its
+          state. You can have as many <code>yield</code>s as you like in a generator function.
+        </p>
+        <p>
+          An interesting but lesser-used feature of generators is the ability to pass a value into the
+          <code>next()</code> method. When you do that, the <code>yield</code> expression that the generator resumes
+          from will have the value that you passed in:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.12 — A generator with two-way yield</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">function</span>* <span class="tok-fn">multiplier</span>(): <span class="tok-fn">Generator</span>&lt;<span class="tok-kw">number</span>, <span class="tok-kw">unknown</span>, <span class="tok-kw">number</span>&gt; {  <span class="tok-com">// #A</span>
+  <span class="tok-kw">let</span> number = <span class="tok-num">1</span>;
+  <span class="tok-kw">while</span> (<span class="tok-kw">true</span>) {
+    <span class="tok-kw">const</span> multiplier = <span class="tok-kw">yield</span> number;                    <span class="tok-com">// #B</span>
+    number *= multiplier;                                 <span class="tok-com">// #B</span>
+  }
+}
+
+<span class="tok-kw">const</span> multiplierGenerator = <span class="tok-fn">multiplier</span>();
+console.<span class="tok-fn">assert</span>(multiplierGenerator.<span class="tok-fn">next</span>().value === <span class="tok-num">1</span>);
+console.<span class="tok-fn">assert</span>(multiplierGenerator.<span class="tok-fn">next</span>(<span class="tok-num">5</span>).value === <span class="tok-num">5</span>);
+console.<span class="tok-fn">assert</span>(multiplierGenerator.<span class="tok-fn">next</span>(<span class="tok-num">4</span>).value === <span class="tok-num">20</span>);</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> The type annotation lets TypeScript verify that the generator both returns and accepts a number</div>
+            <div><b>#B</b> Yields the number, then multiplies the number by the value passed to <code>next()</code></div>
+          </div>
+        </div>
+
+        <p>
+          One more interesting feature is the ability to delegate to another generator using <code>yield*</code>. This
+          means that the original generator will yield values from the delegated generator until those values are
+          exhausted (that is, until <code>done</code> is true):
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.13 — Using yield* to delegate to another generator</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">function</span>* <span class="tok-fn">warriors</span>() {
+  <span class="tok-kw">yield</span> <span class="tok-str">"Sun Tzu"</span>;
+  <span class="tok-kw">yield</span>* <span class="tok-fn">ninjas</span>();                            <span class="tok-com">// #A</span>
+  <span class="tok-kw">yield</span> <span class="tok-str">"Genghis Khan"</span>;
+}
+
+<span class="tok-kw">function</span>* <span class="tok-fn">ninjas</span>() {
+  <span class="tok-kw">yield</span> <span class="tok-str">"Hattori"</span>;
+  <span class="tok-kw">yield</span> <span class="tok-str">"Yoshi"</span>;
+}
+
+<span class="tok-kw">for</span> (<span class="tok-kw">let</span> warrior <span class="tok-kw">of</span> <span class="tok-fn">warriors</span>()) {
+  console.<span class="tok-fn">log</span>(warrior);
+}</code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Delegates to another generator</div>
+          </div>
+        </div>
+
+        <div class="terminal"><pre>Sun Tzu
+Hattori
+Yoshi
+Genghis Khan</pre></div>
+
+        <p>
+          The output of this code shows that <code>yield* ninjas()</code> goes through all of the yields in
+          <code>ninjas</code> before returning the flow of code execution to <code>warriors</code>.
+        </p>
+        <p>
+          A great use case for <code>yield*</code> is recursion: a generator can yield to another generator returned
+          from the same generator function with different arguments. Using a recursive generator, you could iterate
+          through all of the elements in a DOM tree in a simple <code>for…of</code> loop, without the inefficiency of
+          converting the tree to a flat array.
+        </p>
+        <p>Next we’ll find out what happens when we combine generators with the power of <code>async</code> and <code>await</code>.</p>
+
+        <h3 id="c8-async-iterables"><span class="num">8.3.3</span> Async iterables and async generators</h3>
+        <p>
+          So far we’ve seen how generator functions can pause their own execution using the <code>yield</code> keyword.
+          But <code>yield</code> only moves the flow of code execution to where the next iterator result is consumed; it
+          doesn’t pause the thread the way <code>await</code> does, allowing events to fire. That behavior wouldn’t make
+          sense for an iterator.
+        </p>
+        <p>
+          That’s why ES2018 introduced <strong>async generators</strong>, along with corresponding async iterable and
+          async iterator protocols. As you might have guessed, all of these constructs are built on top of promises:
+          whereas a synchronous iterator’s <code>next()</code> method returns an iterator result object, an async
+          iterator’s <code>next()</code> method returns a promise that fulfills with an iterator result object.
+        </p>
+        <p>
+          Async iterables are a straightforward analogue of synchronous iterables: instead of the key
+          <code>Symbol.iterator</code>, they use the key <code>Symbol.asyncIterator</code>. (There’s nothing stopping an
+          object from having both keys, making it both an iterable and an async iterable.) Calling
+          <code>object[Symbol.asyncIterator]()</code> is expected to return an async iterator, an object with a
+          promise-returning <code>next()</code> function.
+        </p>
+        <p>
+          But all of that is, thankfully, abstracted by async generators. To define one, you just use the
+          <code>async</code> keyword with the now-familiar <code>function*</code> syntax:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Listing 8.14 — Using an async generator</span><span class="lang">TypeScript</span></div>
+          <pre><code><span class="tok-kw">async</span> <span class="tok-kw">function</span>* <span class="tok-fn">fetchPosts</span>() {                        <span class="tok-com">// #A</span>
+  <span class="tok-kw">for</span> (<span class="tok-kw">let</span> i = <span class="tok-num">1</span>; i &lt;= <span class="tok-num">3</span>; i++) {
+    <span class="tok-kw">const</span> response = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(                       <span class="tok-com">// #B</span>
+      <span class="tok-str">`https://jsonplaceholder.typicode.com/posts/${i}`</span>,   <span class="tok-com">// #B</span>
+    );                                                    <span class="tok-com">// #B</span>
+    <span class="tok-kw">if</span> (!response.ok) {                                   <span class="tok-com">// #C</span>
+      <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`Status code ${response.status}`</span>);    <span class="tok-com">// #C</span>
+    }                                                     <span class="tok-com">// #C</span>
+    <span class="tok-kw">const</span> json = <span class="tok-kw">await</span> response.<span class="tok-fn">json</span>();
+    <span class="tok-kw">yield</span> json;                                          <span class="tok-com">// #D</span>
+  }
+}
+
+<span class="tok-kw">for</span> <span class="tok-kw">await</span> (<span class="tok-kw">const</span> post <span class="tok-kw">of</span> <span class="tok-fn">fetchPosts</span>()) {              <span class="tok-com">// #E</span>
+  console.<span class="tok-fn">log</span>(post);                                       <span class="tok-com">// #E</span>
+}                                                        <span class="tok-com">// #E</span></code></pre>
+          <div class="callouts">
+            <div><b>#A</b> Defines an async generator</div>
+            <div><b>#B</b> Uses <code>await</code> to pause while waiting for the response</div>
+            <div><b>#C</b> Throws if the response’s status code indicates an error</div>
+            <div><b>#D</b> Resolves the next iterator result promise</div>
+            <div><b>#E</b> Iterates through the async iterator</div>
+          </div>
+        </div>
+
+        <p>
+          By combining <code>yield</code> with <code>async</code> and <code>await</code>, we finally have the ability to
+          actually pause code execution inside of a generator function!
+        </p>
+        <p>
+          In terms of how they’re consumed, async iterators aren’t quite as versatile as the synchronous variety: you
+          can’t use them in array destructuring or spread them as function arguments. The only syntax that uses async
+          iterators (apart from calling <code>next()</code> directly) is the <code>for await…of</code> loop syntax, an
+          asynchronous analogue of <code>for…of</code> that waits for each iterator result promise to resolve.
+        </p>
+        <p>
+          Shortly after ECMAScript introduced async iterators, browsers introduced the <code>ReadableStream</code> API,
+          a convenient way to read data as it flows in. Whenever you interact with a web-based LLM, that smooth flow of
+          text is likely coming from a <code>for await…of</code> loop:
+        </p>
+
+        <div class="listing">
+          <div class="bar"><span>Reading a stream chunk by chunk</span><span class="lang">JavaScript</span></div>
+          <pre><code><span class="tok-kw">for</span> <span class="tok-kw">await</span> (<span class="tok-kw">const</span> chunk <span class="tok-kw">of</span> stream) {
+  <span class="tok-com">// render the new chunk of text...</span>
+}</code></pre>
+        </div>
+
+        <p>We’ll learn more about streams in chapter 11.</p>
+        <p>
+          Now that you know how generators work, we come to a question that JavaScript developers have been pondering
+          for years: are generators useful? The ability to pause a function and resume its execution later is a neat
+          trick, but in practice, the main use case for generators is when you want to make some functionality easier
+          to consume by wrapping it in an iterable. Using generators, you can neatly express:
+        </p>
+        <ul>
+          <li>Assigning multiple generated values using array destructuring.</li>
+          <li>A <code>for…of</code> loop that iterates through elements in a tree using recursion.</li>
+          <li>A <code>for await…of</code> loop that iterates through a series of expensive tasks.</li>
+        </ul>
+        <p>The next time you find yourself writing a complex loop, ask yourself whether it might be more elegant to write it as a generator.</p>
+      </section>
+
+      <section id="c8-summary">
+        <h2><span class="num">8.4</span> Summary</h2>
+        <div class="card">
+          <h4>Nine things to remember</h4>
+          <ol>
+            <li>
+              A <strong>promise</strong> is a placeholder for the result of a task, typically an asynchronous one. A
+              promise can either be fulfilled or rejected. Once that’s happened, we say that it’s
+              <strong>settled</strong>: it will permanently remain in the same state.
+            </li>
+            <li>
+              Asynchronous JavaScript APIs like <code>fetch</code> return a promise instead of taking a callback. We can
+              attach as many callbacks as we want using the <code>then</code> method on the promise.
+            </li>
+            <li>We can use utility functions like <code>Promise.all</code> and <code>Promise.race</code> to combine promises for tracking multiple tasks.</li>
+            <li>
+              The <code>await</code> keyword waits for a promise to resolve, returning its fulfilled value or throwing
+              its rejection reason.
+            </li>
+            <li>
+              The <code>async</code> keyword guarantees that a function will always return a promise. When the function
+              returns a value or throws an error, it’ll be used to resolve the returned promise.
+            </li>
+            <li>
+              A <strong>generator function</strong> is declared by putting an asterisk (<code>*</code>) after the
+              <code>function</code> keyword. Within the body of the generator, we can use the new <code>yield</code>
+              keyword that yields a value and suspends the execution of the generator. If we want to yield to another
+              generator, we use the <code>yield*</code> operator.
+            </li>
+            <li>
+              The object returned by a generator function is an <strong>iterable</strong>. Iterables have a
+              <code>next()</code> method for advancing to the next result, but are more often used in
+              <code>for…of</code> loops or destructured like an array.
+            </li>
+            <li>
+              The <code>yield</code> keyword works as a two-way binding with the generator’s <code>next()</code> method,
+              allowing values to be returned from and passed into the generator.
+            </li>
+            <li>
+              We can combine generators with <code>async</code> and <code>await</code> to produce async iterators that
+              can be used in <code>for await…of</code> loops.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="c8-source">
+        <h2>Source</h2>
+        <p>
+          Chapter 8, “Functions for the future: promises and generators”, of
+          <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10) — Manning Publications. Printed pages
+          154–183 of the PDF edition in this repository.
+        </p>
+        <p>
+          Both figures (8.1, 8.2) and all fourteen listings (8.1–8.14) are included above, with the book’s
+          <code>#A</code>–<code>#H</code> callouts kept as annotation keys beneath each snippet.
+        </p>
+      </section>
+
+      <p class="chapter-next">
+        <button type="button" class="back" data-goto="chapter-7"><span class="n">Back</span> ← Chapter 7 — Closures and scopes</button>
+        <span class="spacer"></span>
+        <button type="button" data-goto="chapter-9"><span class="n">Next</span> Chapter 9 — Objects, prototypes and classes →</button>
+      </p>
+
+      </div>
+
     </main>
   </div>
 </div>
 
 <footer>
   <div class="wrap">
-    <p><strong>Summaries prepared from Chapters 1–7 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
+    <p><strong>Summaries prepared from Chapters 1–8 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
     <p>Text and examples © Manning Publications Co. — summarised here for study purposes. Book reference: manning.com.</p>
   </div>
 </footer>
@@ -6864,7 +8193,7 @@ console.<span class="tok-fn">log</span>(<span class="tok-str">`It's me, ${ninjaN
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-nav button[data-target]'));
   var chapters = Array.prototype.slice.call(document.querySelectorAll('div.chapter'));
-  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6', 7: 'toc-7'};
+  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6', 7: 'toc-7', 8: 'toc-8'};
 
   function show(id) {
     chapters.forEach(function (c) {
