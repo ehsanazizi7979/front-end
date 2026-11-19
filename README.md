@@ -5,7 +5,7 @@ Study notes from the JavaScript books in this repository.
 ## Chapter summaries
 
 - **[index.html](index.html)** — Chapter summaries of *Secrets of the JavaScript Ninja, Third Edition*
-  (MEAP V10), in one self-contained HTML page with a ten-tab chapter switcher:
+  (MEAP V10), in one self-contained HTML page with an eleven-tab switcher (ten chapters plus the appendix):
   - **Chapter 1 — JavaScript is everywhere** (printed pp. 1–16)
   - **Chapter 2 — Using modern JavaScript tools** (printed pp. 17–43): TypeScript, ESLint, Prettier,
     Husky — listings 2.1–2.15
@@ -38,6 +38,10 @@ Study notes from the JavaScript books in this repository.
     the iteration and functional methods (`map`, `flatMap`, `every`, `some`, `find`, `filter`,
     `sort` with `Intl.Collator`, `reduce`), maps and `WeakMap`, sets and `WeakSet`, read-only
     TypeScript collections and Immer — figures 10.1–10.8 and listings 10.1–10.15
+  - **Appendix A — Setting up Node.js and npm** (printed pp. 260–264, the final section of the
+    excerpt): cloud IDEs, installing Node.js with fnm, `.node-version` files, the Node.js release
+    schedule, and alternatives to Node.js (Deno, Bun) and to npm (Yarn, pnpm, JSR) — no figures
+    or listings, just four terminal commands
 
   The book’s figure and note icons are embedded as data URIs, and every code listing is reproduced
   with its `#A`–`#E` callouts. No external requests, so the file works offline or opened from disk.
@@ -72,7 +76,7 @@ URIs to keep the page small), so it works when opened directly from disk, offlin
 
 ### Source books
 
-- Secrets of the JavaScript Ninja, Third Edition (MEAP V10) — chapters 1–10 summarised
+- Secrets of the JavaScript Ninja, Third Edition (MEAP V10) — chapters 1–10 and appendix A summarised
 - Eloquent JavaScript, 4th Edition
 - JavaScript: The Definitive Guide, 7th Edition
 - You Don’t Know JS Yet: Get Started

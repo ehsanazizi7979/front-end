@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chapters 1–10 | Secrets of the JavaScript Ninja, 3rd Edition</title>
-<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–10, from “JavaScript is everywhere” to “Dealing with collections”, with the book’s figures, icons and code listings embedded.">
+<title>Chapters 1–10 + Appendix A | Secrets of the JavaScript Ninja, 3rd Edition</title>
+<meta name="description" content="Chapter summaries of Secrets of the JavaScript Ninja, Third Edition (MEAP V10): chapters 1–10 plus appendix A, from “JavaScript is everywhere” to “Dealing with collections” and setting up Node.js, with the book’s figures, icons and code listings embedded.">
 <style>
   :root{
     --ink:#14161a;
@@ -337,7 +337,7 @@
   <div class="wrap">
     <p class="kicker">Secrets of the JavaScript Ninja · Third Edition · MEAP V10</p>
     <h1>Chapter summaries
-      <span class="thin">Chapters 1–10 — from “JavaScript is everywhere” through functions for the novice, the journeyman and the master, promises and generators, and objects and classes, to “Dealing with collections”, with the book’s figures, icons and every code listing reproduced.</span>
+      <span class="thin">Chapters 1–10 plus appendix A — from “JavaScript is everywhere” through functions for the novice, the journeyman and the master, promises and generators, objects and classes, and collections, to setting up Node.js and npm, with the book’s figures, icons and every code listing reproduced.</span>
     </h1>
     <p class="byline">
       <strong>Trevor Burnham</strong>, with Bear Bibeault, Josip Maras &amp; John Resig ·
@@ -393,6 +393,11 @@
       <li role="presentation">
         <button type="button" role="tab" id="tab-10" aria-controls="chapter-10" aria-selected="false" data-target="chapter-10">
           <span class="n">Ch 10</span> Collections
+        </button>
+      </li>
+      <li role="presentation">
+        <button type="button" role="tab" id="tab-11" aria-controls="chapter-11" aria-selected="false" data-target="chapter-11">
+          <span class="n">App A</span> Setting up Node.js
         </button>
       </li>
     </ul>
@@ -629,6 +634,18 @@
         <li class="sub"><a href="#c10-immer">10.4.3 Immer</a></li>
         <li><a href="#c10-summary"><span class="mono">10.5</span> Summary</a></li>
         <li><a href="#c10-source">Source</a></li>
+      </ol>
+    </nav>
+
+    <nav class="toc" id="toc-11" aria-label="Appendix A contents" hidden>
+      <h2>Appendix A · on this page</h2>
+      <ol>
+        <li><a href="#c11-intro">What this appendix covers</a></li>
+        <li><a href="#c11-fnm"><span class="mono">A.1</span> Installing with fnm</a></li>
+        <li><a href="#c11-runtimes"><span class="mono">A.2</span> Alternatives to Node.js</a></li>
+        <li><a href="#c11-package-managers"><span class="mono">A.3</span> Alternatives to npm</a></li>
+        <li><a href="#c11-summary"><span class="mono">A.4</span> Summary</a></li>
+        <li><a href="#c11-source">Source</a></li>
       </ol>
     </nav>
 
@@ -11141,11 +11158,275 @@ console.<span class="tok-fn">assert</span>(
         </p>
         <p>
           This is the last chapter contained in this repository’s MEAP V10 excerpt, which covers chapters 1–10 of 15;
-          the PDF continues straight from here into appendix A, “Setting up Node.js and npm”.
+          the PDF continues straight from here into appendix A, “Setting up Node.js and npm”, summarised in the final
+          tab.
         </p>
       </section>
 
-      <p class="chapter-next"><button type="button" class="back" data-goto="chapter-9"><span class="n">Back</span> ← Chapter 9 — Objects, prototypes and classes</button></p>
+      <p class="chapter-next">
+        <button type="button" class="back" data-goto="chapter-9"><span class="n">Back</span> ← Chapter 9 — Objects, prototypes and classes</button>
+        <span class="spacer"></span>
+        <button type="button" data-goto="chapter-11"><span class="n">Next</span> Appendix A — Setting up Node.js and npm →</button>
+      </p>
+
+      </div>
+
+      <div class="chapter" id="chapter-11" data-chapter="11" hidden>
+
+      <section class="chapter-head" id="c11-intro">
+        <p class="kicker">Appendix A</p>
+        <h2 class="chapter-title">Setting up Node.js and npm</h2>
+        <div class="card">
+          <h4>This appendix covers</h4>
+          <ul>
+            <li>Installing Node.js and npm</li>
+            <li>Managing Node.js versions with fnm</li>
+            <li>Alternatives to Node.js and npm</li>
+          </ul>
+        </div>
+        <p>
+          This appendix is a quick start guide to get you up and running with Node.js and npm. By the end of this
+          appendix, you’ll be equipped with the <code>node</code>, <code>npm</code>, and <code>npx</code> commands used
+          from chapter 2 on. You’ll also know how to manage multiple Node.js versions on your development machine. (Any
+          recent version should work fine for the activities in this book.)
+        </p>
+        <p>
+          Lastly, although this book will only use Node.js and npm, there are alternative options that you might want to
+          consider for your own projects. The last section of the appendix gives a brief overview of some of those
+          alternatives.
+        </p>
+
+        <div class="card sidebar">
+          <h4>Developing in the cloud</h4>
+          <p>
+            This appendix assumes that you want to do things the old-fashioned way: writing and running code on a
+            computer that’s right in front of you. These days, though, it’s becoming more and more common to use a remote
+            server for development. The cloud-based approach makes it easy to spin up a new environment for each project
+            and share that same environment with teammates, avoiding the hassles and inconsistencies that come with
+            every developer trying to figure out how to run the project themselves. It’s also a big win for security
+            since the code for each individual project runs in its own sandbox.
+          </p>
+          <p>
+            If the remote approach appeals to you, <a href="https://codesandbox.io">CodeSandbox</a> is a popular
+            browser-based IDE that can run Node.js and other JavaScript runtimes in their cloud. Alternatively,
+            <a href="https://stackblitz.com">StackBlitz</a> uses a technology called WebContainers to run Node.js in the
+            browser itself, which means your browser-based IDE will work even if you’re offline.
+          </p>
+          <p>
+            It’s worth familiarizing yourself with these cloud-based development systems even if you don’t plan to use
+            them for your day-to-day work. They’re enormously useful for sharing bug reproductions and other one-off
+            projects.
+          </p>
+        </div>
+      </section>
+
+      <section id="c11-fnm">
+        <h2><span class="num">A.1</span> Installing Node.js with a version manager</h2>
+        <p>
+          If you visit the official Node.js website (<a href="https://nodejs.org">nodejs.org</a>), you’ll see a “Download
+          Node.js” link, which will let you install the latest stable version. However, as a JavaScript Ninja, you’ll
+          want to use a <strong>version manager</strong> instead.
+        </p>
+        <p>
+          A version manager is a tool that lets you install and switch between different Node.js versions. That way, you
+          can use different versions for different projects, avoiding any potential backward compatibility issues when
+          you upgrade Node.js. There are several competing Node.js version managers, but the one we’ll use here is
+          <a href="https://github.com/Schniz/fnm">fnm</a>, which touts itself as the Fast Node Manager. It’s easy to set
+          up, works on every major platform, and — as the name suggests — it can switch Node.js versions in an instant!
+        </p>
+        <p>Install fnm using the instructions on the site, then install the latest Long Term Support (LTS) Node.js version with it:</p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> fnm install --lts</pre></div>
+
+        <p>
+          Copy the version emitted from that command and use <code>fnm use [version]</code> to switch to it. Then
+          confirm that the <code>node</code> command now references the Node.js version that fnm installed:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> node --version</pre></div>
+
+        <p>
+          Set that as the default version with <code>fnm default [version]</code>. That way, the LTS version of Node.js
+          will be used when you start a new shell session. You can re-run this sequence of commands whenever you want to
+          upgrade to the latest LTS version of Node.js.
+        </p>
+
+        <div class="card sidebar">
+          <h4>The Node.js release schedule</h4>
+          <p>
+            As of this writing, Node.js has a new major version every six months. However, not all versions are created
+            equal. Odd-numbered versions are more experimental, often used to get community feedback on new features
+            that may be changed or removed later. Even-numbered versions are more stable. Six months after their release,
+            even-numbered versions enter Long Term Support (LTS), indicating that they’re battle-tested and ready for
+            mainstream adoption.
+          </p>
+          <p>
+            Based on that schedule, you can expect a new LTS version of Node.js every year. Unless you’re in urgent need
+            of some of the cutting-edge features announced in newer versions, sticking to the latest LTS release is
+            generally recommended.
+          </p>
+        </div>
+
+        <p>
+          The real power of fnm is that it allows you to easily switch between different Node.js versions for different
+          projects. To associate a different version of Node.js with a particular project, install and switch to the
+          version of Node.js that you want, then create a <code>.node-version</code> file with the version specifier
+          emitted by <code>node --version</code>:
+        </p>
+
+        <div class="terminal"><pre><span class="prompt">$</span> node --version &gt; .node-version</pre></div>
+
+        <p>
+          The <code>.node-version</code> file is also recognized by other popular tools, making it a useful part of any
+          Node.js project.
+        </p>
+        <p>
+          You can manually switch to the version specified by the closest <code>.node-version</code> file by running the
+          <code>fnm use</code> command with no arguments. Better yet, if you initialize fnm with the
+          <code>--use-on-cd</code> flag in your shell’s start script, fnm will automatically switch Node versions every
+          time you change into a directory with a <code>.node-version</code> file.
+        </p>
+        <p>
+          In addition to the <code>node</code> command, every recent version of Node.js also includes utilities called
+          <code>npm</code> (the official Node.js package manager) and <code>npx</code> (a shortcut for the
+          <code>npm exec</code> command). When you use fnm to switch Node.js versions, it switches to the corresponding
+          <code>npm</code> and <code>npx</code> versions as well.
+        </p>
+      </section>
+
+      <section id="c11-runtimes">
+        <h2><span class="num">A.2</span> Alternatives to Node.js</h2>
+        <p>
+          Although Node.js is the most popular runtime for JavaScript (outside of the browser), it’s not the only
+          option. In recent years, two notable competitors have appeared:
+        </p>
+        <ul>
+          <li>
+            <strong>Deno</strong> (<a href="https://deno.com">deno.com</a>) is a streamlined reimagining of the
+            JavaScript runtime from Node.js creator Ryan Dahl. It includes built-in TypeScript support, a more extensive
+            standard library, and built-in tooling to reduce the need for third-party libraries.
+          </li>
+          <li>
+            <strong>Bun</strong> (<a href="https://bun.sh">bun.sh</a>) aspires to be a drop-in replacement for Node.js,
+            rebuilt from the ground up for superior performance. As of this writing, there are some remaining
+            compatibility issues, but its impressive benchmarks have grabbed a lot of attention.
+          </li>
+        </ul>
+        <p>If you’re starting a new project, which runtime is the best option?</p>
+        <p>
+          As of this writing, Node.js continues to enjoy overwhelming market share (see
+          <a href="https://2024.stateofjs.com/en-US/other-tools/#runtimes">the State of JS 2024 survey</a>), and the vast
+          majority of JavaScript libraries and tools are created with Node.js in mind. Using a different runtime may
+          limit your ability to tap into the JavaScript ecosystem at large.
+        </p>
+        <p>
+          On the other hand, using libraries and tools with Node.js is hardly a frictionless experience. For example, the
+          ongoing shift from CommonJS to ESM (the subject of chapter 13) can cause painful compatibility issues across
+          different packages. Deno introduced a solution to this problem in the form of a new registry called
+          <a href="https://jsr.io">JSR</a>, which promises that all of its packages are compatible with all major
+          JavaScript runtimes. Its selection is, however, much more limited than what you’ll find in the
+          <a href="https://www.npmjs.com">npm registry</a>.
+        </p>
+        <p>
+          That’s the tradeoff in a nutshell. If you can make do with the subset of the JavaScript ecosystem that works in
+          Deno or Bun, you’ll find those runtimes to be a pleasure to use.
+        </p>
+      </section>
+
+      <section id="c11-package-managers">
+        <h2><span class="num">A.3</span> Alternatives to npm</h2>
+        <p>
+          Shortly after Node.js was introduced, Isaac Schlueter created a Node.js package manager called simply npm,
+          along with a public registry of the same name. These innovations made it dramatically easier to share
+          JavaScript code.
+        </p>
+        <p>Today, npm is bundled with Node.js and remains the most commonly-used JavaScript package manager. However, it has several notable competitors:</p>
+        <ul>
+          <li>
+            <strong>Yarn</strong> (<a href="https://yarnpkg.com">yarnpkg.com</a>) touts first-class support for
+            workspaces (projects that contain multiple JavaScript packages) and a robust plugin architecture for added
+            flexibility. It also supports a “Plug’n’Play” mode that resolves dependencies at runtime, avoiding the need
+            to perform a time-consuming install process every time the dependency tree changes.
+          </li>
+          <li>
+            <strong>pnpm</strong> (<a href="https://pnpm.io">pnpm.io</a>) is designed to do everything that npm does, but
+            faster (the “p” stands for “performant”), with a shared cache that reduces disk space usage if you have
+            multiple projects with the same dependencies. It also boasts many of the same features as Yarn, including
+            first-class support for workspaces and Plug’n’Play mode.
+          </li>
+          <li>
+            <strong>JSR</strong> (<a href="https://jsr.io">jsr.io</a>) is a package manager and registry that’s designed
+            specifically for TypeScript and ESM. Like Deno (which spawned it), it’s a streamlined rethinking of patterns
+            established by Node.js.
+          </li>
+          <li>
+            <strong>Bun</strong> has its own
+            <a href="https://bun.sh/package-manager">package manager</a>. It’s largely used with the Bun runtime, but
+            touts Node.js compatibility.
+          </li>
+        </ul>
+        <p>If you’re starting a new project, which package manager is the best option?</p>
+        <p>
+          As of this writing, all of the alternatives have a lot going for them. Although it’s still actively developed,
+          npm’s codebase is looking long in the tooth. Features like workspaces feel grafted on rather than being
+          smoothly integrated. A number of known bugs have languished for years. And it’s slow enough to feel like a
+          bottleneck in large projects: it’s not uncommon for the <code>npm install</code> command to take minutes.
+        </p>
+        <p>
+          And then there are the security issues. When you install a package with npm, that package can immediately run
+          lifecycle scripts (such as <code>postinstall</code>). This is a useful feature for packages that need to install
+          an OS-specific binary. However, it creates a vulnerability: if you mistype the name of a package you want to
+          install from the npm registry, you might instead install a package from a malicious “typosquatter,” which can
+          then immediately execute code on your machine!
+        </p>
+        <p>
+          pnpm has achieved a reputation in recent years as the “enterprise package manager” for its ability to handle
+          large projects efficiently and its more cautious approach to security (by default, it prevents lifecycle
+          scripts from being run until the package is allowlisted). We use npm throughout this book, but if you have a
+          choice of package managers for a new project, pnpm comes highly recommended.
+        </p>
+      </section>
+
+      <section id="c11-summary">
+        <h2><span class="num">A.4</span> Summary</h2>
+        <div class="card">
+          <h4>Four things to remember</h4>
+          <ol>
+            <li>
+              If you don’t want to set up Node.js on your development machine, you can use websites like CodeSandbox and
+              StackBlitz to spin up a complete Node.js development environment directly in your browser.
+            </li>
+            <li>
+              Installing Node.js with fnm makes it easy to use different versions of Node.js and npm for different
+              projects, avoiding potential compatibility issues.
+            </li>
+            <li>
+              Node.js is very popular but faces competition from Deno and Bun. Deno offers a more “batteries included”
+              experience, while Bun promises faster performance.
+            </li>
+            <li>
+              Node.js comes with a package manager called npm, but several alternatives are available that offer faster
+              performance and other benefits. Most notably, pnpm has been gaining traction in recent years.
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="c11-source">
+        <h2>Source</h2>
+        <p>
+          Appendix A, “Setting up Node.js and npm”, of
+          <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10) — Manning Publications. Printed pages
+          260–264 of the PDF edition in this repository.
+        </p>
+        <p>
+          The appendix contains no numbered figures or listings — only the four terminal commands above — so this page
+          reproduces it in full as prose, with the book’s two sidebars (“Developing in the cloud” and “The Node.js release
+          schedule”) kept as boxes. This is the final section of the excerpt: the PDF ends here.
+        </p>
+      </section>
+
+      <p class="chapter-next"><button type="button" class="back" data-goto="chapter-10"><span class="n">Back</span> ← Chapter 10 — Dealing with collections</button></p>
 
       </div>
 
@@ -11155,7 +11436,7 @@ console.<span class="tok-fn">assert</span>(
 
 <footer>
   <div class="wrap">
-    <p><strong>Summaries prepared from Chapters 1–10 of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
+    <p><strong>Summaries prepared from Chapters 1–10 and appendix A of <em>Secrets of the JavaScript Ninja, Third Edition</em> (MEAP V10).</strong></p>
     <p>Text and examples © Manning Publications Co. — summarised here for study purposes. Book reference: manning.com.</p>
   </div>
 </footer>
@@ -11164,7 +11445,7 @@ console.<span class="tok-fn">assert</span>(
 (function () {
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.chapter-nav button[data-target]'));
   var chapters = Array.prototype.slice.call(document.querySelectorAll('div.chapter'));
-  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6', 7: 'toc-7', 8: 'toc-8', 9: 'toc-9', 10: 'toc-10'};
+  var tocs = {1: 'toc-1', 2: 'toc-2', 3: 'toc-3', 4: 'toc-4', 5: 'toc-5', 6: 'toc-6', 7: 'toc-7', 8: 'toc-8', 9: 'toc-9', 10: 'toc-10', 11: 'toc-11'};
 
   function show(id) {
     chapters.forEach(function (c) {
